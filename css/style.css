@@ -791,7 +791,7 @@ div.loading {
 }
 
 .clients-logo .block:hover img {
-  -webkit-filter: invert(1);
+  filter: invert(1);
 }
 
 /**
@@ -1128,26 +1128,26 @@ hr.hr-border {
   top: 0;
   left: 0;
   box-sizing: border-box;
-  -webkit-transform: scale(0);
+  transform: scale(0);
   transition: 0.5s;
 }
 
 .border-effect:before {
   border-bottom: 1px solid #facd8a;
   border-left: 1px solid #facd8a;
-  -webkit-transform-origin: 0 100%;
+  transform-origin: 0 100%;
 }
 
 .border-effect:after {
   border-top: 1px solid #facd8a;
   border-right: 1px solid #facd8a;
-  -webkit-transform-origin: 100% 0%;
+  transform-origin: 100% 0%;
 }
 
 .table:hover .table-price:before, .table:hover .table-price:after,
 .table:hover .pricing-list:before,
 .table:hover .pricing-list:after {
-  -webkit-transform: scale(1);
+ transform: scale(1);
 }
 
 /**********************************************
