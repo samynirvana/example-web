@@ -18,24 +18,7 @@ body {
   -moz-font-smoothing: antialiased;
 }
 
-.float{
-	position:fixed;
-	width:60px;
-	height:60px;
-	bottom:40px;
-	right:40px;
-	background-color:#25d366;
-	color:#FFF;
-	border-radius:50px;
-	text-align:center;
-  font-size:30px;
-	box-shadow: 2px 2px 3px #999;
-  z-index:100;
-}
 
-.my-float{
-	margin-top:16px;
-}
 /* Heading Fonts Size */
 h1, h2, h3 {
   font-family: "Playfair Display", serif;
@@ -1377,12 +1360,12 @@ hr.hr-border {
 
 .testimonials-area {
   position: relative;
-  padding: 90px 75px;
+  padding: 20px 20px;
   text-align: center;
 }
 
 .testimonials-area .testimonials-description {
-  margin-bottom: 35px;
+  margin-bottom: 5px;
   font-family: "Calibri Light", serif;
   font-size: 25px;
   line-height: 25px;
