@@ -18,6 +18,24 @@ body {
   -moz-font-smoothing: antialiased;
 }
 
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:40px;
+	right:40px;
+	background-color:#25d366;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+  font-size:30px;
+	box-shadow: 2px 2px 3px #999;
+  z-index:100;
+}
+
+.my-float{
+	margin-top:16px;
+}
 /* Heading Fonts Size */
 h1, h2, h3 {
   font-family: "Playfair Display", serif;
@@ -729,11 +747,11 @@ div.loading {
 .case-study .content li {
   color:rgba(175, 175, 175, 0.8);
   font-family: Calibri Light;
-  font-size: 16px;
+  font-size: 25px;
 }
 
 .case-study .content p {
-  font-size: 16px;
+  font-size: 25px;
   font-family: Calibri Light;
   color: rgba(175, 175, 175, 0.8);
 }
@@ -774,7 +792,7 @@ div.loading {
   padding: 100px 0;
   background-attachment: fixed;
 }
-
+ 
 .clients-logo .block {
   padding: 40px 0;
   background: rgba(0, 0, 0, 0.7);
@@ -790,9 +808,7 @@ div.loading {
   background: #fff;
 }
 
-.clients-logo .block:hover img {
-  filter: invert(1);
-}
+
 
 /**
  * ---------------------------------------------------------------------------
