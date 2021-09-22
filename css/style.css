@@ -1277,7 +1277,7 @@ hr.hr-border {
   left: 0px;
   bottom: 0px;
   right: 0px;
-  background: #facd8a;
+  background: transparent;
   opacity: 0;
   transition: 0.5s;
 }
@@ -1287,7 +1287,7 @@ hr.hr-border {
 }
 
 .service-item:hover .services-icon {
-  background: #facd8a;
+  background: transparent;
   box-shadow: 0px 0px 0px 14px #191919;
 }
 
