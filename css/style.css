@@ -18,6 +18,29 @@ body {
   -moz-font-smoothing: antialiased;
 }
 
+.buttonClass {
+  font-size:15px;
+  font-family:Arial;
+  width:140px;
+  height:50px;
+  border-width:2px;
+  color:#505739;
+  border-color:#333029;
+  font-weight:bold;
+  border-top-left-radius:15px;
+  border-top-right-radius:15px;
+  border-bottom-left-radius:15px;
+  border-bottom-right-radius:15px;
+  box-shadow: 0px 1px 0px 0px #1c1b18;
+  text-shadow: 0px 1px 0px #ffffff;
+  background:linear-gradient(#eae0c2, #ccc2a6);
+}
+
+.buttonClass:hover {
+  background: linear-gradient(#ccc2a6, #eae0c2);
+}
+   
+
 .video-element{
   position: relative; 
   right: 0; 
