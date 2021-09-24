@@ -18,6 +18,14 @@ body {
   -moz-font-smoothing: antialiased;
 }
 
+.company-header {
+  font-size: 30px;
+  text-align: center;
+}
+
+
+}
+
 .buttonClass {
   font-size:15px;
   font-family:Arial;
@@ -45,7 +53,7 @@ body {
   position: relative; 
   right: 0; 
   bottom: 0;
-  min-width: 100%; 
+  min-width: 10%; 
   min-height: 100%;
   width: auto; 
   height: auto; 
@@ -137,6 +145,7 @@ button:hover, button:focus {
 /* Display Style */
 .flex {
   display: flex;
+
 }
 
 /* Padding */
@@ -1670,7 +1679,10 @@ hr.hr-border {
 }
 
 .portfolio-single img {
-  width: 100%;
+  width: 50%;
+  display: block;
+  position: relative;
+  text-align: center;
 }
 
 .portfolio-single-description {
