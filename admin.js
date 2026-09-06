@@ -7729,6 +7729,8 @@ window.updateEditOfflineQuizClassLabel = updateEditOfflineQuizClassLabel;
 // STUDENTS ATTENDANCE & PRESENT LIST SYSTEM (ADMIN/TEACHER)
 // ======================================================
 
+window.escapeHtml = escapeHtml;
+
 let activeAttendanceSession = null;
 let attendanceEnrolledStudents = [];
 let attendanceRecordsMap = {}; // keyed by studentCode
@@ -7768,6 +7770,13 @@ async function initAttendanceTab() {
         document.getElementById('btnRefreshAttendance')?.addEventListener('click', () => checkAndLoadAttendance());
         document.getElementById('btnExportAttendanceExcel')?.addEventListener('click', exportAttendanceToExcel);
         document.getElementById('btnPrintAttendance')?.addEventListener('click', () => window.print());
+
+        // Close dropdown when any action item is clicked
+        document.getElementById('attActionDropdownMenu')?.addEventListener('click', (e) => {
+            if (e.target.closest('.att-action-dropdown-item')) {
+                closeAllAttDropdowns();
+            }
+        });
 
         // Search Input
         const searchInput = document.getElementById('attSearchInput');
@@ -7920,6 +7929,7 @@ async function checkAndLoadAttendance() {
             }
             if (activeInfo) activeInfo.innerText = `Live session deployed on ${foundSession.date} for ${foundSession.subject} - Class ${foundSession.targetClass}. Real-time student responses streaming below.`;
             if (closeBtn) closeBtn.classList.remove('hidden');
+            document.getElementById('attCloseSessionDivider')?.classList.remove('hidden');
             if (deployBtn) deployBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> <span>Update Session Title</span>`;
             if (titleInput && foundSession.sessionTitle) titleInput.value = foundSession.sessionTitle;
         } else if (foundSession && foundSession.status === 'closed') {
@@ -7929,6 +7939,7 @@ async function checkAndLoadAttendance() {
             }
             if (activeInfo) activeInfo.innerText = `This attendance session was closed on ${foundSession.date}. You can re-open/deploy it anytime.`;
             if (closeBtn) closeBtn.classList.add('hidden');
+            document.getElementById('attCloseSessionDivider')?.classList.add('hidden');
             if (deployBtn) deployBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> <span>Re-Open Attendance Call</span>`;
             if (titleInput && foundSession.sessionTitle) titleInput.value = foundSession.sessionTitle;
         } else {
@@ -7938,6 +7949,7 @@ async function checkAndLoadAttendance() {
             }
             if (activeInfo) activeInfo.innerText = '';
             if (closeBtn) closeBtn.classList.add('hidden');
+            document.getElementById('attCloseSessionDivider')?.classList.add('hidden');
             if (deployBtn) deployBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> <span>Deploy Attendance Call</span>`;
         }
 
@@ -8044,18 +8056,21 @@ function renderAttendanceTable() {
     if (pctOthersEl) pctOthersEl.innerText = calcPct(othersCount);
     if (pctPendingEl) pctPendingEl.innerText = calcPct(pendingCount);
 
-    // Update Pill Count Badges
-    const pAll = document.getElementById('pillAllCount');
-    const pPresent = document.getElementById('pillPresentCount');
-    const pAbsent = document.getElementById('pillAbsentCount');
-    const pOthers = document.getElementById('pillOthersCount');
-    const pPending = document.getElementById('pillPendingCount');
+    // Update Filter Select Options with live counts
+    const statusSelect = document.getElementById('attStatusFilterSelect');
+    if (statusSelect) {
+        const optAll = statusSelect.querySelector('option[value="all"]');
+        const optPresent = statusSelect.querySelector('option[value="present"]');
+        const optAbsent = statusSelect.querySelector('option[value="absent"]');
+        const optOthers = statusSelect.querySelector('option[value="others"]');
+        const optPending = statusSelect.querySelector('option[value="pending"]');
 
-    if (pAll) pAll.innerText = totalStudents;
-    if (pPresent) pPresent.innerText = presentCount;
-    if (pAbsent) pAbsent.innerText = absentCount;
-    if (pOthers) pOthers.innerText = othersCount;
-    if (pPending) pPending.innerText = pendingCount;
+        if (optAll) optAll.innerText = `All (${totalStudents})`;
+        if (optPresent) optPresent.innerText = `Present (${presentCount})`;
+        if (optAbsent) optAbsent.innerText = `Absent (${absentCount})`;
+        if (optOthers) optOthers.innerText = `Others (${othersCount})`;
+        if (optPending) optPending.innerText = `Pending (${pendingCount})`;
+    }
 
     // Filter list
     let filtered = studentRows;
@@ -8119,20 +8134,29 @@ function renderAttendanceTable() {
             <td>${badgeHtml}</td>
             <td>${reasonDisplay}</td>
             <td style="font-size: 12px; color: var(--text-gray); white-space: nowrap;">${timeStr}</td>
-            <td style="text-align: right; white-space: nowrap;">
-                <div style="display: inline-flex; gap: 4px; align-items: center; justify-content: flex-end;">
-                    <button type="button" class="att-action-btn att-action-present" title="Quick Mark Present" onclick="quickMarkAttendance('${escapeHtml(s.code)}', '${escapeHtml(s.studentName || '')}', '${escapeHtml(s.studentClass || '')}', 'present')">
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                        <span>Present</span>
-                    </button>
-                    <button type="button" class="att-action-btn att-action-absent" title="Quick Mark Absent" onclick="quickMarkAttendance('${escapeHtml(s.code)}', '${escapeHtml(s.studentName || '')}', '${escapeHtml(s.studentClass || '')}', 'absent')">
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                        <span>Absent</span>
-                    </button>
-                    <button type="button" class="att-action-btn att-action-edit" title="Edit / Set Reason" onclick="openAttManualModal('${escapeHtml(s.code)}', '${escapeHtml(s.studentName || '')}', '${escapeHtml(s.studentClass || '')}', '${status}', '${escapeHtml(reason)}')">
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                        <span>Note</span>
-                    </button>
+            <td style="text-align: center; position: relative;">
+                <div class="att-kebab-menu">
+                    <button type="button" class="att-kebab-trigger" title="Actions" aria-label="Actions" onclick="toggleAttendanceRowMenu(event, '${escapeHtml(s.code)}')">⋮</button>
+                    <div id="att-menu-${escapeHtml(s.code)}" class="att-row-dropdown hidden">
+                        <button type="button" class="att-row-item opt-present" onclick="quickMarkAttendance('${escapeHtml(s.code)}', '${escapeHtml(s.studentName || '')}', '${escapeHtml(s.studentClass || '')}', 'present'); closeAllAttDropdowns();">
+                            <span class="att-item-icon-wrap" style="color: #10b981; background: rgba(16,185,129,0.12);">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </span>
+                            <span>Present</span>
+                        </button>
+                        <button type="button" class="att-row-item opt-absent" onclick="quickMarkAttendance('${escapeHtml(s.code)}', '${escapeHtml(s.studentName || '')}', '${escapeHtml(s.studentClass || '')}', 'absent'); closeAllAttDropdowns();">
+                            <span class="att-item-icon-wrap" style="color: #ef4444; background: rgba(239,68,68,0.12);">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </span>
+                            <span>Absent</span>
+                        </button>
+                        <button type="button" class="att-row-item opt-note" onclick="openAttManualModal('${escapeHtml(s.code)}', '${escapeHtml(s.studentName || '')}', '${escapeHtml(s.studentClass || '')}', '${status}', '${escapeHtml(reason)}'); closeAllAttDropdowns();">
+                            <span class="att-item-icon-wrap" style="color: #6366f1; background: rgba(99,102,241,0.12);">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            </span>
+                            <span>Note</span>
+                        </button>
+                    </div>
                 </div>
             </td>
         `;
@@ -8153,9 +8177,10 @@ function formatTimeDisplay(raw) {
 
 window.filterAttendanceStatus = function(status) {
     currentAttStatusFilter = status;
-    document.querySelectorAll('.att-pill').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-filter') === status);
-    });
+    const select = document.getElementById('attStatusFilterSelect');
+    if (select && select.value !== status) {
+        select.value = status;
+    }
     renderAttendanceTable();
 };
 
@@ -8283,6 +8308,54 @@ window.openAttManualModal = function(studentCode, studentName, studentClass, cur
 window.closeAttManualModal = function() {
     document.getElementById('attManualModal')?.classList.add('hidden');
 };
+
+window.toggleAttendanceRowMenu = function(event, code) {
+    if (event) event.stopPropagation();
+    const menuId = `att-menu-${code}`;
+    const targetMenu = document.getElementById(menuId);
+    
+    // Close other row menus
+    document.querySelectorAll('.att-row-dropdown').forEach(m => {
+        if (m.id !== menuId) m.classList.add('hidden');
+    });
+    // Close split dropdown
+    const actionDropdown = document.getElementById('attActionDropdownMenu');
+    if (actionDropdown) actionDropdown.classList.add('hidden');
+    const toggleBtn = document.getElementById('btnAttendanceMenuToggle');
+    if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
+
+    if (targetMenu) {
+        targetMenu.classList.toggle('hidden');
+    }
+};
+
+window.toggleAttendanceActionsDropdown = function(event) {
+    if (event) event.stopPropagation();
+    const dropdown = document.getElementById('attActionDropdownMenu');
+    const toggleBtn = document.getElementById('btnAttendanceMenuToggle');
+    if (!dropdown) return;
+    
+    // Close any open row menus
+    document.querySelectorAll('.att-row-dropdown').forEach(m => m.classList.add('hidden'));
+
+    const isHidden = dropdown.classList.toggle('hidden');
+    if (toggleBtn) toggleBtn.setAttribute('aria-expanded', String(!isHidden));
+};
+
+window.closeAllAttDropdowns = function() {
+    document.querySelectorAll('.att-row-dropdown').forEach(m => m.classList.add('hidden'));
+    const dropdown = document.getElementById('attActionDropdownMenu');
+    if (dropdown) dropdown.classList.add('hidden');
+    const toggleBtn = document.getElementById('btnAttendanceMenuToggle');
+    if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
+};
+
+// Global click listener to close attendance dropdowns when clicking outside
+window.addEventListener('click', (e) => {
+    if (!e.target.closest('.att-kebab-menu') && !e.target.closest('.att-split-btn-wrapper')) {
+        closeAllAttDropdowns();
+    }
+});
 
 window.onAttManualStatusChange = function() {
     const status = document.getElementById('attManualStatusSelect')?.value;
