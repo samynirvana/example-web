@@ -11,18 +11,23 @@ const themeToggleBtn = document.getElementById('themeToggleBtn');
 const mainThemeText = document.getElementById('mainThemeText');
 const savedTheme = localStorage.getItem('appTheme') || 'light';
 
-if (savedTheme === 'dark') {
-    document.body.classList.add('dark-theme');
-    document.body.classList.add('dark-mode');
-    if (mainThemeText) mainThemeText.innerText = 'Light Mode';
+function applyProfileTheme(theme) {
+    const isDark = theme === 'dark';
+    document.body.classList.toggle('dark-theme', isDark);
+    document.body.classList.toggle('dark-mode', isDark);
+    if (mainThemeText) mainThemeText.innerText = isDark ? 'Light Mode' : 'Dark Mode';
+    document.querySelectorAll('.theme-icon-sun').forEach(el => el.style.setProperty('display', isDark ? 'inline-block' : 'none', 'important'));
+    document.querySelectorAll('.theme-icon-moon').forEach(el => el.style.setProperty('display', isDark ? 'none' : 'inline-block', 'important'));
 }
 
+applyProfileTheme(savedTheme);
+
 themeToggleBtn?.addEventListener('click', () => {
-    const isDark = document.body.classList.toggle('dark-theme');
-    document.body.classList.toggle('dark-mode', isDark);
-    localStorage.setItem('appTheme', isDark ? 'dark' : 'light');
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    if (mainThemeText) mainThemeText.innerText = isDark ? 'Light Mode' : 'Dark Mode';
+    const isDark = !document.body.classList.contains('dark-theme');
+    const newTheme = isDark ? 'dark' : 'light';
+    localStorage.setItem('appTheme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    applyProfileTheme(newTheme);
 });
 
 // --- LOGOUT HANDLER ---

@@ -3505,7 +3505,7 @@ select:focus {
 }
 
 /* Theme Toggle Button Single-Line Alignment */
-.theme-toggle-btn {
+.theme-toggle-btn:not(.btn-circle) {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -3517,7 +3517,7 @@ select:focus {
     min-width: max-content !important;
 }
 
-.theme-toggle-btn .btn-icon {
+.theme-toggle-btn:not(.btn-circle) .btn-icon {
     width: 18px !important;
     height: 18px !important;
     object-fit: contain !important;
@@ -3682,12 +3682,12 @@ body.dark-theme .multi-select-option-row:hover {
 /* ======================================================
    ROUNDED PILL BUTTON STYLING SYSTEM (LIGHT & DARK THEME)
    ====================================================== */
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass),
-.btn:not(.dropdown-item):not(.kebab-item),
-.action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn),
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn),
+.btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle),
+.action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle),
 .add-btn,
 .save-btn,
-.delete-btn:not(.dropdown-item):not(.kebab-item),
+.delete-btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle),
 .modal-btn {
     background: #ffffff !important;
     color: #0f172a !important;
@@ -3705,12 +3705,12 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     transition: all 0.2s ease !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):hover,
-.btn:not(.dropdown-item):not(.kebab-item):hover,
-.action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):hover,
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):hover,
+.btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle):hover,
+.action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle):hover,
 .add-btn:hover,
 .save-btn:hover,
-.delete-btn:not(.dropdown-item):not(.kebab-item):hover,
+.delete-btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle):hover,
 .modal-btn:hover {
     background: #f8fafc !important;
     border-color: #cbd5e1 !important;
@@ -4859,59 +4859,72 @@ body.dark-mode #topbarUserRole {
     }
 
     .sidebar #themeToggleBtn,
-    .student-sidebar #themeToggleBtn {
-        height: 32px !important;
-        min-height: 32px !important;
-        max-height: 32px !important;
-        padding: 4px 12px !important;
-        font-size: 12px !important;
-        font-weight: 600 !important;
-        border-radius: 20px !important;
-        gap: 6px !important;
-        min-width: auto !important;
-        background: rgba(255, 255, 255, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    .student-sidebar #themeToggleBtn,
+    .sidebar .teacher-btn,
+    .student-sidebar .teacher-btn,
+    .sidebar #studentLogoutBtn,
+    .student-sidebar #studentLogoutBtn,
+    .sidebar #logoutBtn,
+    .student-sidebar #logoutBtn,
+    .desktop-user-actions .btn-circle {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
+        max-width: 34px !important;
+        max-height: 34px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
         color: #ffffff !important;
         cursor: pointer !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
+        flex: none !important;
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
+        transition: all 0.2s ease !important;
     }
 
     .sidebar #themeToggleBtn:hover,
-    .student-sidebar #themeToggleBtn:hover {
-        background: rgba(255, 255, 255, 0.18) !important;
-    }
-
-    .sidebar #themeToggleBtn .btn-icon,
-    .student-sidebar #themeToggleBtn .btn-icon {
-        width: 14px !important;
-        height: 14px !important;
-        margin: 0 !important;
+    .student-sidebar #themeToggleBtn:hover,
+    .sidebar .teacher-btn:hover,
+    .student-sidebar .teacher-btn:hover,
+    .desktop-user-actions .btn-circle:hover {
+        background: rgba(255, 255, 255, 0.22) !important;
+        border-color: rgba(255, 255, 255, 0.45) !important;
+        transform: translateY(-1px) scale(1.06) !important;
     }
 
     .sidebar #logoutBtn,
-    .student-sidebar #logoutBtn {
-        height: 32px !important;
-        min-height: 32px !important;
-        max-height: 32px !important;
-        padding: 4px 14px !important;
-        font-size: 12px !important;
-        font-weight: 600 !important;
-        border-radius: 20px !important;
-        background: rgba(239, 68, 68, 0.15) !important;
-        border: 1px solid rgba(239, 68, 68, 0.35) !important;
+    .student-sidebar #logoutBtn,
+    .sidebar #studentLogoutBtn,
+    .student-sidebar #studentLogoutBtn {
+        background: rgba(239, 68, 68, 0.18) !important;
+        border: 1px solid rgba(239, 68, 68, 0.4) !important;
         color: #ff6b6b !important;
-        cursor: pointer !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
     }
 
     .sidebar #logoutBtn:hover,
-    .student-sidebar #logoutBtn:hover {
-        background: rgba(239, 68, 68, 0.28) !important;
+    .student-sidebar #logoutBtn:hover,
+    .sidebar #studentLogoutBtn:hover,
+    .student-sidebar #studentLogoutBtn:hover {
+        background: rgba(239, 68, 68, 0.32) !important;
+        border-color: rgba(239, 68, 68, 0.65) !important;
         color: #ffffff !important;
+        transform: translateY(-1px) scale(1.06) !important;
+    }
+
+    .desktop-user-actions svg {
+        width: 16px !important;
+        height: 16px !important;
+        stroke: currentColor !important;
+        stroke-width: 2 !important;
+        fill: none !important;
+        margin: 0 !important;
+        display: inline-block !important;
     }
 }
 
@@ -4959,9 +4972,9 @@ body.dark-mode .mobile-kebab-user-info {
     margin-top: 24px;
     margin-bottom: 24px;
     width: 100% !important;
-    max-width: 1240px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     box-sizing: border-box !important;
 }
 
@@ -6155,6 +6168,137 @@ body.dark-theme .score-ledger-divider {
         transition-duration: 0.001ms !important;
     }
 }
+
+/* ======================================================
+   CIRCULAR ACTION BUTTONS IN DESKTOP NAVBAR (ADMIN & INDEX)
+   ====================================================== */
+.desktop-user-actions button,
+.desktop-user-actions .btn-circle,
+.desktop-user-actions #themeToggleBtn,
+.desktop-user-actions #darkModeToggle,
+.desktop-user-actions .theme-toggle-btn,
+.desktop-user-actions .teacher-btn,
+.desktop-user-actions #logoutBtn,
+.desktop-user-actions #studentLogoutBtn,
+.desktop-user-actions .logout-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: none !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.desktop-user-actions .btn-circle:hover,
+.desktop-user-actions #themeToggleBtn:hover,
+.desktop-user-actions #darkModeToggle:hover,
+.desktop-user-actions .theme-toggle-btn:hover,
+.desktop-user-actions .teacher-btn:hover {
+    background: rgba(255, 255, 255, 0.22) !important;
+    border-color: rgba(255, 255, 255, 0.45) !important;
+    transform: translateY(-1px) scale(1.05) !important;
+}
+
+.desktop-user-actions #logoutBtn,
+.desktop-user-actions #studentLogoutBtn,
+.desktop-user-actions .logout-btn {
+    background: rgba(239, 68, 68, 0.18) !important;
+    border: 1.5px solid rgba(239, 68, 68, 0.45) !important;
+    color: #f87171 !important;
+}
+
+.desktop-user-actions #logoutBtn:hover,
+.desktop-user-actions #studentLogoutBtn:hover,
+.desktop-user-actions .logout-btn:hover {
+    background: rgba(239, 68, 68, 0.35) !important;
+    border-color: rgba(239, 68, 68, 0.7) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) scale(1.05) !important;
+}
+
+/* Bulletproof SVG Icon Visibility & Sizing */
+.desktop-user-actions button svg,
+.desktop-user-actions .btn-circle svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    max-width: 18px !important;
+    max-height: 18px !important;
+    fill: none !important;
+    stroke: #ffffff !important;
+    stroke-width: 2.2 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    flex-shrink: 0 !important;
+    pointer-events: none !important;
+    transition: stroke 0.2s ease !important;
+}
+
+.desktop-user-actions #logoutBtn svg,
+.desktop-user-actions #studentLogoutBtn svg,
+.desktop-user-actions .logout-btn svg {
+    stroke: #f87171 !important;
+}
+
+.desktop-user-actions #logoutBtn:hover svg,
+.desktop-user-actions #studentLogoutBtn:hover svg,
+.desktop-user-actions .logout-btn:hover svg {
+    stroke: #ffffff !important;
+}
+
+/* Theme Icon Swapping System: Light Mode -> Moon visible, Sun hidden; Dark Mode -> Sun visible, Moon hidden */
+.theme-icon-sun,
+svg.theme-icon-sun,
+.desktop-user-actions .theme-icon-sun,
+.desktop-user-actions svg.theme-icon-sun {
+    display: none !important;
+}
+
+.theme-icon-moon,
+svg.theme-icon-moon,
+.desktop-user-actions .theme-icon-moon,
+.desktop-user-actions svg.theme-icon-moon {
+    display: inline-block !important;
+}
+
+body.dark-theme .theme-icon-sun,
+body.dark-theme svg.theme-icon-sun,
+body.dark-theme .desktop-user-actions .theme-icon-sun,
+body.dark-theme .desktop-user-actions svg.theme-icon-sun,
+body.dark-mode .theme-icon-sun,
+body.dark-mode svg.theme-icon-sun,
+body.dark-mode .desktop-user-actions .theme-icon-sun,
+body.dark-mode .desktop-user-actions svg.theme-icon-sun {
+    display: inline-block !important;
+}
+
+body.dark-theme .theme-icon-moon,
+body.dark-theme svg.theme-icon-moon,
+body.dark-theme .desktop-user-actions .theme-icon-moon,
+body.dark-theme .desktop-user-actions svg.theme-icon-moon,
+body.dark-mode .theme-icon-moon,
+body.dark-mode svg.theme-icon-moon,
+body.dark-mode .desktop-user-actions .theme-icon-moon,
+body.dark-mode .desktop-user-actions svg.theme-icon-moon {
+    display: none !important;
+}
+
 
 
 

@@ -101,6 +101,8 @@ const initMobileNav = () => {
         if (desktopThemeText) {
             desktopThemeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
         }
+        document.querySelectorAll('.theme-icon-sun').forEach(el => el.style.setProperty('display', isDark ? 'inline-block' : 'none', 'important'));
+        document.querySelectorAll('.theme-icon-moon').forEach(el => el.style.setProperty('display', isDark ? 'none' : 'inline-block', 'important'));
     };
     updateThemeText();
 

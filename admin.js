@@ -6884,28 +6884,33 @@ const LIGHT_MODE_ICON_URL = 'https://lh3.googleusercontent.com/d/1_NNJ0sMnU6x1pL
 
 function applyAdminTheme(theme) {
     const mobileThemeText = document.getElementById('mobileKebabThemeText');
-    if (theme === 'dark') {
-        document.body.classList.add('dark-theme');
+    const isDark = theme === 'dark';
+    if (isDark) {
+        document.body.classList.add('dark-theme', 'dark-mode');
         if (adminThemeIcon) adminThemeIcon.src = LIGHT_MODE_ICON_URL;
         if (adminThemeText) adminThemeText.innerText = 'Light Mode';
         if (mobileThemeText) mobileThemeText.innerText = 'Light Mode';
     } else {
-        document.body.classList.remove('dark-theme');
+        document.body.classList.remove('dark-theme', 'dark-mode');
         if (adminThemeIcon) adminThemeIcon.src = DARK_MODE_ICON_URL;
         if (adminThemeText) adminThemeText.innerText = 'Dark Mode';
         if (mobileThemeText) mobileThemeText.innerText = 'Dark Mode';
     }
+    // Strict SVG Icon Toggle: When light mode -> show Moon, hide Sun. When dark mode -> show Sun, hide Moon.
+    document.querySelectorAll('.theme-icon-sun').forEach(el => el.style.setProperty('display', isDark ? 'inline-block' : 'none', 'important'));
+    document.querySelectorAll('.theme-icon-moon').forEach(el => el.style.setProperty('display', isDark ? 'none' : 'inline-block', 'important'));
 }
 
 // Load saved theme state
-const savedAdminTheme = localStorage.getItem('appTheme') || 'light';
+const savedAdminTheme = localStorage.getItem('appTheme') || localStorage.getItem('theme') || 'light';
 applyAdminTheme(savedAdminTheme);
 
 // Handle toggle click
 themeToggleBtn?.addEventListener('click', () => {
-    const isDarkNow = document.body.classList.toggle('dark-theme');
+    const isDarkNow = !document.body.classList.contains('dark-theme');
     const newTheme = isDarkNow ? 'dark' : 'light';
     localStorage.setItem('appTheme', newTheme);
+    localStorage.setItem('theme', newTheme);
     applyAdminTheme(newTheme);
 });
 

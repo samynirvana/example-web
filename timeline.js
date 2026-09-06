@@ -83,7 +83,8 @@ const DARK_MODE_ICON_URL = 'https://lh3.googleusercontent.com/d/1N2sZUgBKIQCviZY
 const LIGHT_MODE_ICON_URL = 'https://lh3.googleusercontent.com/d/1_NNJ0sMnU6x1pLW1GiV8FmfL9bPccVhd';
 
 function applyTheme(theme) {
-    if (theme === 'dark') {
+    const isDark = theme === 'dark';
+    if (isDark) {
         document.body.classList.add('dark-mode', 'dark-theme');
         if (themeToggleIcon) themeToggleIcon.src = LIGHT_MODE_ICON_URL;
         if (themeToggleText) themeToggleText.innerText = 'Light Mode';
@@ -92,6 +93,8 @@ function applyTheme(theme) {
         if (themeToggleIcon) themeToggleIcon.src = DARK_MODE_ICON_URL;
         if (themeToggleText) themeToggleText.innerText = 'Dark Mode';
     }
+    document.querySelectorAll('.theme-icon-sun').forEach(el => el.style.setProperty('display', isDark ? 'inline-block' : 'none', 'important'));
+    document.querySelectorAll('.theme-icon-moon').forEach(el => el.style.setProperty('display', isDark ? 'none' : 'inline-block', 'important'));
 }
 
 // Load saved theme on initial page load
@@ -101,8 +104,7 @@ applyTheme(savedTheme);
 // Toggle theme on button click
 if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', () => {
-        const isDarkNow = document.body.classList.toggle('dark-theme');
-        document.body.classList.toggle('dark-mode', isDarkNow);
+        const isDarkNow = !document.body.classList.contains('dark-theme');
         const newTheme = isDarkNow ? 'dark' : 'light';
         localStorage.setItem('appTheme', newTheme);
         localStorage.setItem('theme', newTheme);

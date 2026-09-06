@@ -193,7 +193,7 @@ html, body {
 }
 
 /* Prevents theme button text from wrapping onto two lines */
-.theme-toggle-btn {
+.theme-toggle-btn:not(.btn-circle) {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -203,7 +203,7 @@ html, body {
     min-width: max-content !important;
 }
 
-.theme-toggle-btn .btn-icon {
+.theme-toggle-btn:not(.btn-circle) .btn-icon {
     width: 18px !important;
     height: 18px !important;
     object-fit: contain !important;

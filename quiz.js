@@ -12,16 +12,22 @@ let currentReviewedQuiz = null;
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 const savedTheme = localStorage.getItem('appTheme') || 'light';
 
-if (savedTheme === 'dark') {
-    document.body.classList.add('dark-theme');
-    if (themeToggleBtn) themeToggleBtn.innerText = 'Light Mode';
+function applyQuizTheme(theme) {
+    const isDark = theme === 'dark';
+    document.body.classList.toggle('dark-theme', isDark);
+    document.body.classList.toggle('dark-mode', isDark);
+    document.querySelectorAll('.theme-icon-sun').forEach(el => el.style.setProperty('display', isDark ? 'inline-block' : 'none', 'important'));
+    document.querySelectorAll('.theme-icon-moon').forEach(el => el.style.setProperty('display', isDark ? 'none' : 'inline-block', 'important'));
 }
 
+applyQuizTheme(savedTheme);
+
 themeToggleBtn?.addEventListener('click', () => {
-    document.body.classList.toggle('dark-theme');
-    const isDark = document.body.classList.contains('dark-theme');
-    localStorage.setItem('appTheme', isDark ? 'dark' : 'light');
-    themeToggleBtn.innerText = isDark ? 'Light Mode' : 'Dark Mode';
+    const isDark = !document.body.classList.contains('dark-theme');
+    const newTheme = isDark ? 'dark' : 'light';
+    localStorage.setItem('appTheme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    applyQuizTheme(newTheme);
 });
 
 document.getElementById('studentLogoutBtn')?.addEventListener('click', () => {

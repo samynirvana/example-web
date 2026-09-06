@@ -1785,37 +1785,123 @@ body.dark-mode .notif-btn svg {
 .notif-item.unread { font-weight: bold; background: var(--avatar-bg); border-left: 3px solid var(--primary-color); }
 
 /* Compact Navbar Action Buttons in Desktop Header */
+.desktop-user-actions button,
 .desktop-user-actions .theme-toggle-btn,
 .desktop-user-actions .teacher-btn,
-.desktop-user-actions button.theme-toggle-btn,
-.desktop-user-actions button.teacher-btn {
-    padding: 5px 12px !important;
-    font-size: 12.5px !important;
-    font-weight: 600 !important;
-    height: 32px !important;
-    min-height: 32px !important;
-    max-height: 32px !important;
-    border-radius: 16px !important;
-    gap: 6px !important;
-    white-space: nowrap !important;
-}
-.desktop-user-actions .theme-toggle-btn svg,
-.desktop-user-actions .teacher-btn svg {
-    width: 14px !important;
-    height: 14px !important;
-}
-.desktop-user-actions #studentLogoutBtn {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    min-height: 32px !important;
-    max-width: 32px !important;
-    max-height: 32px !important;
-    border-radius: 16px !important;
+.desktop-user-actions #studentLogoutBtn,
+.desktop-user-actions .logout-btn,
+.desktop-user-actions .btn-circle {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    border-radius: 50% !important;
     padding: 0 !important;
+    margin: 0 !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    flex: none !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.desktop-user-actions .btn-circle:hover,
+.desktop-user-actions .theme-toggle-btn:hover,
+.desktop-user-actions #darkModeToggle:hover,
+.desktop-user-actions .teacher-btn:hover {
+    background: rgba(255, 255, 255, 0.22) !important;
+    border-color: rgba(255, 255, 255, 0.45) !important;
+    transform: translateY(-1px) scale(1.05) !important;
+}
+
+.desktop-user-actions #studentLogoutBtn,
+.desktop-user-actions .logout-btn {
+    background: rgba(239, 68, 68, 0.18) !important;
+    border: 1.5px solid rgba(239, 68, 68, 0.45) !important;
+    color: #f87171 !important;
+}
+
+.desktop-user-actions #studentLogoutBtn:hover,
+.desktop-user-actions .logout-btn:hover {
+    background: rgba(239, 68, 68, 0.35) !important;
+    border-color: rgba(239, 68, 68, 0.7) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) scale(1.05) !important;
+}
+
+.desktop-user-actions button svg,
+.desktop-user-actions .btn-circle svg,
+.desktop-user-actions svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    max-width: 18px !important;
+    max-height: 18px !important;
+    fill: none !important;
+    stroke: #ffffff !important;
+    stroke-width: 2.2 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    flex-shrink: 0 !important;
+    pointer-events: none !important;
+    transition: stroke 0.2s ease !important;
+}
+
+.desktop-user-actions #studentLogoutBtn svg,
+.desktop-user-actions .logout-btn svg {
+    stroke: #f87171 !important;
+}
+
+.desktop-user-actions #studentLogoutBtn:hover svg,
+.desktop-user-actions .logout-btn:hover svg {
+    stroke: #ffffff !important;
+}
+
+/* Theme Icon Swapping System: Light Mode -> Moon visible, Sun hidden; Dark Mode -> Sun visible, Moon hidden */
+.theme-icon-sun,
+svg.theme-icon-sun,
+.desktop-user-actions .theme-icon-sun,
+.desktop-user-actions svg.theme-icon-sun {
+    display: none !important;
+}
+
+.theme-icon-moon,
+svg.theme-icon-moon,
+.desktop-user-actions .theme-icon-moon,
+.desktop-user-actions svg.theme-icon-moon {
+    display: inline-block !important;
+}
+
+body.dark-theme .theme-icon-sun,
+body.dark-theme svg.theme-icon-sun,
+body.dark-theme .desktop-user-actions .theme-icon-sun,
+body.dark-theme .desktop-user-actions svg.theme-icon-sun,
+body.dark-mode .theme-icon-sun,
+body.dark-mode svg.theme-icon-sun,
+body.dark-mode .desktop-user-actions .theme-icon-sun,
+body.dark-mode .desktop-user-actions svg.theme-icon-sun {
+    display: inline-block !important;
+}
+
+body.dark-theme .theme-icon-moon,
+body.dark-theme svg.theme-icon-moon,
+body.dark-theme .desktop-user-actions .theme-icon-moon,
+body.dark-theme .desktop-user-actions svg.theme-icon-moon,
+body.dark-mode .theme-icon-moon,
+body.dark-mode svg.theme-icon-moon,
+body.dark-mode .desktop-user-actions .theme-icon-moon,
+body.dark-mode .desktop-user-actions svg.theme-icon-moon {
+    display: none !important;
 }
 
 .mention-popup { position: absolute; background: var(--card-bg); border: 1px solid var(--border-color); max-height: 200px; overflow-y: auto; z-index: 1000; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15); border-radius: 8px; }
