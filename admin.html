@@ -12,10 +12,9 @@
     <meta http-equiv="Expires" content="0">
     <title>Teacher Admin Dashboard</title>
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1o_7O1hdx1SJOXfoFw9ZKxpl4zSOD_VYd">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="admin.css?v=367">
+    <link rel="stylesheet" href="admin.css?v=375">
 </head>
 
 <body>
@@ -432,8 +431,11 @@
         <!-- MAIN CONTENT AREA -->
         <main class="main-wrapper">
 
-            <!-- GREETING HERO BANNER WITH BUILDING GRAPHIC (ADMIN & TEACHER) -->
-            <div class="student-greeting-banner admin-greeting-banner">
+            <!-- Centered Main Content Wrapper (prevents overstretching on wide displays) -->
+            <div class="admin-main-container">
+
+                <!-- GREETING HERO BANNER WITH BUILDING GRAPHIC (ADMIN & TEACHER) -->
+                <div class="student-greeting-banner admin-greeting-banner">
                 <div class="greeting-text-container">
                     <h1 class="greeting-title" id="welcomeTitle">Good morning, Teacher 👋</h1>
                     <p class="greeting-subtitle" id="welcomeSub">Welcome back to your workspace. Here’s what’s happening today.</p>
@@ -693,19 +695,37 @@
                     <div
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
                         <h3 style="margin: 0;" id="scoreInputHeaderTitle">Input scores</h3>
-                        <div class="register-mode-toggle">
-                            <button type="button" class="toggle-mode-btn active" id="btnScoreInputSingle"
-                                onclick="setScoreInputMode('single')">Input scores</button>
-                            <button type="button" class="toggle-mode-btn" id="btnScoreInputBulk"
-                                onclick="setScoreInputMode('bulk')">Multiple Input Score</button>
-                            <button type="button" class="toggle-mode-btn" id="btnScoreInputGClass"
-                                onclick="setScoreInputMode('gclass')" style="display: inline-flex; align-items: center; gap: 6px;">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                                </svg>
-                                Sync Google Classroom
+                        <div class="score-mode-dropdown-wrap" style="position: relative; display: inline-block;">
+                            <button type="button" id="scoreModeDropdownTrigger" class="score-mode-btn" onclick="toggleScoreModeDropdown(event)" aria-haspopup="true" aria-expanded="false" title="Choose score input mode">
+                                <span id="scoreModeActiveIcon" style="display: inline-flex; align-items: center; color: var(--primary-blue, #1e5eff);">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                </span>
+                                <span id="scoreModeActiveLabel" style="font-weight: 700;">Input scores</span>
+                                <svg class="score-mode-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-left: 2px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </button>
+                            <div id="scoreModeDropdownMenu" class="score-mode-menu hidden">
+                                <button type="button" class="score-mode-option active" id="btnScoreInputSingle" onclick="setScoreInputMode('single')">
+                                    <span class="score-mode-opt-icon score-mode-icon-single">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                    </span>
+                                    <span class="score-mode-opt-text">Input scores</span>
+                                    <svg class="score-mode-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </button>
+                                <button type="button" class="score-mode-option" id="btnScoreInputBulk" onclick="setScoreInputMode('bulk')">
+                                    <span class="score-mode-opt-icon score-mode-icon-bulk">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                                    </span>
+                                    <span class="score-mode-opt-text">Multiple Input Score</span>
+                                    <svg class="score-mode-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </button>
+                                <button type="button" class="score-mode-option" id="btnScoreInputGClass" onclick="setScoreInputMode('gclass')">
+                                    <span class="score-mode-opt-icon score-mode-icon-gclass">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                                    </span>
+                                    <span class="score-mode-opt-text">Sync Google Classroom</span>
+                                    <svg class="score-mode-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -974,22 +994,32 @@
                             </select>
                         </div>
 
-                        <div style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 8px; justify-content: flex-end;">
-                            <button type="button" id="viewLedgerBtn" onclick="viewScoreLedger()" style="width: 100%; min-width: 140px; padding: 7px 14px; border-radius: 8px; font-weight: 600; font-size: 12.5px; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                                <span>View Table</span>
-                            </button>
-                            <button type="button" id="exportScoreExcelBtn" onclick="exportChosenScoreToExcel()" title="Download chosen score records as Excel (.xlsx)" style="width: 100%; min-width: 140px; background: #10b981; color: #ffffff; border: none; padding: 7px 14px; border-radius: 8px; font-weight: 600; font-size: 12.5px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2); transition: all 0.2s;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                    <polyline points="7 10 12 15 17 10"></polyline>
-                                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                                </svg>
-                                <span>Download Excel</span>
-                            </button>
+                        <div style="flex: 0 0 auto; display: flex; align-items: flex-end;">
+                            <div class="score-ledger-split-wrap" style="position: relative; display: inline-flex; align-items: center;">
+                                <div class="score-ledger-split-pill">
+                                    <button type="button" id="viewLedgerBtn" class="score-ledger-main-btn" onclick="viewScoreLedger()" title="View Table">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        <span>View Table</span>
+                                    </button>
+                                    <div class="score-ledger-divider"></div>
+                                    <button type="button" id="btnScoreLedgerMenuToggle" class="score-ledger-arrow-btn" aria-label="More options" aria-haspopup="true" aria-expanded="false" onclick="toggleScoreLedgerDropdown(event)" title="More options">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                    </button>
+                                </div>
+                                <div id="scoreLedgerDropdownMenu" class="score-ledger-dropdown hidden">
+                                    <button type="button" id="exportScoreExcelBtn" class="score-ledger-dropdown-item" onclick="exportChosenScoreToExcel(); closeScoreLedgerDropdown();" title="Download chosen score records as Excel (.xlsx)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="7 10 12 15 17 10"></polyline>
+                                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                                        </svg>
+                                        <span>Download Excel</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1883,7 +1913,10 @@
 
                     <!-- Existing Quizzes Box -->
                     <div class="box">
-                        <h3>Quiz Created</h3>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                            <h3 style="margin: 0;">Active & Draft Quizzes</h3>
+                            <span style="font-size: 13px; color: var(--text-gray, #64748b);">Published quizzes available for students</span>
+                        </div>
                         <div class="table-responsive">
                             <table id="quizTable">
                                 <thead>
@@ -1896,6 +1929,39 @@
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Past / Completed Quizzes Box -->
+                    <div class="box" id="pastQuizzesSection" style="margin-top: 24px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                            <div>
+                                <h3 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                                    <span>Past Quizzes & Completed Assessments</span>
+                                    <span id="pastQuizBadgeCount" style="background: rgba(100, 116, 139, 0.15); color: #64748b; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px;">0</span>
+                                </h3>
+                                <p style="margin: 4px 0 0 0; font-size: 13px; color: var(--text-gray, #64748b);">
+                                    Past quizzes recorded from student submissions. Deleting a past quiz permanently removes the quiz and all associated student scores/records from the database.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="pastQuizTable">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Subject</th>
+                                        <th>Submissions</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; color: var(--text-gray); padding: 20px;">Loading past quizzes...</td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -2638,6 +2704,7 @@
             <button onclick="saveEditStudentProfile()" style="background: var(--primary-blue); color: white; width: 100%; padding: 12px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; font-size: 14px;">Save Changes</button>
         </div>
     </div>
+    </div> <!-- end .admin-main-container -->
 
     <!-- EDIT OFFLINE EXAM / QUIZ MODAL -->
     <div id="editOfflineQuizModal" class="hidden"
@@ -2842,8 +2909,8 @@
 
 
     <!-- Navigation & Core Scripts -->
-    <script src="studentNav.js?v=367"></script>
-    <script type="module" src="admin.js?v=367"></script>
+    <script src="studentNav.js?v=379"></script>
+    <script type="module" src="admin.js?v=382"></script>
 </body>
 
 </html>

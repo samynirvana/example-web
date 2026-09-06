@@ -412,6 +412,17 @@ textarea:focus {
     /* Hidden by default, shown on hover tooltip */
 }
 
+@keyframes tooltipSlideFade {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -5px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
 /* Tooltip on Cursor Hover */
 .menu-btn:hover::before {
     content: attr(data-label);
@@ -429,6 +440,7 @@ textarea:focus {
     z-index: 10000;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     pointer-events: none;
+    animation: tooltipSlideFade 0.18s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .menu-icon {
@@ -451,9 +463,23 @@ textarea:focus {
     flex: 1 !important;
     display: flex !important;
     flex-direction: column !important;
+    align-items: center !important;
     overflow-y: auto !important;
-    padding: 0 32px 32px !important;
+    overflow-x: hidden !important;
+    padding: 0 32px 40px !important;
     height: calc(100vh - 56px) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Centered Main Content Wrapper (Focuses content in the middle, avoiding overstretch on large displays) */
+.admin-main-container {
+    width: 100% !important;
+    max-width: 1240px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
 }
 
 .menu-btn:hover .menu-icon {
@@ -691,8 +717,12 @@ body.dark-theme .db-page-btn.active {
     flex: 1;
     display: flex;
     flex-direction: column;
+    align-items: center;
     overflow-y: auto;
-    padding: 0 32px 32px;
+    overflow-x: hidden;
+    padding: 0 32px 40px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* --- Topbar Styling --- */
@@ -801,19 +831,23 @@ body.dark-mode .welcome-user-highlight {
 /* --- Content Layout --- */
 .tab-content {
     display: none;
-    animation: fadeIn 0.3s ease-in-out;
+    width: 100%;
+    max-width: 1240px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
 }
 
 .tab-content.active {
-    display: block;
+    display: block !important;
+    animation: fadeInUpTab 0.22s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInUpTab {
     from {
         opacity: 0;
-        transform: translateY(5px);
+        transform: translateY(8px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -3648,7 +3682,7 @@ body.dark-theme .multi-select-option-row:hover {
 /* ======================================================
    ROUNDED PILL BUTTON STYLING SYSTEM (LIGHT & DARK THEME)
    ====================================================== */
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item),
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item),
 .btn:not(.dropdown-item):not(.kebab-item),
 .action-btn:not(.dropdown-item):not(.kebab-item),
 .add-btn,
@@ -3671,7 +3705,7 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     transition: all 0.2s ease !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):hover,
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):hover,
 .btn:not(.dropdown-item):not(.kebab-item):hover,
 .action-btn:not(.dropdown-item):not(.kebab-item):hover,
 .add-btn:hover,
@@ -3684,14 +3718,14 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):active,
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):active,
 .btn:not(.dropdown-item):not(.kebab-item):active {
     transform: translateY(0) !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 /* Dark Theme Overrides for Admin Buttons */
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item),
+body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item),
 body.dark-theme .btn:not(.dropdown-item):not(.kebab-item),
 body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item),
 body.dark-theme .add-btn,
@@ -3704,7 +3738,7 @@ body.dark-theme .modal-btn {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):hover,
+body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):hover,
 body.dark-theme .btn:not(.dropdown-item):not(.kebab-item):hover,
 body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):hover,
 body.dark-theme .add-btn:hover,
@@ -4609,7 +4643,8 @@ body.dark-theme .att-action-btn {
 /* Action Column in Attendance Table - Non-sticky, compact, no background box */
 #attendanceTable th:last-child {
     position: static !important;
-    background: transparent !important;
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
     box-shadow: none !important;
     text-align: center !important;
     width: 60px !important;
@@ -4923,6 +4958,11 @@ body.dark-mode .mobile-kebab-user-info {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
     margin-top: 24px;
     margin-bottom: 24px;
+    width: 100% !important;
+    max-width: 1240px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
 }
 
 body.dark-theme .student-greeting-banner,
@@ -5353,24 +5393,35 @@ body.dark-theme .teacher-modal-card .password-section-card {
     background: var(--card-bg, #ffffff) !important;
     border: 1.5px solid var(--border-color, #cbd5e1);
     border-radius: 9999px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    box-shadow: none !important;
     overflow: hidden;
     height: 40px;
-    transition: all 0.2s ease;
+    transition: border-color 0.2s ease;
 }
 
 .att-split-pill:hover {
     border-color: #94a3b8;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: none !important;
+}
+
+.att-split-main-btn,
+.att-split-main-btn:hover,
+.att-split-main-btn:active,
+.att-split-main-btn:focus {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
+    height: 100% !important;
+    align-self: stretch !important;
 }
 
 .att-split-main-btn {
     background: transparent !important;
     color: var(--text-dark, #0f172a) !important;
-    border: none !important;
     padding: 0 16px 0 18px !important;
     margin: 0 !important;
-    border-radius: 0 !important;
     font-size: 13.5px !important;
     font-weight: 700 !important;
     cursor: pointer;
@@ -5384,7 +5435,6 @@ body.dark-theme .teacher-modal-card .password-section-card {
 .att-split-main-btn:hover {
     background: #f1f5f9 !important;
     color: var(--primary-blue, #1e5eff) !important;
-    transform: none !important;
 }
 
 .att-split-divider {
@@ -5394,13 +5444,24 @@ body.dark-theme .teacher-modal-card .password-section-card {
     flex-shrink: 0;
 }
 
+.att-split-arrow-btn,
+.att-split-arrow-btn:hover,
+.att-split-arrow-btn:active,
+.att-split-arrow-btn:focus {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
+    height: 100% !important;
+    align-self: stretch !important;
+}
+
 .att-split-arrow-btn {
     background: transparent !important;
     color: var(--text-dark, #334155) !important;
-    border: none !important;
     padding: 0 12px !important;
     margin: 0 !important;
-    border-radius: 0 !important;
     cursor: pointer;
     display: inline-flex !important;
     align-items: center;
@@ -5411,7 +5472,6 @@ body.dark-theme .teacher-modal-card .password-section-card {
 .att-split-arrow-btn:hover {
     background: #f1f5f9 !important;
     color: var(--primary-blue, #1e5eff) !important;
-    transform: none !important;
 }
 
 .att-actions-dropdown {
@@ -5562,24 +5622,28 @@ body.dark-theme .teacher-modal-card .password-section-card {
     border-radius: 6px !important;
     border: none !important;
     background: transparent !important;
-    color: #475569 !important;
+    background-color: transparent !important;
+    color: var(--text-gray, #64748b) !important;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: color 0.15s ease;
     padding: 0 !important;
     margin: 0 auto !important;
     box-shadow: none !important;
+    outline: none !important;
     font-size: 22px !important;
     font-weight: 800 !important;
     line-height: 1 !important;
 }
 
 .att-kebab-trigger:hover {
-    background: rgba(0, 0, 0, 0.07) !important;
-    color: #0f172a !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    color: var(--text-dark, #0f172a) !important;
     transform: none !important;
+    box-shadow: none !important;
 }
 
 .att-row-dropdown {
@@ -5621,12 +5685,16 @@ body.dark-theme .teacher-modal-card .password-section-card {
     cursor: pointer;
     text-align: left;
     box-shadow: none !important;
-    transition: background 0.12s ease, color 0.12s ease;
+    transition: background 0.12s ease, color 0.12s ease, transform 0.12s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
 .att-row-item:hover {
     background: #f1f5f9 !important;
-    transform: none !important;
+    transform: translateX(3px) !important;
+}
+
+.att-row-item:active {
+    transform: scale(0.97) !important;
 }
 
 .att-row-item.opt-present:hover {
@@ -5701,13 +5769,18 @@ body.dark-mode .att-row-item:hover {
 body.dark-theme .att-kebab-trigger,
 body.dark-mode .att-kebab-trigger {
     background: transparent !important;
+    background-color: transparent !important;
     color: #cbd5e1 !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 body.dark-theme .att-kebab-trigger:hover,
 body.dark-mode .att-kebab-trigger:hover {
-    background: rgba(255, 255, 255, 0.12) !important;
+    background: transparent !important;
+    background-color: transparent !important;
     color: #ffffff !important;
+    box-shadow: none !important;
 }
 
 body.dark-theme .att-unified-stats-box,
@@ -5722,6 +5795,367 @@ body.dark-theme .att-dropdown-divider,
 body.dark-mode .att-dropdown-divider {
     background: #334155;
 }
+
+/* ==========================================================================
+   SCORE INPUT MODE DROPDOWN & VIEW SCORE LEDGER SPLIT BUTTON
+   ========================================================================== */
+
+/* 1. Score Mode Dropdown */
+.score-mode-dropdown-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.score-mode-btn {
+    background: var(--card-bg, #ffffff) !important;
+    border: 1.5px solid var(--border-color, #cbd5e1) !important;
+    color: var(--text-dark, #0f172a) !important;
+    border-radius: 9999px !important;
+    padding: 0 16px !important;
+    height: 38px !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.score-mode-btn:hover {
+    border-color: var(--primary-blue, #1e5eff) !important;
+    background: #f8fafc !important;
+}
+
+.score-mode-chevron {
+    transition: transform 0.2s ease;
+    color: #64748b;
+}
+
+.score-mode-btn[aria-expanded="true"] .score-mode-chevron {
+    transform: rotate(180deg);
+}
+
+.score-mode-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    padding: 6px;
+    min-width: 250px;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    animation: fadeIn 0.15s ease-out;
+}
+
+.score-mode-menu.hidden {
+    display: none !important;
+}
+
+.score-mode-option {
+    display: flex !important;
+    align-items: center !important;
+    gap: 11px !important;
+    width: 100% !important;
+    padding: 7px 10px !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--text-dark, #334155) !important;
+    cursor: pointer !important;
+    text-align: left !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
+    white-space: nowrap !important;
+    transition: background 0.12s ease, color 0.12s ease !important;
+}
+
+.score-mode-option:hover {
+    background: #f1f5f9 !important;
+    color: var(--text-dark, #0f172a) !important;
+}
+
+.score-mode-opt-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.score-mode-icon-single {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.score-mode-icon-bulk {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
+
+.score-mode-icon-gclass {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.score-mode-opt-text {
+    flex: 1;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.score-mode-check {
+    display: none;
+    color: var(--primary-blue, #1e5eff);
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.score-mode-option.active {
+    background: #f8fafc !important;
+    color: var(--primary-blue, #1e5eff) !important;
+}
+
+.score-mode-option.active .score-mode-opt-text {
+    font-weight: 700;
+    color: var(--primary-blue, #1e5eff);
+}
+
+.score-mode-option.active .score-mode-check {
+    display: inline-block;
+}
+
+/* 2. Score Ledger Split Button */
+.score-ledger-split-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.score-ledger-split-pill,
+.score-ledger-split-btn-wrap {
+    display: inline-flex;
+    align-items: stretch;
+    background: var(--card-bg, #ffffff) !important;
+    border: 1.5px solid var(--border-color, #cbd5e1);
+    border-radius: 9999px;
+    box-shadow: none !important;
+    overflow: hidden;
+    height: 38px;
+    transition: border-color 0.2s ease;
+}
+
+.score-ledger-split-pill:hover,
+.score-ledger-split-btn-wrap:hover {
+    border-color: #94a3b8;
+    box-shadow: none !important;
+}
+
+.score-ledger-main-btn,
+.score-ledger-main-btn:hover,
+.score-ledger-main-btn:active,
+.score-ledger-main-btn:focus {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
+    height: 100% !important;
+    align-self: stretch !important;
+}
+
+.score-ledger-main-btn {
+    background: transparent !important;
+    color: var(--text-dark, #0f172a) !important;
+    padding: 0 16px !important;
+    margin: 0 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 7px;
+    transition: background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+}
+
+.score-ledger-main-btn:hover {
+    background: #f1f5f9 !important;
+    color: var(--primary-blue, #1e5eff) !important;
+}
+
+.score-ledger-divider {
+    width: 1px;
+    background: var(--border-color, #cbd5e1);
+    align-self: stretch;
+    flex-shrink: 0;
+}
+
+.score-ledger-arrow-btn,
+.score-ledger-arrow-btn:hover,
+.score-ledger-arrow-btn:active,
+.score-ledger-arrow-btn:focus {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
+    height: 100% !important;
+    align-self: stretch !important;
+}
+
+.score-ledger-arrow-btn {
+    background: transparent !important;
+    color: var(--text-dark, #334155) !important;
+    padding: 0 11px !important;
+    margin: 0 !important;
+    cursor: pointer;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.score-ledger-arrow-btn:hover {
+    background: #f1f5f9 !important;
+    color: var(--primary-blue, #1e5eff) !important;
+}
+
+.score-ledger-arrow-btn svg {
+    transition: transform 0.2s ease;
+}
+
+.score-ledger-arrow-btn[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+}
+
+.score-ledger-dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    padding: 5px;
+    min-width: 175px;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    animation: fadeIn 0.15s ease-out;
+}
+
+.score-ledger-dropdown.hidden {
+    display: none !important;
+}
+
+.score-ledger-dropdown-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    width: 100% !important;
+    padding: 8px 12px !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--text-dark, #1e293b) !important;
+    cursor: pointer !important;
+    text-align: left !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
+    white-space: nowrap !important;
+    transition: background 0.12s ease, color 0.12s ease !important;
+}
+
+.score-ledger-dropdown-item:hover {
+    background: #f1f5f9 !important;
+    color: #10b981 !important;
+}
+
+/* Dark theme overrides */
+body.dark-theme .score-mode-btn {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+body.dark-theme .score-mode-btn:hover {
+    background: #334155 !important;
+}
+body.dark-theme .score-mode-menu,
+body.dark-theme .score-ledger-dropdown {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45) !important;
+}
+body.dark-theme .score-mode-option,
+body.dark-theme .score-ledger-dropdown-item {
+    color: #f1f5f9 !important;
+}
+body.dark-theme .score-mode-option:hover,
+body.dark-theme .score-ledger-dropdown-item:hover {
+    background: #334155 !important;
+}
+body.dark-theme .score-mode-option.active {
+    background: #0f172a !important;
+}
+body.dark-theme .score-mode-icon-single {
+    background: rgba(37, 99, 235, 0.2);
+    color: #60a5fa;
+}
+body.dark-theme .score-mode-icon-bulk {
+    background: rgba(124, 58, 237, 0.2);
+    color: #c084fc;
+}
+body.dark-theme .score-mode-icon-gclass {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+body.dark-theme .score-ledger-split-pill,
+body.dark-theme .score-ledger-split-btn-wrap {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+body.dark-theme .score-ledger-main-btn {
+    color: #f8fafc !important;
+}
+body.dark-theme .score-ledger-main-btn:hover,
+body.dark-theme .score-ledger-arrow-btn:hover {
+    background: #334155 !important;
+}
+body.dark-theme .score-ledger-arrow-btn {
+    color: #cbd5e1 !important;
+}
+body.dark-theme .score-ledger-divider {
+    background: #334155 !important;
+}
+
+/* Accessibility: Respect Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
 
 
 

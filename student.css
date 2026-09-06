@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
 
+:root {
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring-subtle: cubic-bezier(0.34, 1.25, 0.64, 1);
+}
+
 h1, h2, h3, h4, .quick-link-title, .modal-header-title {
     font-family: 'Outfit', sans-serif !important;
     font-weight: 800 !important;
@@ -51,9 +57,10 @@ h1, h2, h3, h4, .quick-link-title, .modal-header-title {
     background: var(--card-bg, #ffffff);
     border-radius: 14px;
     box-shadow: 0 4px 16px -4px rgba(15, 23, 42, 0.05);
-    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 220ms var(--ease-out-quint), box-shadow 220ms var(--ease-out-quint), border-color 220ms var(--ease-out-quint) !important;
     height: 100%;
     position: relative;
+    user-select: none;
 }
 
 .quick-link-card:nth-child(1) {
@@ -70,9 +77,33 @@ h1, h2, h3, h4, .quick-link-title, .modal-header-title {
 }
 
 .quick-link-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px -6px var(--primary-blue-glow, rgba(37, 99, 235, 0.18));
-    border-color: var(--border-color-hover, oklch(75% 0.06 255));
+    transform: translateY(-4px) !important;
+}
+.quick-link-card:active {
+    transform: translateY(-1px) scale(0.985) !important;
+    transition-duration: 90ms !important;
+}
+
+.quick-link-card:nth-child(1):hover {
+    box-shadow: 0 14px 28px -6px rgba(37, 99, 235, 0.22) !important;
+}
+.quick-link-card:nth-child(2):hover {
+    box-shadow: 0 14px 28px -6px rgba(234, 179, 8, 0.22) !important;
+}
+.quick-link-card:nth-child(3):hover {
+    box-shadow: 0 14px 28px -6px rgba(16, 185, 129, 0.22) !important;
+}
+.quick-link-card:nth-child(4):hover {
+    box-shadow: 0 14px 28px -6px rgba(168, 85, 247, 0.22) !important;
+}
+
+.quick-link-card .quick-link-icon-container,
+.quick-link-card svg {
+    transition: transform 220ms var(--ease-spring-subtle) !important;
+}
+.quick-link-card:hover .quick-link-icon-container,
+.quick-link-card:hover svg {
+    transform: scale(1.1) rotate(4deg) !important;
 }
 
 /* --- Search Bar Container --- */
@@ -93,13 +124,14 @@ h1, h2, h3, h4, .quick-link-title, .modal-header-title {
     border: 1.5px solid var(--border-color);
     border-radius: 10px;
     background: var(--input-bg);
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s var(--ease-out-quint), box-shadow 0.2s var(--ease-out-quint), transform 0.2s var(--ease-out-quint);
 }
 
 .search-input-code:focus {
     border-color: var(--primary-blue);
-    box-shadow: 0 0 0 3px var(--primary-blue-glow);
+    box-shadow: 0 0 0 3.5px rgba(30, 94, 255, 0.18);
     outline: none;
+    transform: translateY(-1px);
 }
 
 .search-btn-custom {
@@ -900,7 +932,7 @@ body.dark-mode .behavior-item-title {
 /* ======================================================
    ROUNDED PILL BUTTON STYLING SYSTEM (LIGHT & DARK THEME)
    ====================================================== */
-button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn),
+button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item),
 .btn-pill,
 .teacher-btn,
 .theme-toggle-btn,
@@ -926,7 +958,7 @@ button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#no
     transition: all 0.2s ease !important;
 }
 
-button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.kebab-btn):not(.kebab-item):hover,
+button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.kebab-btn):not(.kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):hover,
 .btn-pill:hover,
 .teacher-btn:hover,
 .theme-toggle-btn:hover,
@@ -944,12 +976,12 @@ button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#no
 
 button:active,
 .btn-pill:active {
-    transform: translateY(0) !important;
+    transform: translateY(0) scale(0.97) !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 /* Dark Theme Button Overrides */
-.dark-theme button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn),
+.dark-theme button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item),
 .dark-theme .btn-pill,
 .dark-theme .teacher-btn,
 .dark-theme .theme-toggle-btn,
@@ -965,7 +997,7 @@ button:active,
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
-.dark-theme button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):hover,
+.dark-theme button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):hover,
 .dark-theme .btn-pill:hover,
 .dark-theme .teacher-btn:hover,
 .dark-theme .theme-toggle-btn:hover,
@@ -1960,5 +1992,71 @@ body.dark-mode .reminder-notes-text {
     }
     100% {
         transform: scale(1.3) translateY(-2px);
+    }
+}
+
+/* ======================================================
+   PURPOSEFUL MICRO-INTERACTIONS & MOTION ENHANCEMENTS
+   ====================================================== */
+
+/* KPI & Stat Cards Subtle Lift */
+.stat-grid-4 > div,
+.stat-card,
+.analytics-card,
+.dashboard-left-col > div {
+    transition: transform 220ms var(--ease-out-quint), box-shadow 220ms var(--ease-out-quint), border-color 220ms var(--ease-out-quint);
+}
+
+.stat-grid-4 > div:hover,
+.stat-card:hover,
+.analytics-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.08) !important;
+}
+
+#statAverageCard:active {
+    transform: translateY(-1px) scale(0.985);
+}
+
+#statAverageCard:hover svg {
+    transform: rotate(180deg);
+    transition: transform 0.4s var(--ease-out-quint);
+}
+
+#statAverageCard svg {
+    transition: transform 0.3s var(--ease-out-quint);
+}
+
+/* Progress Bar Smooth Fill Transitions */
+.progress-fill,
+.score-progress-bar,
+.bar-fill,
+.score-meter-fill {
+    transition: width 0.75s var(--ease-out-expo) !important;
+    will-change: width;
+}
+
+/* Attendance Call Breathing Pulse */
+@keyframes pulseGlowSoft {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(30, 94, 255, 0.35);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(30, 94, 255, 0);
+    }
+}
+
+.active-attendance-prompt,
+#studentActiveAttBanner,
+.live-pulse-badge {
+    animation: pulseGlowSoft 2.6s infinite ease-in-out;
+}
+
+/* Accessibility: Respect Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
     }
 }

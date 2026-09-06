@@ -295,7 +295,7 @@ button, input, select, textarea {
   cursor: pointer;
   font-weight: 600;
   font-size: 12.5px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1) !important;
   outline: none;
   white-space: nowrap;
   flex-shrink: 0;
@@ -303,25 +303,35 @@ button, input, select, textarea {
 
 .tab-btn:hover {
   color: #1e293b;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateY(-1px);
+}
+
+.tab-btn:active {
+  transform: scale(0.95);
 }
 
 .tab-btn.active {
   background: #2563eb;
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
   font-weight: 700;
+  transform: scale(1.02);
+}
+
+.tab-btn.active:hover {
+  transform: scale(1.02) translateY(-1px);
 }
 
 .tab-icon {
   font-size: 14px;
   display: inline-flex;
   align-items: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.34, 1.25, 0.64, 1);
 }
 
 .tab-btn:hover .tab-icon {
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.1);
 }
 
 /* Topbar User Profile & Logout */

@@ -11,9 +11,9 @@
     <title>Take Quiz - Student Portal</title>
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1o_7O1hdx1SJOXfoFw9ZKxpl4zSOD_VYd">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=347">
-    <link rel="stylesheet" href="admin.css?v=334">
-    <link rel="stylesheet" href="student.css?v=334">
+    <link rel="stylesheet" href="style.css?v=375">
+    <link rel="stylesheet" href="admin.css?v=375">
+    <link rel="stylesheet" href="student.css?v=375">
     <style>
         /* Quiz Specific Custom Layout Enhancements */
         .modal-overlay {
@@ -22,24 +22,75 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(11, 20, 55, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
+            background: rgba(11, 20, 55, 0.65);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 16px;
+            box-sizing: border-box;
         }
 
         .modal-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 480px;
-            padding: 28px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            animation: modalFadeIn 0.25s ease-out;
+            background: var(--card-bg, #ffffff) !important;
+            border: 1px solid var(--border-color, #e2e8f0) !important;
+            border-radius: 20px !important;
+            width: 100% !important;
+            max-width: 520px !important;
+            max-height: 86vh !important;
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 22px 24px !important;
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
+            animation: modalFadeIn 0.25s var(--ease-out-quint, ease-out);
+            position: relative;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
+        }
+
+        .modal-card-header {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            margin-bottom: 14px !important;
+            padding-bottom: 12px !important;
+            border-bottom: 1px solid var(--border-color, #e2e8f0) !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .modal-close-icon-btn {
+            width: 28px !important;
+            min-width: 28px !important;
+            max-width: 28px !important;
+            height: 28px !important;
+            min-height: 28px !important;
+            max-height: 28px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: none !important;
+            background: transparent !important;
+            color: #64748b !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            font-size: 22px !important;
+            font-weight: 700 !important;
+            line-height: 1 !important;
+            transition: all 0.15s ease !important;
+            flex-shrink: 0 !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        .modal-close-icon-btn:hover {
+            background: transparent !important;
+            border: none !important;
+            color: #ef4444 !important;
+            transform: scale(1.15) !important;
         }
 
         /* Modal Dark Mode Styling */
@@ -47,59 +98,26 @@
         body.dark-mode .modal-card {
             background: #111c44 !important;
             border-color: #1b254b !important;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
         }
 
-        body.dark-theme #modalStudentName,
-        body.dark-mode #modalStudentName {
-            color: #f8fafc !important;
+        body.dark-theme .modal-card-header,
+        body.dark-mode .modal-card-header {
+            border-bottom-color: #1b254b !important;
         }
 
-        body.dark-theme #modalStudentClass,
-        body.dark-mode #modalStudentClass {
-            background: rgba(30, 94, 255, 0.2) !important;
-            color: #60a5fa !important;
-            border: 1px solid rgba(96, 165, 250, 0.3) !important;
-        }
-
-        body.dark-theme #quizSelectDropdown,
-        body.dark-mode #quizSelectDropdown {
-            background: #1b254b !important;
-            color: #f8fafc !important;
-            border: 1.5px solid #2b3674 !important;
-            border-radius: 10px !important;
-        }
-
-        body.dark-theme #quizSelectDropdown option,
-        body.dark-mode #quizSelectDropdown option {
-            background: #1b254b !important;
-            color: #f8fafc !important;
-        }
-
-        body.dark-theme #closeModalBtn,
-        body.dark-mode #closeModalBtn {
-            background: #1e293b !important;
-            border-color: #334155 !important;
-            color: #cbd5e1 !important;
-        }
-
-        body.dark-theme #closeModalBtn:hover,
-        body.dark-mode #closeModalBtn:hover {
-            background: #334155 !important;
-            color: #ffffff !important;
-        }
-
-        body.dark-theme #startSelectedQuizBtn,
-        body.dark-mode #startSelectedQuizBtn {
-            background: #1e5eff !important;
-            color: #ffffff !important;
-            box-shadow: 0 4px 14px rgba(30, 94, 255, 0.4) !important;
+        body.dark-theme .modal-close-icon-btn,
+        body.dark-mode .modal-close-icon-btn {
+            background: transparent !important;
             border: none !important;
+            color: #94a3b8 !important;
         }
 
-        body.dark-theme #startSelectedQuizBtn:hover,
-        body.dark-mode #startSelectedQuizBtn:hover {
-            background: #2563eb !important;
+        body.dark-theme .modal-close-icon-btn:hover,
+        body.dark-mode .modal-close-icon-btn:hover {
+            background: transparent !important;
+            border: none !important;
+            color: #f87171 !important;
         }
 
         @keyframes modalFadeIn {
@@ -107,12 +125,651 @@
                 opacity: 0;
                 transform: translateY(10px) scale(0.98);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
             }
         }
+
+        /* --- QUIZ DASHBOARD HUB LAYOUT --- */
+        #quizDashboardSection {
+            max-width: 860px;
+            margin: 20px auto 60px auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Student Identity Header Card */
+        .quiz-student-banner {
+            background: var(--card-bg, #ffffff);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 18px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+            flex-wrap: wrap;
+        }
+
+        body.dark-theme .quiz-student-banner {
+            background: #111c44;
+            border-color: #1b254b;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+        }
+
+        .quiz-student-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #1e5eff 0%, #7c3aed 100%);
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(30, 94, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .quiz-student-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .quiz-student-name {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--text-dark, #0f172a);
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+
+        body.dark-theme .quiz-student-name {
+            color: #f8fafc;
+        }
+
+        .quiz-student-badges {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .student-code-badge {
+            background: rgba(30, 94, 255, 0.1);
+            color: var(--primary-blue, #1e5eff);
+            font-weight: 700;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(30, 94, 255, 0.2);
+        }
+
+        body.dark-theme .student-code-badge {
+            background: rgba(30, 94, 255, 0.2);
+            color: #60a5fa;
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+
+        .switch-student-btn {
+            background: transparent;
+            border: 1px solid var(--border-color, #e2e8f0);
+            color: var(--text-gray, #64748b);
+            font-size: 12.5px;
+            font-weight: 600;
+            padding: 7px 14px;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out-quint, ease-out);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .switch-student-btn:hover {
+            border-color: var(--primary-blue, #1e5eff);
+            color: var(--primary-blue, #1e5eff);
+            background: rgba(30, 94, 255, 0.05);
+            transform: translateY(-1px);
+        }
+
+        body.dark-theme .switch-student-btn {
+            border-color: #2b3674;
+            color: #94a3b8;
+        }
+
+        body.dark-theme .switch-student-btn:hover {
+            border-color: #60a5fa;
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        /* --- TABS BAR --- */
+        .quiz-tabs-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--border-color, #e2e8f0);
+            padding-bottom: 2px;
+            margin-top: 6px;
+        }
+
+        body.dark-theme .quiz-tabs-bar {
+            border-bottom-color: #1b254b;
+        }
+
+        .quiz-tab-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: none;
+            border-bottom: 2.5px solid transparent;
+            padding: 10px 16px;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-gray, #64748b);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            bottom: -2px;
+        }
+
+        .quiz-tab-pill.active {
+            color: var(--primary-blue, #1e5eff);
+            border-bottom-color: var(--primary-blue, #1e5eff);
+        }
+
+        body.dark-theme .quiz-tab-pill {
+            color: #94a3b8;
+        }
+
+        body.dark-theme .quiz-tab-pill.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+        }
+
+        .quiz-count-badge {
+            font-size: 11.5px;
+            font-weight: 700;
+            background: #e2e8f0;
+            color: #475569;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .quiz-tab-pill.active .quiz-count-badge {
+            background: rgba(30, 94, 255, 0.12);
+            color: var(--primary-blue, #1e5eff);
+        }
+
+        body.dark-theme .quiz-count-badge {
+            background: #1b254b;
+            color: #94a3b8;
+        }
+
+        body.dark-theme .quiz-tab-pill.active .quiz-count-badge {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+        }
+
+        /* --- RECENT QUIZZES CONTAINER & CARDS --- */
+        .recent-quizzes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .recent-quiz-card {
+            background: var(--card-bg, #ffffff);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 16px;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            transition: transform 220ms var(--ease-out-quint, ease-out), box-shadow 220ms var(--ease-out-quint, ease-out), border-color 220ms ease;
+            box-shadow: 0 4px 14px -3px rgba(15, 23, 42, 0.04);
+            flex-wrap: wrap;
+        }
+
+        .recent-quiz-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.08);
+            border-color: rgba(30, 94, 255, 0.3);
+        }
+
+        body.dark-theme .recent-quiz-card {
+            background: #111c44;
+            border-color: #1b254b;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        body.dark-theme .recent-quiz-card:hover {
+            border-color: rgba(96, 165, 250, 0.35);
+            box-shadow: 0 10px 28px -4px rgba(0, 0, 0, 0.45);
+        }
+
+        .recent-quiz-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .recent-quiz-header-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .subject-badge {
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .subject-badge.math { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        .subject-badge.science { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .subject-badge.english { background: rgba(124, 58, 237, 0.1); color: #7c3aed; }
+        .subject-badge.ict { background: rgba(6, 182, 212, 0.1); color: #0891b2; }
+        .subject-badge.general { background: rgba(100, 116, 139, 0.1); color: #64748b; }
+
+        body.dark-theme .subject-badge.math { background: rgba(37, 99, 235, 0.25); color: #60a5fa; }
+        body.dark-theme .subject-badge.science { background: rgba(16, 185, 129, 0.25); color: #34d399; }
+        body.dark-theme .subject-badge.english { background: rgba(124, 58, 237, 0.25); color: #c084fc; }
+        body.dark-theme .subject-badge.ict { background: rgba(6, 182, 212, 0.25); color: #22d3ee; }
+        body.dark-theme .subject-badge.general { background: rgba(100, 116, 139, 0.25); color: #94a3b8; }
+
+        .recent-quiz-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark, #0f172a);
+            margin: 0;
+        }
+
+        body.dark-theme .recent-quiz-title {
+            color: #f8fafc;
+        }
+
+        .recent-quiz-date {
+            font-size: 12.5px;
+            color: var(--text-gray, #64748b);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        body.dark-theme .recent-quiz-date {
+            color: #94a3b8;
+        }
+
+        .recent-quiz-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .recent-quiz-score-pill {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .score-number-highlight {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .score-percentage-label {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-gray, #64748b);
+        }
+
+        body.dark-theme .score-percentage-label {
+            color: #94a3b8;
+        }
+
+        .score-good { color: #10b981; }
+        .score-medium { color: #f59e0b; }
+        .score-low { color: #ef4444; }
+
+        .review-quiz-btn {
+            background: rgba(30, 94, 255, 0.08);
+            color: var(--primary-blue, #1e5eff);
+            border: 1px solid rgba(30, 94, 255, 0.2);
+            font-size: 13px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out-quint, ease-out);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .review-quiz-btn:hover {
+            background: var(--primary-blue, #1e5eff);
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 94, 255, 0.3);
+        }
+
+        body.dark-theme .review-quiz-btn {
+            background: rgba(30, 94, 255, 0.2);
+            color: #60a5fa;
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+
+        body.dark-theme .review-quiz-btn:hover {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+
+
+        /* --- EMPTY STATE --- */
+        .quiz-empty-box {
+            background: var(--card-bg, #ffffff);
+            border: 1.5px dashed var(--border-color, #cbd5e1);
+            border-radius: 16px;
+            padding: 40px 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        body.dark-theme .quiz-empty-box {
+            background: #111c44;
+            border-color: #2b3674;
+        }
+
+        .quiz-empty-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: rgba(30, 94, 255, 0.1);
+            color: var(--primary-blue, #1e5eff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+
+        body.dark-theme .quiz-empty-icon {
+            background: rgba(30, 94, 255, 0.2);
+            color: #60a5fa;
+        }
+
+        /* --- START QUIZ CTA CARD (POSITIONED DIRECTLY BELOW STUDENT NAME) --- */
+        .start-quiz-cta-card {
+            background: linear-gradient(135deg, rgba(30, 94, 255, 0.06) 0%, rgba(124, 58, 237, 0.08) 100%);
+            border: 1.5px solid rgba(37, 99, 235, 0.22);
+            border-radius: 18px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-top: 0;
+            margin-bottom: 6px;
+            box-shadow: 0 10px 30px -8px rgba(30, 94, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+        }
+
+        body.dark-theme .start-quiz-cta-card {
+            background: linear-gradient(135deg, rgba(30, 94, 255, 0.14) 0%, rgba(124, 58, 237, 0.18) 100%);
+            border-color: rgba(96, 165, 250, 0.32);
+            box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.4);
+        }
+
+        .cta-content-left {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .cta-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #7c3aed;
+            background: rgba(124, 58, 237, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            width: fit-content;
+            letter-spacing: 0.3px;
+        }
+
+        body.dark-theme .cta-badge-pill {
+            background: rgba(192, 132, 252, 0.2);
+            color: #c084fc;
+        }
+
+        .cta-heading {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-dark, #0f172a);
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+
+        body.dark-theme .cta-heading {
+            color: #f8fafc;
+        }
+
+        .start-quiz-big-btn {
+            background: linear-gradient(135deg, #1e5eff 0%, #2563eb 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            padding: 12px 28px !important;
+            font-size: 15px !important;
+            font-weight: 800 !important;
+            border-radius: 12px !important;
+            cursor: pointer !important;
+            box-shadow: 0 6px 18px -3px rgba(30, 94, 255, 0.4) !important;
+            transition: all 200ms ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            width: auto !important;
+            flex-shrink: 0 !important;
+        }
+
+        .start-quiz-big-btn:hover {
+            transform: translateY(-2px) scale(1.02) !important;
+            box-shadow: 0 10px 24px -3px rgba(30, 94, 255, 0.55) !important;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+        }
+
+        .start-quiz-big-btn:active {
+            transform: translateY(0) scale(0.98) !important;
+        }
+
+        /* --- AVAILABLE QUIZZES IN POPUP MODAL --- */
+        .available-quizzes-container {
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            max-height: 480px !important;
+            padding: 4px 2px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .available-quiz-card {
+            background: var(--card-bg, #ffffff) !important;
+            border: 1.5px solid var(--border-color, #e2e8f0) !important;
+            border-radius: 14px !important;
+            padding: 14px 18px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 14px !important;
+            cursor: pointer !important;
+            transition: all 180ms ease !important;
+            position: relative !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
+        }
+
+        .available-quiz-card:hover {
+            border-color: #2563eb !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 6px 18px -3px rgba(37, 99, 235, 0.15) !important;
+            background: #f8faff !important;
+        }
+
+        .available-quiz-card:active {
+            transform: scale(0.99) !important;
+        }
+
+        body.dark-theme .available-quiz-card {
+            background: #16224f !important;
+            border-color: #2b3674 !important;
+        }
+
+        body.dark-theme .available-quiz-card:hover {
+            border-color: #60a5fa !important;
+            background: #1b2860 !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        .avail-quiz-info {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 6px !important;
+            flex: 1 !important;
+            min-width: 0 !important;
+        }
+
+        .avail-quiz-title {
+            font-size: 15.5px !important;
+            font-weight: 700 !important;
+            color: var(--text-dark, #0f172a) !important;
+            margin: 0 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        body.dark-theme .avail-quiz-title {
+            color: #f8fafc !important;
+        }
+
+        .avail-quiz-meta {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            font-size: 12px !important;
+            color: var(--text-gray, #64748b) !important;
+            flex-wrap: wrap !important;
+        }
+
+        body.dark-theme .avail-quiz-meta {
+            color: #94a3b8 !important;
+        }
+
+        .take-quiz-arrow-btn {
+            background: #1e5eff !important;
+            color: #ffffff !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            border-radius: 8px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            transition: all 0.2s ease !important;
+            flex-shrink: 0 !important;
+            width: auto !important;
+            min-width: 72px !important;
+            height: auto !important;
+            box-shadow: 0 3px 10px rgba(30, 94, 255, 0.25) !important;
+            cursor: pointer !important;
+        }
+
+        .available-quiz-card:hover .take-quiz-arrow-btn {
+            background: #1d4ed8 !important;
+            box-shadow: 0 4px 14px rgba(30, 94, 255, 0.45) !important;
+            transform: translateY(-1px) !important;
+        }
+
+        body.dark-theme .take-quiz-arrow-btn {
+            background: #2563eb !important;
+            color: #ffffff !important;
+        }
+
+        body.dark-theme .available-quiz-card:hover .take-quiz-arrow-btn {
+            background: #3b82f6 !important;
+        }
+
+        /* --- REVIEW MODAL DETAIL STYLING --- */
+        .review-question-item {
+            background: var(--bg-body, #f8fafc);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        body.dark-theme .review-question-item {
+            background: #0b1437;
+            border-color: #1b254b;
+        }
+
+        .review-status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 6px;
+            width: fit-content;
+        }
+
+        .review-status-correct { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .review-status-incorrect { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .review-status-essay { background: rgba(124, 58, 237, 0.15); color: #8b5cf6; }
 
         /* Centered Quiz Layout Container */
         #takeQuizSection {
@@ -276,12 +933,45 @@
             border-color: #60a5fa;
         }
 
+        .quiz-option-label:active {
+            transform: scale(0.985);
+        }
+
+        .quiz-option-label:has(input[type="radio"]:checked) {
+            border-color: #2563eb !important;
+            background: #eff6ff !important;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25), 0 4px 14px rgba(37, 99, 235, 0.12) !important;
+            transform: translateY(-1px) scale(1.008) !important;
+        }
+
+        body.dark-theme .quiz-option-label:has(input[type="radio"]:checked) {
+            background: #1b254b !important;
+            border-color: #60a5fa !important;
+            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3), 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+        }
+
         .quiz-option-label input[type="radio"] {
             width: 20px;
             height: 20px;
             margin: 0;
             accent-color: #2563eb;
             flex-shrink: 0;
+            transition: transform 0.15s ease;
+        }
+
+        .quiz-option-label:has(input[type="radio"]:checked) input[type="radio"] {
+            transform: scale(1.15);
+        }
+
+        /* Low timer breathing pulse */
+        @keyframes timerUrgentPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(1.06); }
+        }
+
+        .timer-warning, .timer-danger {
+            animation: timerUrgentPulse 1.2s infinite ease-in-out !important;
+            color: #ef4444 !important;
         }
 
         /* Mobile & Tablet Adaptation for Quiz */
@@ -490,77 +1180,143 @@
         <!-- MAIN CONTENT WRAPPER -->
         <main class="main-wrapper" style="padding-top: 24px;">
 
-            <!-- STEP 1: VERIFICATION CARD -->
-            <div id="authSection" class="box" style="margin-top: 20px;">
-                <h3 style="margin-top: 0; margin-bottom: 6px;">Quiz Access Verification</h3>
-                <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 16px;">Enter your 5-character student
-                    code to load your registered quizzes.</p>
-
-                <div class="search-wrapper">
-                    <input type="text" id="studentCodeInput" class="search-input-code"
-                        placeholder="ENTER CODE (E.G. BLXVC)" maxlength="5">
-                    <button id="verifyBtn" class="search-btn-custom" style="width: 120px;">Verify</button>
+            <!-- STUDENT QUIZ DASHBOARD HUB -->
+            <div id="quizDashboardSection">
+                <!-- Student Identity Banner -->
+                <div class="quiz-student-banner">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <div id="dashStudentAvatar" class="quiz-student-avatar">S</div>
+                        <div class="quiz-student-meta">
+                            <h2 class="quiz-student-name">Welcome, <span id="dashStudentName">Student</span>!</h2>
+                            <div class="quiz-student-badges">
+                                <span id="dashStudentClass" class="student-class-badge">Classroom</span>
+                                <span id="dashStudentCode" class="student-code-badge">ID: -----</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="authErrorMessage" class="error-box hidden">
-                    Invalid student code. Please check your code and try again.
+                <!-- Start Quiz CTA Card (Directly Below Student Name) -->
+                <div class="start-quiz-cta-card" id="startQuizCtaCard">
+                    <div class="cta-content-left">
+                        <span class="cta-badge-pill">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            <span id="ctaAvailableQuizzesCount">Available Tests</span>
+                        </span>
+                        <h3 class="cta-heading">Ready for a Quiz?</h3>
+                    </div>
+                    <button id="openAvailableQuizzesBtn" class="start-quiz-big-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        <span>Start Quiz</span>
+                    </button>
+                </div>
+
+                <!-- Tabs Navigation -->
+                <div class="quiz-tabs-bar">
+                    <button class="quiz-tab-pill active" id="tabRecentQuizzes">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span>Recent Quizzes</span>
+                        <span id="recentQuizCountBadge" class="quiz-count-badge">0</span>
+                    </button>
+                </div>
+
+                <!-- Recent Quizzes Container -->
+                <div id="recentQuizzesContainer" class="recent-quizzes-list">
+                    <!-- Populated dynamically via quiz.js -->
+                    <div class="quiz-empty-box">
+                        <div class="quiz-empty-icon">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                        </div>
+                        <h4 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--text-dark);">Loading Recent Quizzes...</h4>
+                    </div>
                 </div>
             </div>
 
-            <!-- STEP 2: POPUP MODAL (STUDENT PROFILE & QUIZ SELECTION) -->
+            <!-- STEP 3: AVAILABLE QUIZZES POP-UP MODAL -->
             <div id="studentQuizModal" class="modal-overlay hidden">
                 <div class="modal-card">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
-                        <div>
-                            <span
-                                style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--primary-blue); font-weight: 700;">Student
-                                Verified</span>
-                            <h2 id="modalStudentName"
-                                style="margin: 4px 0 0 0; font-size: 20px; color: var(--text-dark);">Student Name</h2>
+                    <div class="modal-card-header">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(30, 94, 255, 0.1); color: var(--primary-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 17px; font-weight: 800; color: var(--text-dark);">Available Quizzes</h3>
+                                <p style="margin: 2px 0 0 0; font-size: 12px; color: var(--text-gray);">Assigned for <span id="modalStudentClass" style="font-weight: 700; color: var(--primary-blue);">Classroom</span></p>
+                            </div>
                         </div>
-                        <span id="modalStudentClass" class="student-class-badge"
-                            style="background: #eef2ff; color: var(--primary-blue); margin: 0;">Classroom</span>
+                        <button id="closeModalIconBtn" class="modal-close-icon-btn" title="Close" aria-label="Close" style="width: 28px !important; min-width: 28px !important; max-width: 28px !important; height: 28px !important; min-height: 28px !important; max-height: 28px !important; padding: 0 !important; margin: 0 !important; border: none !important; background: transparent !important; color: #64748b !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; font-size: 24px !important; font-weight: 700 !important; line-height: 1 !important; box-shadow: none !important; outline: none !important;">&times;</button>
                     </div>
 
-                    <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 16px 0;">
+                    <!-- Available Quizzes Grid List -->
+                    <div id="availableQuizzesList" class="available-quizzes-container">
+                        <!-- Populated dynamically via quiz.js -->
+                    </div>
 
-                    <label
-                        style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px; display: block;">
-                        Select Available Quiz:
-                    </label>
-                    <select id="quizSelectDropdown" style="margin-bottom: 20px; height: 46px;">
-                        <option value="">-- Loading Quizzes --</option>
-                    </select>
-
-                    <div style="display: flex; gap: 12px;">
-                        <button id="closeModalBtn"
-                            style="background: transparent; border: 1px solid var(--border-color); color: var(--text-dark); flex: 1;">Cancel</button>
-                        <button id="startSelectedQuizBtn" style="flex: 2; background: var(--primary-blue);">Start
-                            Quiz</button>
+                    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end;">
+                        <button id="closeModalBtn" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-dark); padding: 8px 20px; border-radius: 9px; font-weight: 600; cursor: pointer; width: auto !important;">Cancel</button>
                     </div>
                 </div>
             </div>
 
-            <!-- STEP 3: TAKING QUIZ SECTION -->
+            <!-- STEP 4: QUIZ REVIEW MODAL -->
+            <div id="quizReviewModal" class="modal-overlay hidden">
+                <div class="modal-card" style="max-width: 640px;">
+                    <div class="modal-card-header">
+                        <div>
+                            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-gray); letter-spacing: 0.5px;">Quiz Submission Review</span>
+                            <h3 id="reviewQuizTitle" style="margin: 2px 0 0 0; font-size: 18px; font-weight: 800; color: var(--text-dark);">Review Assessment</h3>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span id="reviewScoreBadge" class="student-code-badge" style="font-size: 13px; padding: 4px 12px;">Score: 0 / 0</span>
+                            <button id="closeReviewModalIconBtn" class="modal-close-icon-btn" title="Close" aria-label="Close" style="width: 28px !important; min-width: 28px !important; max-width: 28px !important; height: 28px !important; min-height: 28px !important; max-height: 28px !important; padding: 0 !important; margin: 0 !important; border: none !important; background: transparent !important; color: #64748b !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; font-size: 24px !important; font-weight: 700 !important; line-height: 1 !important; box-shadow: none !important; outline: none !important;">&times;</button>
+                        </div>
+                    </div>
+
+                    <!-- Questions & Responses Container -->
+                    <div id="quizReviewQuestionsList" style="overflow-y: auto; max-height: 56vh; padding: 4px 2px; display: flex; flex-direction: column; gap: 10px;">
+                        <!-- Injected via quiz.js -->
+                    </div>
+
+                    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end;">
+                        <button id="closeReviewModalBtn" style="background: var(--primary-blue); color: #ffffff; border: none; padding: 10px 24px; border-radius: 10px; font-weight: 700; cursor: pointer;">Done</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 5: TAKING QUIZ SECTION -->
             <div id="takeQuizSection" class="hidden" style="margin-top: 20px;">
-                <div class="hero-point-card" style="margin-bottom: 24px; padding: 24px;">
+                <div class="hero-point-card" style="margin-bottom: 24px; padding: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
                     <div>
                         <span class="hero-label">Active Assessment</span>
                         <h2 id="activeQuizTitle" class="student-name-heading" style="margin-top: 6px;">Quiz Title</h2>
                         <span id="activeQuizSubject" class="student-class-badge">Subject</span>
                     </div>
+                    <button id="cancelQuizBtn" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 10px; font-weight: 700; cursor: pointer;">Exit Quiz</button>
                 </div>
 
                 <form id="quizForm"></form>
 
                 <button id="submitQuizBtn"
-                    style="background: #10b981; padding: 16px; font-size: 16px; font-weight: 700; margin-top: 10px; margin-bottom: 40px;">
+                    style="background: #10b981; padding: 16px; font-size: 16px; font-weight: 700; margin-top: 10px; margin-bottom: 40px; width: 100%; border-radius: 12px; border: none; color: #ffffff; cursor: pointer; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
                     Submit Assessment
                 </button>
             </div>
 
-            <!-- STEP 4: RESULT SECTION -->
+            <!-- STEP 6: RESULT SECTION -->
             <div id="resultSection" class="box hidden"
                 style="margin-top: 20px; text-align: center; padding: 40px 20px;">
                 <div
@@ -570,16 +1326,23 @@
                 <h2 style="margin: 0 0 8px 0; color: var(--text-dark);">Quiz Submitted Successfully!</h2>
                 <p id="scoreSummary"
                     style="font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-bottom: 24px;"></p>
-                <button onclick="window.location.href='index.html'"
-                    style="width: auto; padding: 12px 32px; background: var(--primary-blue);">Return to Student
-                    Portal</button>
+                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                    <button id="returnToDashboardBtn"
+                        style="width: auto; padding: 12px 28px; background: var(--primary-blue); color: #ffffff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;">
+                        Back to Quiz Hub
+                    </button>
+                    <button onclick="window.location.href='index.html'"
+                        style="width: auto; padding: 12px 28px; background: transparent; border: 1px solid var(--border-color); color: var(--text-dark); border-radius: 10px; font-weight: 600; cursor: pointer;">
+                        Return to Portal
+                    </button>
+                </div>
             </div>
 
         </main>
     </div>
 
-    <script type="module" src="quiz.js?v=336"></script>
-    <script type="module" src="studentNav.js?v=336"></script>
+    <script type="module" src="quiz.js?v=384"></script>
+    <script type="module" src="studentNav.js?v=376"></script>
 </body>
 
 </html>

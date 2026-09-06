@@ -276,7 +276,48 @@ window.setStudentRegMode = function (mode) {
     if (btnPhotos) btnPhotos.classList.toggle('active', mode === 'photos');
 };
 
-// --- SCORE INPUT MODE SWITCHER ---
+// --- SCORE INPUT MODE SWITCHER & DROPDOWN ---
+window.toggleScoreModeDropdown = function (e) {
+    if (e) e.stopPropagation();
+    const menu = document.getElementById('scoreModeDropdownMenu');
+    if (!menu) return;
+    const isHidden = menu.classList.contains('hidden');
+    document.querySelectorAll('.score-mode-menu, .score-ledger-dropdown').forEach(d => d.classList.add('hidden'));
+    document.getElementById('scoreModeDropdownTrigger')?.setAttribute('aria-expanded', 'false');
+    document.getElementById('btnScoreLedgerMenuToggle')?.setAttribute('aria-expanded', 'false');
+    if (isHidden) {
+        menu.classList.remove('hidden');
+        document.getElementById('scoreModeDropdownTrigger')?.setAttribute('aria-expanded', 'true');
+    }
+};
+
+window.closeScoreModeDropdown = function () {
+    const menu = document.getElementById('scoreModeDropdownMenu');
+    if (menu) menu.classList.add('hidden');
+    document.getElementById('scoreModeDropdownTrigger')?.setAttribute('aria-expanded', 'false');
+};
+
+// Split button controller for View Score Ledger & Download Excel
+window.toggleScoreLedgerDropdown = function (e) {
+    if (e) e.stopPropagation();
+    const menu = document.getElementById('scoreLedgerDropdownMenu');
+    if (!menu) return;
+    const isHidden = menu.classList.contains('hidden');
+    document.querySelectorAll('.score-mode-menu, .score-ledger-dropdown').forEach(d => d.classList.add('hidden'));
+    document.getElementById('scoreModeDropdownTrigger')?.setAttribute('aria-expanded', 'false');
+    document.getElementById('btnScoreLedgerMenuToggle')?.setAttribute('aria-expanded', 'false');
+    if (isHidden) {
+        menu.classList.remove('hidden');
+        document.getElementById('btnScoreLedgerMenuToggle')?.setAttribute('aria-expanded', 'true');
+    }
+};
+
+window.closeScoreLedgerDropdown = function () {
+    const menu = document.getElementById('scoreLedgerDropdownMenu');
+    if (menu) menu.classList.add('hidden');
+    document.getElementById('btnScoreLedgerMenuToggle')?.setAttribute('aria-expanded', 'false');
+};
+
 window.setScoreInputMode = function (mode) {
     const singleView = document.getElementById('scoreInputSingleView');
     const bulkView = document.getElementById('scoreInputBulkView');
@@ -285,6 +326,11 @@ window.setScoreInputMode = function (mode) {
     const btnBulk = document.getElementById('btnScoreInputBulk');
     const btnGclass = document.getElementById('btnScoreInputGClass');
     const titleEl = document.getElementById('scoreInputHeaderTitle');
+    const labelEl = document.getElementById('scoreModeActiveLabel');
+    const iconEl = document.getElementById('scoreModeActiveIcon');
+
+    // Remove active class from all options
+    document.querySelectorAll('.score-mode-option').forEach(opt => opt.classList.remove('active'));
 
     if (mode === 'bulk') {
         if (singleView) singleView.classList.add('hidden');
@@ -294,6 +340,8 @@ window.setScoreInputMode = function (mode) {
         if (btnGclass) btnGclass.classList.remove('active');
         if (btnBulk) btnBulk.classList.add('active');
         if (titleEl) titleEl.innerText = 'Multiple Input Score';
+        if (labelEl) labelEl.innerText = 'Multiple Input Score';
+        if (iconEl) iconEl.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>`;
     } else if (mode === 'gclass') {
         if (singleView) singleView.classList.add('hidden');
         if (bulkView) bulkView.classList.add('hidden');
@@ -302,6 +350,8 @@ window.setScoreInputMode = function (mode) {
         if (btnBulk) btnBulk.classList.remove('active');
         if (btnGclass) btnGclass.classList.add('active');
         if (titleEl) titleEl.innerText = 'Sync Google Classroom';
+        if (labelEl) labelEl.innerText = 'Sync Google Classroom';
+        if (iconEl) iconEl.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>`;
         initGoogleClassroomSyncUI();
     } else {
         if (bulkView) bulkView.classList.add('hidden');
@@ -311,7 +361,10 @@ window.setScoreInputMode = function (mode) {
         if (btnGclass) btnGclass.classList.remove('active');
         if (btnSingle) btnSingle.classList.add('active');
         if (titleEl) titleEl.innerText = 'Input scores';
+        if (labelEl) labelEl.innerText = 'Input scores';
+        if (iconEl) iconEl.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`;
     }
+    closeScoreModeDropdown();
 };
 
 // --- GOOGLE CLASSROOM SYNC CONTROLLER ---
@@ -3328,23 +3381,26 @@ async function toggleQuizStatus(id, currentStatus) {
 }
 window.toggleQuizStatus = toggleQuizStatus;
 
-// --- LOAD QUIZZES TABLE WITH FULL KEBAB MENU OPTIONS ---
+// --- LOAD QUIZZES TABLE (ACTIVE & PAST QUIZZES WITH DELETION) ---
 async function loadQuizzesTable() {
     const tbody = document.querySelector("#quizTable tbody");
+    const pastTbody = document.querySelector("#pastQuizTable tbody");
+    const pastBadge = document.getElementById("pastQuizBadgeCount");
     if (!tbody) return;
 
     try {
         const snap = await getDocs(collection(db, "quizzes"));
         tbody.innerHTML = "";
 
-        if (snap.empty) {
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-gray); padding: 30px;">No quizzes found. Click <strong>&quot;+ Create New Quiz&quot;</strong> above to create one.</td></tr>`;
-            return;
-        }
-
         const quizzesList = [];
+        const activeTitlesSet = new Set();
+
         snap.forEach(docSnap => {
-            quizzesList.push({ id: docSnap.id, ...docSnap.data() });
+            const data = docSnap.data();
+            quizzesList.push({ id: docSnap.id, ...data });
+            if (data.title) {
+                activeTitlesSet.add(data.title.trim().toLowerCase());
+            }
         });
 
         // Sort quizzes by creation/update date descending, or by title
@@ -3355,39 +3411,140 @@ async function loadQuizzesTable() {
             return (a.title || '').localeCompare(b.title || '');
         });
 
-        quizzesList.forEach(quiz => {
-            const safeTitle = (quiz.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-            const displayTitle = escapeHtml(quiz.title || 'Untitled Quiz');
-            const displaySubject = escapeHtml(quiz.subject || '-');
-            const displayClass = escapeHtml(quiz.targetClass || '-');
-            const status = quiz.status || 'active';
+        if (quizzesList.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-gray); padding: 30px;">No created quizzes found. Click <strong>&quot;+ Create New Quiz&quot;</strong> above to create one.</td></tr>`;
+        } else {
+            quizzesList.forEach(quiz => {
+                const safeTitle = (quiz.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                const displayTitle = escapeHtml(quiz.title || 'Untitled Quiz');
+                const displaySubject = escapeHtml(quiz.subject || '-');
+                const displayClass = escapeHtml(quiz.targetClass || '-');
+                const status = quiz.status || 'active';
 
-            const badgeBg = status === 'active' ? '#ecfdf5' : '#f1f5f9';
-            const badgeText = status === 'active' ? '#10b981' : '#64748b';
-            const toggleLabel = status === 'active' ? 'Deactivate Quiz' : 'Activate Quiz';
+                const badgeBg = status === 'active' ? '#ecfdf5' : '#f1f5f9';
+                const badgeText = status === 'active' ? '#10b981' : '#64748b';
+                const toggleLabel = status === 'active' ? 'Deactivate Quiz' : 'Activate Quiz';
 
-            tbody.innerHTML += `<tr>
-                <td><strong>${displayTitle}</strong></td>
-                <td>${displaySubject}</td>
-                <td>${displayClass}</td>
-                <td>
-                    <span style="padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; background: ${badgeBg}; color: ${badgeText};">
-                        ${status.toUpperCase()}
-                    </span>
-                </td>
-                <td>
-                    <div class="kebab-menu">
-                        <button class="kebab-btn" onclick="toggleMenu(event, 'quiz-${quiz.id}')">⋮</button>
-                        <div id="menu-quiz-${quiz.id}" class="dropdown-menu">
-                            <button class="dropdown-item" onclick="viewQuizResults('${safeTitle}', '${quiz.id}')">View Results</button>
-                            <button class="dropdown-item" onclick="toggleQuizStatus('${quiz.id}', '${status}')">${toggleLabel}</button>
-                            <button class="dropdown-item" onclick="editQuiz('${quiz.id}')">Edit Quiz</button>
-                            <button class="dropdown-item danger" onclick="deleteQuiz('${quiz.id}')">Delete Quiz</button>
+                tbody.innerHTML += `<tr>
+                    <td><strong>${displayTitle}</strong></td>
+                    <td>${displaySubject}</td>
+                    <td>${displayClass}</td>
+                    <td>
+                        <span style="padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; background: ${badgeBg}; color: ${badgeText};">
+                            ${status.toUpperCase()}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="kebab-menu">
+                            <button class="kebab-btn" onclick="toggleMenu(event, 'quiz-${quiz.id}')">⋮</button>
+                            <div id="menu-quiz-${quiz.id}" class="dropdown-menu">
+                                <button class="dropdown-item" onclick="viewQuizResults('${safeTitle}', '${quiz.id}')">View Results</button>
+                                <button class="dropdown-item" onclick="toggleQuizStatus('${quiz.id}', '${status}')">${toggleLabel}</button>
+                                <button class="dropdown-item" onclick="editQuiz('${quiz.id}')">Edit Quiz</button>
+                                <button class="dropdown-item danger" onclick="deleteQuiz('${quiz.id}', '${safeTitle}')">Delete Quiz</button>
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>`;
-        });
+                    </td>
+                </tr>`;
+            });
+        }
+
+        // Load Past Quizzes & Completed Assessments from quiz_results
+        if (pastTbody) {
+            pastTbody.innerHTML = "";
+            const pastQuizzesMap = new Map();
+
+            try {
+                const resultsSnap = await getDocs(collection(db, "quiz_results"));
+                resultsSnap.forEach(docSnap => {
+                    const r = docSnap.data();
+                    const rawTitle = (r.quizTitle || 'Untitled Quiz').trim();
+                    const titleLower = rawTitle.toLowerCase();
+
+                    // If it is not in the active quizzes collection, treat as Past Quiz
+                    if (!activeTitlesSet.has(titleLower)) {
+                        if (!pastQuizzesMap.has(titleLower)) {
+                            pastQuizzesMap.set(titleLower, {
+                                title: rawTitle,
+                                subject: r.subject || 'General',
+                                submissionCount: 0,
+                                lastSubmitted: r.submittedAt || null,
+                                docIds: []
+                            });
+                        }
+                        const item = pastQuizzesMap.get(titleLower);
+                        item.submissionCount++;
+                        item.docIds.push(docSnap.id);
+                        if (r.submittedAt && (!item.lastSubmitted || new Date(r.submittedAt) > new Date(item.lastSubmitted))) {
+                            item.lastSubmitted = r.submittedAt;
+                        }
+                        if (r.subject && r.subject !== 'General' && item.subject === 'General') {
+                            item.subject = r.subject;
+                        }
+                    }
+                });
+            } catch (err) {
+                console.warn("Error querying quiz_results for past quizzes:", err);
+            }
+
+            const pastQuizzesList = Array.from(pastQuizzesMap.values());
+            // Sort by most recent submission or title
+            pastQuizzesList.sort((a, b) => {
+                const tA = a.lastSubmitted ? new Date(a.lastSubmitted).getTime() : 0;
+                const tB = b.lastSubmitted ? new Date(b.lastSubmitted).getTime() : 0;
+                if (tB !== tA) return tB - tA;
+                return a.title.localeCompare(b.title);
+            });
+
+            if (pastBadge) pastBadge.innerText = pastQuizzesList.length;
+
+            if (pastQuizzesList.length === 0) {
+                pastTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-gray); padding: 24px;">No past or archived quizzes found in student records.</td></tr>`;
+            } else {
+                pastQuizzesList.forEach((quiz, idx) => {
+                    const safeTitle = quiz.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const displayTitle = escapeHtml(quiz.title);
+                    const displaySubject = escapeHtml(quiz.subject);
+                    const displayCount = `${quiz.submissionCount} submission${quiz.submissionCount === 1 ? '' : 's'}`;
+
+                    pastTbody.innerHTML += `<tr>
+                        <td><strong>${displayTitle}</strong></td>
+                        <td>${displaySubject}</td>
+                        <td><span style="font-weight: 600; color: #1e5eff;">${displayCount}</span></td>
+                        <td>
+                            <span style="padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; background: #fef3c7; color: #d97706;">
+                                PAST QUIZ
+                            </span>
+                        </td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <button 
+                                    type="button" 
+                                    class="icon-btn" 
+                                    style="padding: 6px 12px; background: rgba(30, 94, 255, 0.08); color: #1e5eff; border: 1px solid rgba(30, 94, 255, 0.2); border-radius: 6px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;"
+                                    onclick="viewQuizResults('${safeTitle}')"
+                                    title="View student results"
+                                >
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                    <span>Results</span>
+                                </button>
+                                <button 
+                                    type="button" 
+                                    class="icon-btn delete" 
+                                    style="padding: 6px 12px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 6px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;"
+                                    onclick="deletePastQuiz('${safeTitle}')"
+                                    title="Permanently delete this quiz and its student scores"
+                                >
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span>Delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`;
+                });
+            }
+        }
+
     } catch (e) {
         console.error("Error loading quizzes:", e);
         if (tbody) {
@@ -3492,17 +3649,152 @@ async function editQuiz(id) {
 }
 
 
-// 5. Delete Quiz
-async function deleteQuiz(id) {
-    if (confirm("Are you sure you want to delete this quiz?")) {
+// 5. Delete Quiz (Cascades to student quiz_results and exam scores)
+async function deleteQuiz(id, title = '') {
+    let resolvedTitle = title;
+    if (!resolvedTitle && id) {
         try {
-            await deleteDoc(doc(db, "quizzes", id));
-            alert("Quiz deleted successfully!");
-            loadQuizzesTable();
-        } catch (e) { alert("Error deleting quiz: " + e.message); }
+            const s = await getDoc(doc(db, "quizzes", id));
+            if (s.exists()) resolvedTitle = s.data().title || '';
+        } catch (e) {}
+    }
+
+    const titleMsg = resolvedTitle ? ` "${resolvedTitle}"` : '';
+    if (!confirm(`Are you sure you want to delete this quiz${titleMsg}?\n\nThis will also permanently delete all related student submissions, scores, and records from the database.`)) {
+        return;
+    }
+
+    try {
+        let deletedSubmissions = 0;
+        const deletePromises = [];
+
+        // 1. Delete quiz doc from quizzes collection
+        if (id) {
+            deletePromises.push(deleteDoc(doc(db, "quizzes", id)));
+        }
+
+        // 2. Cascade delete from quiz_results by quizId and by quizTitle
+        const normTitle = (resolvedTitle || '').trim().toLowerCase();
+        try {
+            const resSnap = await getDocs(collection(db, "quiz_results"));
+            resSnap.forEach(d => {
+                const data = d.data();
+                const rTitle = (data.quizTitle || '').trim().toLowerCase();
+                if ((id && data.quizId === id) || (normTitle && rTitle === normTitle)) {
+                    deletedSubmissions++;
+                    deletePromises.push(deleteDoc(doc(db, "quiz_results", d.id)));
+                }
+            });
+        } catch (e) {
+            console.warn("Could not query quiz_results for deletion:", e);
+        }
+
+        // 3. Clean up legacy or matching exam_scores & scores
+        if (normTitle) {
+            try {
+                const examSnap = await getDocs(collection(db, "exam_scores"));
+                examSnap.forEach(d => {
+                    const data = d.data();
+                    const eName = (data.examName || data.title || '').trim().toLowerCase();
+                    if (eName === normTitle) {
+                        deletePromises.push(deleteDoc(doc(db, "exam_scores", d.id)));
+                    }
+                });
+            } catch (e) {}
+
+            try {
+                const scoresSnap = await getDocs(collection(db, "scores"));
+                scoresSnap.forEach(d => {
+                    const data = d.data();
+                    const sName = (data.examName || data.title || '').trim().toLowerCase();
+                    if (sName === normTitle) {
+                        deletePromises.push(deleteDoc(doc(db, "scores", d.id)));
+                    }
+                });
+            } catch (e) {}
+        }
+
+        await Promise.all(deletePromises);
+        alert(`Quiz${titleMsg} and all ${deletedSubmissions} student submission(s) have been permanently deleted!`);
+        loadQuizzesTable();
+    } catch (e) {
+        console.error("Error deleting quiz:", e);
+        alert("Error deleting quiz: " + e.message);
     }
 }
 window.deleteQuiz = deleteQuiz;
+
+// 6. Delete Past Quiz (Clears quiz_results, exam_scores, and quizzes by title)
+async function deletePastQuiz(quizTitle) {
+    if (!quizTitle) return;
+    const confirmed = confirm(`Are you sure you want to permanently delete the past quiz "${quizTitle}"?\n\nThis will permanently remove the quiz and ALL related student submissions, scores, and records from the database.`);
+    if (!confirmed) return;
+
+    try {
+        let deletedCount = 0;
+        const deletePromises = [];
+        const normTitle = quizTitle.trim().toLowerCase();
+
+        // 1. Delete matching submissions from quiz_results
+        try {
+            const resSnap = await getDocs(collection(db, "quiz_results"));
+            resSnap.forEach(d => {
+                const data = d.data();
+                const rTitle = (data.quizTitle || '').trim().toLowerCase();
+                if (rTitle === normTitle || data.quizTitle === quizTitle) {
+                    deletedCount++;
+                    deletePromises.push(deleteDoc(doc(db, "quiz_results", d.id)));
+                }
+            });
+        } catch (e) {
+            console.warn("Error querying quiz_results for past quiz deletion:", e);
+        }
+
+        // 2. Also check and delete from quizzes if document exists
+        try {
+            const qQuizzes = await getDocs(collection(db, "quizzes"));
+            qQuizzes.forEach(d => {
+                const data = d.data();
+                const qTitle = (data.title || '').trim().toLowerCase();
+                if (qTitle === normTitle || data.title === quizTitle) {
+                    deletePromises.push(deleteDoc(doc(db, "quizzes", d.id)));
+                }
+            });
+        } catch (e) {}
+
+        // 3. Clean up exam_scores and scores
+        try {
+            const examSnap = await getDocs(collection(db, "exam_scores"));
+            examSnap.forEach(d => {
+                const data = d.data();
+                const eName = (data.examName || data.title || '').trim().toLowerCase();
+                if (eName === normTitle) {
+                    deletePromises.push(deleteDoc(doc(db, "exam_scores", d.id)));
+                }
+            });
+        } catch (e) {}
+
+        try {
+            const scoresSnap = await getDocs(collection(db, "scores"));
+            scoresSnap.forEach(d => {
+                const data = d.data();
+                const sName = (data.examName || data.title || '').trim().toLowerCase();
+                if (sName === normTitle) {
+                    deletePromises.push(deleteDoc(doc(db, "scores", d.id)));
+                }
+            });
+        } catch (e) {}
+
+        await Promise.all(deletePromises);
+
+        alert(`Successfully deleted "${quizTitle}" and all ${deletedCount} related student score record(s) from the database.`);
+        loadQuizzesTable();
+    } catch (err) {
+        console.error("Error deleting past quiz:", err);
+        alert("Error deleting past quiz: " + err.message);
+    }
+}
+window.deletePastQuiz = deletePastQuiz;
 
 // --- QUIZ RESULTS & SCORE SUBMISSION (RESPONSIVE CLASS FILTERING & STATUS ICONS) ---
 window.quizResultsCurrentState = {
@@ -3969,12 +4261,38 @@ function renderQuizResultsTable() {
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                             <span>Save</span>
                         </button>
+                        ${isSubmittedOnline ? `
+                            <button 
+                                type="button"
+                                class="btn-quiz-check" 
+                                onclick="deleteStudentQuizSubmission('${subData.id}', '${safeStudentName}', '${safeQuizTitle}')"
+                                style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 5px 8px;"
+                                title="Delete this online submission"
+                            >
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        ` : ''}
                     </div>
                 </td>
             </tr>
         `;
     });
 }
+
+window.deleteStudentQuizSubmission = async function(submissionId, studentName, quizTitle) {
+    if (!submissionId) return;
+    if (!confirm(`Are you sure you want to delete the submission for ${studentName} on "${quizTitle}"?`)) return;
+    try {
+        await deleteDoc(doc(db, "quiz_results", submissionId));
+        alert("Quiz submission deleted successfully!");
+        if (window.quizResultsCurrentState?.quizTitle) {
+            window.viewQuizResults(window.quizResultsCurrentState.quizTitle, window.quizResultsCurrentState.quizId);
+        }
+    } catch(err) {
+        console.error("Error deleting submission:", err);
+        alert("Error deleting submission: " + err.message);
+    }
+};
 
 window.viewStudentAnswers = async function (studentCode, studentName, quizTitle, studentClass = '') {
     const modal = document.getElementById("studentAnswersModal");
@@ -8350,10 +8668,16 @@ window.closeAllAttDropdowns = function() {
     if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
 };
 
-// Global click listener to close attendance dropdowns when clicking outside
+// Global click listener to close attendance and score dropdowns when clicking outside
 window.addEventListener('click', (e) => {
     if (!e.target.closest('.att-kebab-menu') && !e.target.closest('.att-split-btn-wrapper')) {
         closeAllAttDropdowns();
+    }
+    if (!e.target.closest('.score-mode-dropdown-wrap')) {
+        closeScoreModeDropdown();
+    }
+    if (!e.target.closest('.score-ledger-split-wrap') && !e.target.closest('.score-ledger-split-btn-wrap')) {
+        closeScoreLedgerDropdown();
     }
 });
 

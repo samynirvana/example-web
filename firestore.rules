@@ -49,8 +49,8 @@ service cloud.firestore {
     }
 
     match /quiz_results/{resultId} {
-      allow read, create: if true;
-      allow update, delete: if isStaffOrAdmin();
+      allow read, create, delete: if true;
+      allow update: if isStaffOrAdmin();
     }
 
     match /scores/{scoreId} {
