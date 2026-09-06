@@ -22,7 +22,7 @@ let teacherPhotoRemoved = false;
 
 // --- DYNAMIC AUTH & PERMISSION LISTENER (FAST & PARALLEL) ---
 onAuthStateChanged(auth, async (user) => {
-    const loginScreen = document.getElementById('loginScreen');
+    const authCheckingScreen = document.getElementById('authCheckingScreen');
     const adminDashboard = document.getElementById('adminDashboard');
     const subjectInput = document.getElementById('subject');
     const tableTitle = document.getElementById('tableTitle');
@@ -113,7 +113,7 @@ onAuthStateChanged(auth, async (user) => {
                 }
             }
 
-            loginScreen.classList.add('hidden');
+            if (authCheckingScreen) authCheckingScreen.style.display = 'none';
             adminDashboard.classList.remove('hidden');
 
             // 3. Set UI Views and Role Permissions
@@ -172,23 +172,18 @@ onAuthStateChanged(auth, async (user) => {
             alert("Error setting up session: " + err.message);
         }
     } else {
-        loginScreen.classList.remove('hidden');
-        adminDashboard.classList.add('hidden');
+        // Unauthenticated access: automatically redirect to central login portal
+        window.location.replace("index.html");
     }
 });
 
-async function loginAdmin() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-        alert("Authentication Failed: " + error.message);
-    }
-}
-
 async function logoutAdmin() {
-    await signOut(auth);
+    try {
+        await signOut(auth);
+    } catch (e) {
+        console.warn("SignOut error:", e);
+    }
+    window.location.replace("index.html");
 }
 
 async function createTeacherAccount() {
@@ -2180,8 +2175,7 @@ async function loadPointsTable() {
 }
 
 // Bind basic events
-document.getElementById('loginBtn').addEventListener('click', loginAdmin);
-document.getElementById('logoutBtn').addEventListener('click', logoutAdmin);
+document.getElementById('logoutBtn')?.addEventListener('click', logoutAdmin);
 document.getElementById('createTeacherBtn').addEventListener('click', createTeacherAccount);
 document.getElementById('registerStudentBtn').addEventListener('click', registerStudent);
 document.getElementById('saveScoreBtn')?.addEventListener('click', addStudentScore);

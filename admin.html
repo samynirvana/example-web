@@ -19,14 +19,13 @@
 
 <body>
 
-    <!-- Login Screen -->
-    <div id="loginScreen">
-        <div class="login-card">
-            <h2 style="text-align: center; margin-top: 0;">Portal Sign In</h2>
-            <input type="email" id="loginEmail" placeholder="Email Address">
-            <input type="password" id="loginPassword" placeholder="Password">
-            <button id="loginBtn">Sign In</button>
-        </div>
+    <!-- Auth Checking Overlay (Redirects unauthenticated visitors to central index.html portal) -->
+    <div id="authCheckingScreen" style="position: fixed; inset: 0; background: #0f172a; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999999; color: #ffffff; font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;">
+        <div style="width: 46px; height: 46px; border: 3.5px solid rgba(255, 255, 255, 0.12); border-top-color: #38bdf8; border-radius: 50%; animation: authSpin 0.75s linear infinite; margin-bottom: 16px;"></div>
+        <div style="font-size: 15px; font-weight: 600; color: #e2e8f0; letter-spacing: 0.3px;">Authenticating Workspace...</div>
+        <style>
+            @keyframes authSpin { to { transform: rotate(360deg); } }
+        </style>
     </div>
 
     <!-- Main Dashboard Application -->
@@ -2910,7 +2909,7 @@
 
     <!-- Navigation & Core Scripts -->
     <script src="studentNav.js?v=379"></script>
-    <script type="module" src="admin.js?v=382"></script>
+    <script type="module" src="admin.js?v=383"></script>
 </body>
 
 </html>

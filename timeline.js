@@ -482,6 +482,7 @@ function isTimelineAdmin() {
 
     await fetchAllNames();
     listenStudentsDirectory();
+    await renderTimelineTabs();
     await populateClassDropdown();
     initTimelineImageUpload();
     loadPosts();
@@ -1026,7 +1027,19 @@ document.getElementById('submitPostBtn')?.addEventListener('click', async () => 
     const postMsgEl = document.getElementById('postMessage');
     if (!postMsgEl) return;
     const message = postMsgEl.value.trim();
-    const targetClass = document.getElementById('postTargetClass') ? document.getElementById('postTargetClass').value : 'All';
+    
+    // Detect target class automatically from active tab
+    let targetClass = 'All';
+    if (currentTimelineTab === 'class') {
+        if (currentUser.type === 'staff') {
+            const tabSelect = document.getElementById('tabClassSelect');
+            targetClass = (tabSelect && tabSelect.value) ? tabSelect.value : (currentStaffSelectedClass || 'All');
+        } else {
+            targetClass = (currentUser.studentClass && currentUser.studentClass !== 'Unassigned') ? currentUser.studentClass : 'All';
+        }
+    } else {
+        targetClass = 'All';
+    }
 
     // Poll Validation
     let pollData = null;
@@ -1233,6 +1246,102 @@ window.toggleLikePost = async function(postId) {
     }
 };
 
+// --- TIMELINE FILTER TABS (CLASS vs ALL POSTS) ---
+let currentTimelineTab = 'all'; // 'class' or 'all'
+let currentStaffSelectedClass = '';
+let allCachedPosts = [];
+
+async function renderTimelineTabs() {
+    const tabsWrapper = document.getElementById('timelineTabsWrapper');
+    if (!tabsWrapper || !currentUser) return;
+
+    const isStaff = currentUser.type === 'staff';
+    const studentClass = currentUser.studentClass || 'Unassigned';
+
+    if (!isStaff) {
+        if (!studentClass || studentClass === 'Unassigned') {
+            currentTimelineTab = 'all';
+        }
+        // Student View: "My Class" and "All Posts"
+        const classLabel = (studentClass && studentClass !== 'Unassigned') ? `My Class (${studentClass})` : 'My Class';
+        tabsWrapper.innerHTML = `
+            <div class="timeline-tabs-nav" role="tablist">
+                <button type="button" class="timeline-tab-item ${currentTimelineTab === 'class' ? 'active' : ''}" id="tabBtnMyClass" data-tab="class">
+                    <span>${escapeHtml(classLabel)}</span>
+                </button>
+                <button type="button" class="timeline-tab-item ${currentTimelineTab === 'all' ? 'active' : ''}" id="tabBtnAllPosts" data-tab="all">
+                    <span>All Posts</span>
+                </button>
+            </div>
+        `;
+
+        document.getElementById('tabBtnMyClass')?.addEventListener('click', () => {
+            currentTimelineTab = 'class';
+            updateActiveTabUI();
+            renderTimelineFeed();
+        });
+
+        document.getElementById('tabBtnAllPosts')?.addEventListener('click', () => {
+            currentTimelineTab = 'all';
+            updateActiveTabUI();
+            renderTimelineFeed();
+        });
+    } else {
+        // Teacher / Admin View: "Class: [Select Class ▾]" and "All Posts"
+        tabsWrapper.innerHTML = `
+            <div class="timeline-tabs-nav" role="tablist">
+                <div class="timeline-tab-item tab-with-select ${currentTimelineTab === 'class' ? 'active' : ''}" id="tabBtnClassWrapper" data-tab="class">
+                    <span>Class:</span>
+                    <select id="tabClassSelect" class="timeline-tab-select" aria-label="Choose Class">
+                        <!-- Populated by populateClassDropdown() -->
+                    </select>
+                </div>
+                <button type="button" class="timeline-tab-item ${currentTimelineTab === 'all' ? 'active' : ''}" id="tabBtnAllPosts" data-tab="all">
+                    <span>All Posts</span>
+                </button>
+            </div>
+        `;
+
+        const classWrapper = document.getElementById('tabBtnClassWrapper');
+        const classSelect = document.getElementById('tabClassSelect');
+        const allPostsBtn = document.getElementById('tabBtnAllPosts');
+
+        classWrapper?.addEventListener('click', (e) => {
+            if (e.target !== classSelect) {
+                currentTimelineTab = 'class';
+                updateActiveTabUI();
+                renderTimelineFeed();
+            }
+        });
+
+        classSelect?.addEventListener('change', (e) => {
+            currentStaffSelectedClass = e.target.value;
+            currentTimelineTab = 'class';
+            updateActiveTabUI();
+            renderTimelineFeed();
+        });
+
+        allPostsBtn?.addEventListener('click', () => {
+            currentTimelineTab = 'all';
+            updateActiveTabUI();
+            renderTimelineFeed();
+        });
+    }
+}
+
+function updateActiveTabUI() {
+    const classTab = document.getElementById('tabBtnMyClass') || document.getElementById('tabBtnClassWrapper');
+    const allTab = document.getElementById('tabBtnAllPosts');
+
+    if (currentTimelineTab === 'class') {
+        classTab?.classList.add('active');
+        allTab?.classList.remove('active');
+    } else {
+        allTab?.classList.add('active');
+        classTab?.classList.remove('active');
+    }
+}
+
 function loadPosts() {
     if (!currentUser) return; 
     if (unsubscribePosts) unsubscribePosts();
@@ -1240,131 +1349,171 @@ function loadPosts() {
     const postsQuery = query(collection(db, "timeline_posts"), orderBy("timestamp", "desc"));
 
     unsubscribePosts = onSnapshot(postsQuery, (snapshot) => {
-        const feed = document.getElementById('timelineFeed');
-        feed.innerHTML = ''; 
-
+        allCachedPosts = [];
         snapshot.forEach((docSnap) => {
-            const post = docSnap.data();
-            const postId = docSnap.id;
-            const postTarget = post.targetClass || 'All';
-
-            // SECURITY & PRIVACY FILTER FOR STUDENTS
-            if (currentUser.type === 'student') {
-                const userClass = currentUser.studentClass || '';
-                if (postTarget !== 'All' && postTarget !== userClass) {
-                    return; // Skip rendering post if not intended for student's class
-                }
-            }
-            
-            const dateStr = formatTimeAgo(post.timestamp);
-            const badgeHTML = post.isStaff ? `<img src="https://lh3.googleusercontent.com/d/1F9iWlab0M6Hlc1L5NR_HP4vsQDJJpd3d" alt="Verified" class="staff-badge-img">` : '';
-            const safeClass = escapeHtml(postTarget);
-            const classBadgeHTML = `<span class="target-class-badge">${safeClass}</span>`;
-            const fullAuthorName = post.authorName || 'Student';
-            const nickname = formatNickname(fullAuthorName);
-            const safeAuthor = escapeHtml(nickname);
-            const safeFullName = escapeHtml(fullAuthorName);
-            const authorAvatarHTML = renderAvatarHTML(nickname, post.authorCode, post.authorPhotoUrl, post.isStaff);
-
-            const canDeletePost = (currentUser.type === 'staff') || 
-                (currentUser.code && post.authorCode && post.authorCode === currentUser.code) ||
-                (currentUser.name && post.authorName && post.authorName === currentUser.name);
-
-            let kebabMenuHTML = '';
-            if (canDeletePost) {
-                kebabMenuHTML = `
-                    <div class="kebab-wrapper">
-                        <button type="button" class="kebab-btn" title="Options" data-post-id="${postId}">⋮</button>
-                        <div id="kebab-post-${postId}" class="kebab-dropdown hidden">
-                            <button type="button" class="kebab-item danger btn-delete-post" data-post-id="${postId}">
-                                Delete Post
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Multi-photo layout (max 5 photos)
-            const allImages = Array.isArray(post.imageUrls) && post.imageUrls.length > 0 
-                ? post.imageUrls 
-                : (post.imageUrl ? [post.imageUrl] : []);
-
-            let imageHTML = '';
-            if (allImages.length > 0) {
-                const gridClass = `grid-${Math.min(allImages.length, 5)}`;
-                const itemsHtml = allImages.map((u, i) => `
-                    <div class="photo-item" onclick="window.open('${escapeHtml(u)}', '_blank')" title="Click to view full photo">
-                        <img src="${escapeHtml(u)}" alt="Photo ${i + 1}" loading="lazy">
-                    </div>
-                `).join('');
-                imageHTML = `<div class="timeline-photo-grid ${gridClass}">${itemsHtml}</div>`;
-            }
-
-            // Poll / Voting layout
-            let pollHTML = '';
-            if (post.poll && Array.isArray(post.poll.options) && post.poll.options.length >= 2) {
-                pollHTML = renderPostPollHTML(postId, post.poll);
-            }
-
-            // Like / Heart status
-            const likes = Array.isArray(post.likes) ? post.likes : [];
-            const myIdentifier = currentUser ? (currentUser.code || currentUser.name) : '';
-            const isLiked = Boolean(myIdentifier && likes.includes(myIdentifier));
-            const likeCount = likes.length;
-
-            const postElement = document.createElement('div');
-            postElement.className = 'timeline-post';
-            postElement.id = 'post-' + postId; 
-            
-            postElement.innerHTML = `
-                <div class="post-sender-row">
-                    <div class="sender-info-wrapper">
-                        ${authorAvatarHTML}
-                        <div class="sender-details">
-                            <div class="sender-name-line">
-                                <span class="sender-name" title="${safeFullName}">${safeAuthor}</span>
-                                ${badgeHTML}
-                                ${classBadgeHTML}
-                            </div>
-                            <span class="post-time" data-timestamp="${post.timestamp}">${dateStr}</span>
-                        </div>
-                    </div>
-                    ${kebabMenuHTML}
-                </div>
-
-                ${post.message ? `<div class="post-body">${formatMessageMentions(post.message)}</div>` : ''}
-                ${imageHTML}
-                ${pollHTML}
-                
-                <div class="post-actions-bar">
-                    <button type="button" class="action-btn like-btn ${isLiked ? 'liked' : ''}" onclick="window.toggleLikePost('${postId}')" title="${isLiked ? 'Unlike' : 'Like'}">
-                        <svg class="action-icon heart-icon" width="18" height="18" viewBox="0 0 24 24" fill="${isLiked ? '#ef4444' : 'none'}" stroke="${isLiked ? '#ef4444' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                        </svg>
-                        <span id="like-count-${postId}">${likeCount > 0 ? likeCount : '0'}</span>
-                    </button>
-                    <button type="button" class="action-btn comment-btn" onclick="toggleComments('${postId}')" title="Comments">
-                        <svg class="action-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span id="comment-count-${postId}">0</span>
-                    </button>
-                </div>
-
-                <div class="comments-wrapper hidden" id="comments-wrapper-${postId}">
-                    <div class="comments-list" id="comments-list-${postId}"></div>
-                    
-                    <div class="reply-box">
-                        <input type="text" id="reply-msg-${postId}" class="reply-input" placeholder="Write a reply... (Type @ to mention)">
-                        <button class="reply-submit-btn" onclick="submitReply('${postId}', '${safeAuthor.replace(/'/g, "\\'")}')">Reply</button>
-                    </div>
-                </div>
-            `;
-            
-            feed.appendChild(postElement);
-            loadCommentsForPost(postId);
+            allCachedPosts.push({ id: docSnap.id, ...docSnap.data() });
         });
+        renderTimelineFeed();
     });
+}
+
+function renderTimelineFeed() {
+    const feed = document.getElementById('timelineFeed');
+    if (!feed) return;
+    feed.innerHTML = '';
+
+    const isStaff = currentUser?.type === 'staff';
+    const studentClass = (currentUser?.studentClass || '').trim();
+
+    const filtered = allCachedPosts.filter(post => {
+        const postTarget = (post.targetClass || 'All').trim();
+        const isAll = postTarget === 'All' || postTarget.toLowerCase() === 'all classes';
+
+        if (currentTimelineTab === 'all') {
+            // "put all classes post to all post"
+            return isAll;
+        } else {
+            // "specific class to that class"
+            const norm = s => (s || '').toLowerCase().replace(/^(grade|class)\s*/i, '').trim();
+            if (!isStaff) {
+                if (!studentClass || studentClass === 'Unassigned') return false;
+                return !isAll && (postTarget.toLowerCase() === studentClass.toLowerCase() || norm(postTarget) === norm(studentClass));
+            } else {
+                if (!currentStaffSelectedClass) return false;
+                return !isAll && (postTarget.toLowerCase() === currentStaffSelectedClass.toLowerCase() || norm(postTarget) === norm(currentStaffSelectedClass));
+            }
+        }
+    });
+
+    if (filtered.length === 0) {
+        const tabTitle = currentTimelineTab === 'all' 
+            ? 'All Posts' 
+            : (isStaff ? (currentStaffSelectedClass || 'this class') : (studentClass || 'My Class'));
+        feed.innerHTML = `
+            <div style="padding: 48px 20px; text-align: center; color: var(--text-muted, #94a3b8);">
+                <div style="font-size: 32px; margin-bottom: 8px;">📭</div>
+                <div style="font-weight: 700; font-size: 15px; color: var(--text-main, #0f172a);">No posts in ${escapeHtml(tabTitle)} yet</div>
+                <div style="font-size: 13px; margin-top: 4px;">Be the first to share something above!</div>
+            </div>
+        `;
+        return;
+    }
+
+    filtered.forEach(post => {
+        renderSinglePostElement(post, feed);
+    });
+}
+
+function renderSinglePostElement(post, feed) {
+    const postId = post.id;
+    const postTarget = post.targetClass || 'All';
+    const dateStr = formatTimeAgo(post.timestamp);
+    const badgeHTML = post.isStaff ? `<img src="https://lh3.googleusercontent.com/d/1F9iWlab0M6Hlc1L5NR_HP4vsQDJJpd3d" alt="Verified" class="staff-badge-img">` : '';
+    const safeClass = escapeHtml(postTarget);
+    const classBadgeHTML = `<span class="target-class-badge">${safeClass}</span>`;
+    const fullAuthorName = post.authorName || 'Student';
+    const nickname = formatNickname(fullAuthorName);
+    const safeAuthor = escapeHtml(nickname);
+    const safeFullName = escapeHtml(fullAuthorName);
+    const authorAvatarHTML = renderAvatarHTML(nickname, post.authorCode, post.authorPhotoUrl, post.isStaff);
+
+    const canDeletePost = (currentUser.type === 'staff') || 
+        (currentUser.code && post.authorCode && post.authorCode === currentUser.code) ||
+        (currentUser.name && post.authorName && post.authorName === currentUser.name);
+
+    let kebabMenuHTML = '';
+    if (canDeletePost) {
+        kebabMenuHTML = `
+            <div class="kebab-wrapper">
+                <button type="button" class="kebab-btn" title="Options" data-post-id="${postId}">⋮</button>
+                <div id="kebab-post-${postId}" class="kebab-dropdown hidden">
+                    <button type="button" class="kebab-item danger btn-delete-post" data-post-id="${postId}">
+                        Delete Post
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // Multi-photo layout (max 5 photos)
+    const allImages = Array.isArray(post.imageUrls) && post.imageUrls.length > 0 
+        ? post.imageUrls 
+        : (post.imageUrl ? [post.imageUrl] : []);
+
+    let imageHTML = '';
+    if (allImages.length > 0) {
+        const gridClass = `grid-${Math.min(allImages.length, 5)}`;
+        const itemsHtml = allImages.map((u, i) => `
+            <div class="photo-item" onclick="window.open('${escapeHtml(u)}', '_blank')" title="Click to view full photo">
+                <img src="${escapeHtml(u)}" alt="Photo ${i + 1}" loading="lazy">
+            </div>
+        `).join('');
+        imageHTML = `<div class="timeline-photo-grid ${gridClass}">${itemsHtml}</div>`;
+    }
+
+    // Poll / Voting layout
+    let pollHTML = '';
+    if (post.poll && Array.isArray(post.poll.options) && post.poll.options.length >= 2) {
+        pollHTML = renderPostPollHTML(postId, post.poll);
+    }
+
+    // Like / Heart status
+    const likes = Array.isArray(post.likes) ? post.likes : [];
+    const myIdentifier = currentUser ? (currentUser.code || currentUser.name) : '';
+    const isLiked = Boolean(myIdentifier && likes.includes(myIdentifier));
+    const likeCount = likes.length;
+
+    const postElement = document.createElement('div');
+    postElement.className = 'timeline-post';
+    postElement.id = 'post-' + postId; 
+    
+    postElement.innerHTML = `
+        <div class="post-sender-row">
+            <div class="sender-info-wrapper">
+                ${authorAvatarHTML}
+                <div class="sender-details">
+                    <div class="sender-name-line">
+                        <span class="sender-name" title="${safeFullName}">${safeAuthor}</span>
+                        ${badgeHTML}
+                        ${classBadgeHTML}
+                    </div>
+                    <span class="post-time" data-timestamp="${post.timestamp}">${dateStr}</span>
+                </div>
+            </div>
+            ${kebabMenuHTML}
+        </div>
+
+        ${post.message ? `<div class="post-body">${formatMessageMentions(post.message)}</div>` : ''}
+        ${imageHTML}
+        ${pollHTML}
+        
+        <div class="post-actions-bar">
+            <button type="button" class="action-btn like-btn ${isLiked ? 'liked' : ''}" onclick="window.toggleLikePost('${postId}')" title="${isLiked ? 'Unlike' : 'Like'}">
+                <svg class="action-icon heart-icon" width="15" height="15" viewBox="0 0 24 24" fill="${isLiked ? '#ef4444' : 'none'}" stroke="${isLiked ? '#ef4444' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <span id="like-count-${postId}">${likeCount > 0 ? likeCount : '0'}</span>
+            </button>
+            <button type="button" class="action-btn comment-btn" onclick="toggleComments('${postId}')" title="Comments">
+                <svg class="action-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span id="comment-count-${postId}">0</span>
+            </button>
+        </div>
+
+        <div class="comments-wrapper hidden" id="comments-wrapper-${postId}">
+            <div class="comments-list" id="comments-list-${postId}"></div>
+            
+            <div class="reply-box">
+                <input type="text" id="reply-msg-${postId}" class="reply-input" placeholder="Write a reply... (Type @ to mention)">
+                <button class="reply-submit-btn" onclick="submitReply('${postId}', '${safeAuthor.replace(/'/g, "\\'")}')">Reply</button>
+            </div>
+        </div>
+    `;
+    
+    feed.appendChild(postElement);
+    loadCommentsForPost(postId);
 }
 
 function loadCommentsForPost(postId) {
@@ -1514,14 +1663,15 @@ startLiveTimestampUpdates();
 
 async function populateClassDropdown() {
     const classSelect = document.getElementById('postTargetClass');
-    if (!classSelect || !currentUser) return;
+    if (!currentUser) return;
 
-    // Use plain text inside option tags so browsers render correctly
-    classSelect.innerHTML = '<option value="All">All Classes</option>';
+    if (classSelect) {
+        classSelect.innerHTML = '<option value="All">All Classes</option>';
+    }
 
     if (currentUser.type === 'student') {
         const userClass = currentUser.studentClass || 'Unassigned';
-        if (userClass !== 'Unassigned') {
+        if (userClass !== 'Unassigned' && classSelect) {
             classSelect.innerHTML += `<option value="${userClass}">${userClass} (My Class)</option>`;
         }
     } 
@@ -1536,9 +1686,24 @@ async function populateClassDropdown() {
                 if (cName) uniqueClasses.add(cName);
             });
 
-            Array.from(uniqueClasses).sort().forEach(className => {
-                classSelect.innerHTML += `<option value="${className}">${className}</option>`;
+            const sortedClasses = Array.from(uniqueClasses).sort();
+            if (sortedClasses.length > 0 && !currentStaffSelectedClass) {
+                currentStaffSelectedClass = sortedClasses[0];
+            }
+
+            sortedClasses.forEach(className => {
+                if (classSelect) {
+                    classSelect.innerHTML += `<option value="${className}">${className}</option>`;
+                }
             });
+
+            const tabSelect = document.getElementById('tabClassSelect');
+            if (tabSelect) {
+                tabSelect.innerHTML = sortedClasses.map(c => `<option value="${c}" ${c === currentStaffSelectedClass ? 'selected' : ''}>${c}</option>`).join('');
+                if (currentStaffSelectedClass) {
+                    tabSelect.value = currentStaffSelectedClass;
+                }
+            }
         } catch (e) {
             console.warn("Could not load classes dropdown list:", e);
         }

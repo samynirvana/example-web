@@ -1,7 +1,14 @@
 import { collection, query, where, getDocs, doc, getDoc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { db, auth } from "./firebase.js";
 import { escapeHtml } from "./utils.js";
+
+// Auto-route authenticated teachers/admins directly to admin dashboard
+onAuthStateChanged(auth, (user) => {
+    if (user && !sessionStorage.getItem('studentLoggedInSession')) {
+        window.location.replace("admin.html");
+    }
+});
 
 let cachedExamScores = [];
 

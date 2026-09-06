@@ -158,25 +158,31 @@ input, textarea, button, select {
 
 /* Fixes the white background issue by explicitly using --bg-color */
 .container,
-.timeline-container { 
-    max-width: 680px; 
-    margin: 0 auto; 
+.timeline-container,
+#timelineApp { 
+    max-width: 680px !important; 
+    margin: 0 auto !important; 
     background-color: transparent !important;
-    width: 100%;
-    box-sizing: border-box;
+    background: transparent !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
     text-align: left !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 #timelineFeed {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
     text-align: left !important;
     background: var(--card-bg, #ffffff) !important;
     border: 1px solid var(--border-color, #e2e8f0) !important;
     border-radius: 16px !important;
     overflow: hidden !important;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
+    box-shadow: none !important;
 }
 
 body.dark-theme #timelineFeed,
@@ -191,11 +197,24 @@ body.dark-mode #timelineFeed {
     z-index: auto !important;
     background: transparent !important;
     backdrop-filter: none !important;
-    padding-bottom: 14px !important;
+    padding-bottom: 0 !important;
     margin-top: 0 !important;
     padding-top: 0 !important;
-    border-bottom: 1px solid var(--border-color) !important;
-    margin-bottom: 18px !important;
+    border-bottom: none !important;
+    margin-bottom: 16px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+.timeline-heading {
+    text-align: center !important;
+    margin: 0 !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    color: var(--text-main) !important;
 }
 
 /* Timeline Post Image Attachment Styling */
@@ -425,7 +444,7 @@ body.dark-mode #mobileTopbarKebabBtn.mobile-kebab-btn {
     border-radius: 16px !important; 
     margin-bottom: 20px !important; 
     border: 1px solid var(--border-color, #e2e8f0) !important;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
+    box-shadow: none !important;
     box-sizing: border-box !important;
 }
 
@@ -567,7 +586,14 @@ body.dark-mode .post-box {
 
 .target-selector-wrapper select,
 #postTargetClass {
-    padding: 0 24px 0 12px !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 11px center !important;
+    background-size: 11px 11px !important;
+    padding: 0 32px 0 14px !important;
     border-radius: 20px !important;
     border: 1.5px solid var(--border-color, #cbd5e1) !important;
     background-color: var(--input-bg, #f8fafc) !important;
@@ -579,7 +605,8 @@ body.dark-mode .post-box {
     min-height: 34px !important;
     max-height: 34px !important;
     width: auto !important;
-    max-width: 145px !important;
+    min-width: 115px !important;
+    max-width: none !important;
     display: inline-block !important;
     box-sizing: border-box !important;
     outline: none !important;
@@ -1007,15 +1034,21 @@ body.dark-mode .poll-option-button.voted-state {
     padding-top: 4px;
 }
 
-/* --- POST ACTIONS BAR (LIKE & COMMENT SIDE-BY-SIDE) --- */
+/* --- POST ACTIONS BAR (LIKE & COMMENT COMPACT & CLOSER) --- */
 .post-actions-bar {
     display: flex !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    gap: 12px !important;
-    margin-top: 10px !important;
-    padding-top: 8px !important;
-    border-top: 1px solid var(--border-color, #e2e8f0) !important;
+    gap: 6px !important;
+    margin-top: 6px !important;
+    padding-top: 2px !important;
+    border-top: none !important;
+    width: 100% !important;
+}
+
+body.dark-theme .post-actions-bar,
+body.dark-mode .post-actions-bar {
+    border-top: none !important;
 }
 
 .post-actions-bar .action-btn,
@@ -1026,16 +1059,28 @@ body.dark-mode .poll-option-button.voted-state {
     border: none !important;
     box-shadow: none !important;
     outline: none !important;
-    padding: 6px 12px !important;
-    border-radius: 8px !important;
-    font-size: 13.5px !important;
+    padding: 2px 7px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
     font-weight: 600 !important;
     color: var(--text-muted) !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 6px !important;
+    gap: 4px !important;
     cursor: pointer !important;
-    transition: all 0.18s ease !important;
+    height: 26px !important;
+    min-height: 26px !important;
+    width: auto !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    transition: all 0.15s ease !important;
+}
+
+.post-actions-bar .action-icon,
+.action-icon.heart-icon {
+    width: 14.5px !important;
+    height: 14.5px !important;
+    flex-shrink: 0 !important;
 }
 
 .post-actions-bar .action-btn:hover,
@@ -1088,7 +1133,7 @@ body.dark-mode .action-btn.comment-btn:hover {
 }
 
 /* ==========================================================================
-   4. TIMELINE POSTS (TWITTER / THREADS DIVIDER STYLE - NO SEPARATE BOXES)
+   4. TIMELINE POSTS (TWITTER / THREADS DIVIDER STYLE - VISIBLE DIVIDERS)
    ========================================================================== */
 .timeline-post { 
     background: transparent !important; 
@@ -1096,13 +1141,23 @@ body.dark-mode .action-btn.comment-btn:hover {
     border-radius: 0 !important; 
     margin-bottom: 0 !important; 
     border: none !important; 
-    border-bottom: 1px solid var(--border-color, #e2e8f0) !important; 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.09) !important; 
     box-shadow: none !important; 
     transition: background-color 0.15s ease !important;
     box-sizing: border-box !important;
 }
 
 .timeline-post:last-child {
+    border-bottom: none !important;
+}
+
+body.dark-theme .timeline-post,
+body.dark-mode .timeline-post {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+
+body.dark-theme .timeline-post:last-child,
+body.dark-mode .timeline-post:last-child {
     border-bottom: none !important;
 }
 
@@ -1352,24 +1407,25 @@ body.dark-mode .kebab-item:hover {
     display: flex !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    gap: 12px !important;
-    padding-top: 8px !important;
-    margin-top: 8px !important;
+    gap: 6px !important;
+    padding-top: 6px !important;
+    margin-top: 6px !important;
 }
 
 .action-btn {
     background: transparent;
     border: none;
     color: var(--text-muted);
-    font-size: 13px; /* Reduced from 14px to make button font smaller */
-    font-weight: 500; /* Slightly lighter weight to reduce distraction */
+    font-size: 12px;
+    font-weight: 500;
     cursor: pointer;
-    padding: 4px 8px; /* Compact padding */
+    padding: 2px 7px;
     border-radius: 6px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    min-height: 32px; /* Reduced min-height */
+    gap: 4px;
+    height: 26px;
+    min-height: 26px;
     transition: background 0.18s, color 0.18s, transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -1663,12 +1719,12 @@ body.dark-theme .target-class-badge {
     background: #ffffff !important; 
     color: #1e293b !important; 
     border: 1.5px solid #cbd5e1 !important; 
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    min-height: 36px !important;
-    max-width: 36px !important;
-    max-height: 36px !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
     padding: 0 !important; 
     border-radius: 50% !important; 
     cursor: pointer !important; 
@@ -1676,18 +1732,18 @@ body.dark-theme .target-class-badge {
     align-items: center !important;
     justify-content: center !important;
     transition: all 0.2s ease !important;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
 #notifToggleBtn.notif-btn:hover,
 .notif-btn:hover {
     background: #f1f5f9 !important;
     border-color: #94a3b8 !important;
-    transform: scale(1.06) !important;
+    transform: scale(1.05) !important;
 }
 #notifToggleBtn.notif-btn svg,
 .notif-btn svg {
-    width: 18px !important;
-    height: 18px !important;
+    width: 15px !important;
+    height: 15px !important;
     stroke: #1e293b !important;
     fill: none !important;
     stroke-width: 2.2 !important;
@@ -1723,10 +1779,44 @@ body.dark-mode .notif-btn svg {
     stroke: #f8fafc !important;
     color: #f8fafc !important;
 }
-.notif-dropdown { display: none; position: absolute; top: 45px; right: 0; width: 300px; max-height: 320px; overflow-y: auto; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15); z-index: 100; }
+.notif-dropdown { display: none; position: absolute; top: 38px; right: 0; width: 300px; max-height: 340px; overflow-y: auto; background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0); border-radius: 10px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); z-index: 9999; }
 .notif-item { padding: 12px 14px; border-bottom: 1px solid var(--border-color); font-size: 14px; cursor: pointer; color: var(--text-main); }
 .notif-item:hover { background: var(--comment-bg); }
 .notif-item.unread { font-weight: bold; background: var(--avatar-bg); border-left: 3px solid var(--primary-color); }
+
+/* Compact Navbar Action Buttons in Desktop Header */
+.desktop-user-actions .theme-toggle-btn,
+.desktop-user-actions .teacher-btn,
+.desktop-user-actions button.theme-toggle-btn,
+.desktop-user-actions button.teacher-btn {
+    padding: 5px 12px !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    border-radius: 16px !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+}
+.desktop-user-actions .theme-toggle-btn svg,
+.desktop-user-actions .teacher-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+}
+.desktop-user-actions #studentLogoutBtn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
+    border-radius: 16px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
 
 .mention-popup { position: absolute; background: var(--card-bg); border: 1px solid var(--border-color); max-height: 200px; overflow-y: auto; z-index: 1000; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15); border-radius: 8px; }
 .mention-item { padding: 12px 14px; font-size: 14px; cursor: pointer; color: var(--text-main); border-bottom: 1px solid var(--border-color); }
@@ -1826,11 +1916,12 @@ body.dark-mode .notif-btn svg {
         height: 34px !important;
         min-height: 34px !important;
         max-height: 34px !important;
-        padding: 0 20px 0 8px !important;
+        padding: 0 28px 0 10px !important;
         font-size: 12px !important;
         border-radius: 18px !important;
-        max-width: 115px !important;
-        min-width: 0 !important;
+        min-width: 105px !important;
+        max-width: none !important;
+        width: auto !important;
         flex-shrink: 0 !important;
         white-space: nowrap !important;
         text-overflow: ellipsis !important;
@@ -1864,17 +1955,22 @@ body.dark-mode .notif-btn svg {
     body.dark-theme #timelineFeed,
     body.dark-mode #timelineFeed {
         background: #1e293b !important;
-        border-color: #334155 !important;
+        border-color: rgba(255, 255, 255, 0.12) !important;
     }
 
     .timeline-post {
         padding: 14px 14px !important;
         margin: 0 !important;
         border: none !important;
-        border-bottom: 1px solid var(--border-color, #e2e8f0) !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
         border-radius: 0 !important;
         box-shadow: none !important;
         background: transparent !important;
+    }
+
+    body.dark-theme .timeline-post,
+    body.dark-mode .timeline-post {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
     }
 
     .timeline-post:last-child {
@@ -2418,4 +2514,189 @@ body.dark-mode .notif-btn svg {
     font-size: 24px;
     font-weight: 700;
     letter-spacing: -0.3px;
+}
+
+/* ==========================================================================
+   TIMELINE FEED FILTER TABS (SEAMLESS / BOXLESS)
+   ========================================================================== */
+.timeline-tabs-wrapper {
+    margin-bottom: 14px !important;
+    width: 100% !important;
+}
+
+.timeline-tabs-nav {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    background: transparent !important;
+    padding: 0 4px !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+body.dark-theme .timeline-tabs-nav,
+body.dark-mode .timeline-tabs-nav {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.timeline-tab-item,
+button.timeline-tab-item,
+#tabBtnAllPosts,
+#tabBtnMyClass,
+#tabBtnClassWrapper {
+    all: unset !important;
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    padding: 6px 14px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    background: transparent !important;
+    color: var(--text-muted, #64748b) !important;
+    font-size: 14.5px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: color 0.18s ease, background-color 0.18s ease !important;
+    user-select: none !important;
+    min-height: 34px !important;
+    height: 34px !important;
+    width: auto !important;
+    max-width: fit-content !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.timeline-tab-item:hover,
+button.timeline-tab-item:hover,
+#tabBtnAllPosts:hover,
+#tabBtnMyClass:hover {
+    color: var(--text-main, #0f172a) !important;
+    background: rgba(15, 23, 42, 0.05) !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+body.dark-theme .timeline-tab-item:hover,
+body.dark-mode .timeline-tab-item:hover,
+body.dark-theme button.timeline-tab-item:hover,
+body.dark-mode button.timeline-tab-item:hover,
+body.dark-theme #tabBtnAllPosts:hover,
+body.dark-mode #tabBtnAllPosts:hover,
+body.dark-theme #tabBtnMyClass:hover,
+body.dark-mode #tabBtnMyClass:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.timeline-tab-item.active,
+button.timeline-tab-item.active,
+#tabBtnAllPosts.active,
+#tabBtnMyClass.active,
+#tabBtnClassWrapper.active {
+    background: transparent !important;
+    color: var(--primary-color, #1e5eff) !important;
+    font-weight: 800 !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-bottom: 2.5px solid var(--primary-color, #1e5eff) !important;
+    border-radius: 0 !important;
+}
+
+body.dark-theme .timeline-tab-item.active,
+body.dark-mode .timeline-tab-item.active,
+body.dark-theme button.timeline-tab-item.active,
+body.dark-mode button.timeline-tab-item.active,
+body.dark-theme #tabBtnAllPosts.active,
+body.dark-mode #tabBtnAllPosts.active,
+body.dark-theme #tabBtnMyClass.active,
+body.dark-mode #tabBtnMyClass.active,
+body.dark-theme #tabBtnClassWrapper.active,
+body.dark-mode #tabBtnClassWrapper.active {
+    background: transparent !important;
+    color: #3b82f6 !important;
+    border: none !important;
+    border-bottom: 2.5px solid #3b82f6 !important;
+}
+
+.timeline-tab-item.tab-with-select {
+    cursor: default !important;
+}
+
+.timeline-tab-item.tab-with-select span {
+    cursor: pointer !important;
+}
+
+.timeline-tab-select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-color: transparent !important;
+    color: inherit !important;
+    border: 1px solid var(--border-color, #cbd5e1) !important;
+    border-radius: 7px !important;
+    padding: 3px 22px 3px 7px !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    outline: none !important;
+    min-width: 95px !important;
+    max-width: 170px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none' stroke='%231e5eff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1 1 5 5 9 1'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 6px center !important;
+    background-size: 8px 5px !important;
+}
+
+.timeline-tab-item:not(.active) .timeline-tab-select {
+    color: var(--text-muted, #64748b) !important;
+    border-color: var(--border-color, #cbd5e1) !important;
+    background-color: transparent !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1 1 5 5 9 1'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 6px center !important;
+    background-size: 8px 5px !important;
+}
+
+body.dark-theme .timeline-tab-select,
+body.dark-mode .timeline-tab-select {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    background-color: transparent !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1 1 5 5 9 1'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 6px center !important;
+    background-size: 8px 5px !important;
+}
+
+body.dark-theme .timeline-tab-item:not(.active) .timeline-tab-select,
+body.dark-mode .timeline-tab-item:not(.active) .timeline-tab-select {
+    color: #94a3b8 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: transparent !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1 1 5 5 9 1'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 6px center !important;
+    background-size: 8px 5px !important;
+}
+
+.timeline-tab-select option {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+}
+
+body.dark-theme .timeline-tab-select option,
+body.dark-mode .timeline-tab-select option {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
 }

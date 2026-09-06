@@ -19,10 +19,10 @@
         rel="stylesheet">
 
     <!-- External Stylesheets -->
-    <link rel="stylesheet" href="style.css?v=400">
-    <link rel="stylesheet" href="admin.css?v=400">
-    <link rel="stylesheet" href="student.css?v=400">
-    <link rel="stylesheet" href="timeline.css?v=400">
+    <link rel="stylesheet" href="style.css?v=409">
+    <link rel="stylesheet" href="admin.css?v=409">
+    <link rel="stylesheet" href="student.css?v=409">
+    <link rel="stylesheet" href="timeline.css?v=409">
 </head>
 
 <body>
@@ -99,9 +99,23 @@
 
             <!-- USER PROFILE & ACTIONS RIGHT -->
             <div class="user-profile-bottom desktop-user-actions"
-                style="display: flex; align-items: center; gap: 12px; margin: 0;">
-                <button id="darkModeToggle" class="theme-toggle-btn" style="padding: 6px 12px; font-size: 13px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                <div class="notif-wrapper" style="position: relative;">
+                    <button id="notifToggleBtn" class="notif-btn" title="Alerts" aria-label="Alerts">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span id="notifBadge" class="notif-badge">0</span>
+                    </button>
+                    <div id="notifDropdown" class="notif-dropdown">
+                        <div
+                            style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-muted);">
+                            Loading notifications...</div>
+                    </div>
+                </div>
+                <button id="darkModeToggle" class="theme-toggle-btn" style="padding: 5px 12px; font-size: 12.5px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
                         <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -116,8 +130,8 @@
                     <span id="themeToggleText">Dark Mode</span>
                 </button>
                 <button onclick="window.location.href='admin.html'" class="teacher-btn"
-                    style="padding: 6px 12px; font-size: 13px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="padding: 5px 12px; font-size: 12.5px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                         <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
@@ -125,8 +139,8 @@
                     <span>For Teacher</span>
                 </button>
                 <button id="studentLogoutBtn" title="Logout"
-                    style="background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; padding: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 16px; padding: 0; width: 32px; height: 32px; min-width: 32px; min-height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                         <polyline points="16 17 21 12 16 7"></polyline>
@@ -242,29 +256,16 @@
             <div id="timelineApp" class="container timeline-container"
                 style="max-width: 680px; margin: 0 auto; width: 100%;">
 
-                <!-- TOP FEED BAR (THREADS STYLE HEADER) -->
+                <!-- TOP FEED BAR -->
                 <div class="timeline-feed-header"
-                    style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <h2 class="timeline-heading"
-                            style="margin: 0; font-size: 22px; font-weight: 800; color: var(--text-main);">Timeline</h2>
-                    </div>
-                    <div class="nav-controls" style="display: flex; align-items: center; gap: 10px;">
-                        <div class="notif-wrapper" style="position: relative;">
-                            <button id="notifToggleBtn" class="notif-btn" title="Alerts" aria-label="Alerts">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                                </svg>
-                                <span id="notifBadge" class="notif-badge">0</span>
-                            </button>
-                            <div id="notifDropdown" class="notif-dropdown">
-                                <div
-                                    style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-muted);">
-                                    Loading notifications...</div>
-                            </div>
-                        </div>
-                    </div>
+                    style="display: flex; justify-content: center; align-items: center; text-align: center; margin-bottom: 16px;">
+                    <h2 class="timeline-heading"
+                        style="margin: 0; font-size: 22px; font-weight: 800; color: var(--text-main); text-align: center;">Timeline</h2>
+                </div>
+
+                <!-- TIMELINE FILTER TABS (CLASS vs ALL POSTS) -->
+                <div class="timeline-tabs-wrapper" id="timelineTabsWrapper">
+                    <!-- Populated dynamically via JS -->
                 </div>
 
                 <!-- POST CREATION CARD (TWITTER / THREADS COMPOSER STYLE) -->
@@ -332,12 +333,6 @@
                                     </svg>
                                     <span>Poll</span>
                                 </button>
-
-                                <div class="target-selector-wrapper">
-                                    <select id="postTargetClass" aria-label="Target Class">
-                                        <option value="All">All Classes</option>
-                                    </select>
-                                </div>
                             </div>
                             <button id="submitPostBtn">Post</button>
                         </div>
@@ -426,8 +421,8 @@
         </div>
     </div>
 
-    <script type="module" src="timeline.js?v=360"></script>
-    <script type="module" src="studentNav.js?v=359"></script>
+    <script type="module" src="timeline.js?v=408"></script>
+    <script type="module" src="studentNav.js?v=408"></script>
 </body>
 
 </html>
