@@ -3682,9 +3682,9 @@ body.dark-theme .multi-select-option-row:hover {
 /* ======================================================
    ROUNDED PILL BUTTON STYLING SYSTEM (LIGHT & DARK THEME)
    ====================================================== */
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item),
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn),
 .btn:not(.dropdown-item):not(.kebab-item),
-.action-btn:not(.dropdown-item):not(.kebab-item),
+.action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn),
 .add-btn,
 .save-btn,
 .delete-btn:not(.dropdown-item):not(.kebab-item),
@@ -3705,9 +3705,9 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     transition: all 0.2s ease !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):hover,
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):hover,
 .btn:not(.dropdown-item):not(.kebab-item):hover,
-.action-btn:not(.dropdown-item):not(.kebab-item):hover,
+.action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):hover,
 .add-btn:hover,
 .save-btn:hover,
 .delete-btn:not(.dropdown-item):not(.kebab-item):hover,
@@ -3718,16 +3718,16 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):active,
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):active,
 .btn:not(.dropdown-item):not(.kebab-item):active {
     transform: translateY(0) !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 /* Dark Theme Overrides for Admin Buttons */
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item),
+body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn),
 body.dark-theme .btn:not(.dropdown-item):not(.kebab-item),
-body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item),
+body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn),
 body.dark-theme .add-btn,
 body.dark-theme .save-btn,
 body.dark-theme .delete-btn:not(.dropdown-item):not(.kebab-item),
@@ -3738,9 +3738,9 @@ body.dark-theme .modal-btn {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):hover,
+body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):hover,
 body.dark-theme .btn:not(.dropdown-item):not(.kebab-item):hover,
-body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):hover,
+body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):hover,
 body.dark-theme .add-btn:hover,
 body.dark-theme .save-btn:hover,
 body.dark-theme .delete-btn:not(.dropdown-item):not(.kebab-item):hover,

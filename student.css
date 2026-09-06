@@ -932,12 +932,11 @@ body.dark-mode .behavior-item-title {
 /* ======================================================
    ROUNDED PILL BUTTON STYLING SYSTEM (LIGHT & DARK THEME)
    ====================================================== */
-button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item),
+button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn),
 .btn-pill,
 .teacher-btn,
 .theme-toggle-btn,
 #studentLoginBtn,
-#submitPostBtn,
 #verifyBtn,
 #startSelectedQuizBtn,
 #submitQuizBtn,
@@ -958,12 +957,11 @@ button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#no
     transition: all 0.2s ease !important;
 }
 
-button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.kebab-btn):not(.kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):hover,
+button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.kebab-btn):not(.kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):hover,
 .btn-pill:hover,
 .teacher-btn:hover,
 .theme-toggle-btn:hover,
 #studentLoginBtn:hover,
-#submitPostBtn:hover,
 #verifyBtn:hover,
 #startSelectedQuizBtn:hover,
 #submitQuizBtn:hover,
@@ -981,12 +979,11 @@ button:active,
 }
 
 /* Dark Theme Button Overrides */
-.dark-theme button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item),
+.dark-theme button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn),
 .dark-theme .btn-pill,
 .dark-theme .teacher-btn,
 .dark-theme .theme-toggle-btn,
 .dark-theme #studentLoginBtn,
-.dark-theme #submitPostBtn,
 .dark-theme #verifyBtn,
 .dark-theme #startSelectedQuizBtn,
 .dark-theme #submitQuizBtn,
@@ -997,12 +994,11 @@ button:active,
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
-.dark-theme button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):hover,
+.dark-theme button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):hover,
 .dark-theme .btn-pill:hover,
 .dark-theme .teacher-btn:hover,
 .dark-theme .theme-toggle-btn:hover,
 .dark-theme #studentLoginBtn:hover,
-.dark-theme #submitPostBtn:hover,
 .dark-theme #verifyBtn:hover,
 .dark-theme #startSelectedQuizBtn:hover,
 .dark-theme #submitQuizBtn:hover,

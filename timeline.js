@@ -187,14 +187,27 @@ window.deletePost = async function(postId) {
         return;
     }
     try {
+        const postSnap = await getDoc(doc(db, "timeline_posts", postId));
+        if (postSnap.exists()) {
+            const post = postSnap.data();
+            const isOwner = (currentUser.code && post.authorCode && post.authorCode === currentUser.code) ||
+                            (currentUser.name && post.authorName && post.authorName === currentUser.name);
+            if (currentUser.type !== 'staff' && !isOwner) {
+                alert("You can only delete your own posts.");
+                return;
+            }
+        }
+
         await deleteDoc(doc(db, "timeline_posts", postId));
         
         // Clean up associated comments in background
         try {
             const commentsSnap = await getDocs(query(collection(db, "timeline_comments"), where("postId", "==", postId)));
-            commentsSnap.forEach(async (cDoc) => {
-                await deleteDoc(doc(db, "timeline_comments", cDoc.id));
+            const deletePromises = [];
+            commentsSnap.forEach((cDoc) => {
+                deletePromises.push(deleteDoc(doc(db, "timeline_comments", cDoc.id)));
             });
+            await Promise.all(deletePromises);
         } catch (cErr) {
             console.warn("Error cleaning up comments:", cErr);
         }
@@ -212,6 +225,17 @@ window.deleteComment = async function(commentId) {
         return;
     }
     try {
+        const commentSnap = await getDoc(doc(db, "timeline_comments", commentId));
+        if (commentSnap.exists()) {
+            const comment = commentSnap.data();
+            const isOwner = (currentUser.code && comment.authorCode && comment.authorCode === currentUser.code) ||
+                            (currentUser.name && comment.authorName && comment.authorName === currentUser.name);
+            if (currentUser.type !== 'staff' && !isOwner) {
+                alert("You can only delete your own comments.");
+                return;
+            }
+        }
+
         await deleteDoc(doc(db, "timeline_comments", commentId));
     } catch (err) {
         alert("Failed to delete reply: " + err.message);
@@ -797,69 +821,150 @@ async function syncDriveConfigFromFirestore() {
     }
 }
 
+// --- MULTI-PHOTO & POLL COMPOSER MANAGEMENT ---
+let currentComposerImages = [];
+let isPollComposerOpen = false;
+
 function initTimelineImageUpload() {
     const attachBtn = document.getElementById('btnAttachImage');
     const fileInput = document.getElementById('timelineImageInput');
-    const removeBtn = document.getElementById('btnRemoveComposerImage');
+    const pollToggleBtn = document.getElementById('btnTogglePollComposer');
+    const discardPollBtn = document.getElementById('btnDiscardPoll');
+    const addPollOptBtn = document.getElementById('btnAddPollOption');
 
     // Sync configuration from Firestore
     syncDriveConfigFromFirestore();
 
-    // File selection
+    // File selection (supports up to 5 photos)
     attachBtn?.addEventListener('click', () => {
         fileInput?.click();
     });
 
     fileInput?.addEventListener('change', async (e) => {
-        const file = e.target.files?.[0];
-        if (file) handleTimelineImageFile(file);
+        const files = Array.from(e.target.files || []);
+        if (files.length === 0) return;
+
+        if (currentComposerImages.length + files.length > 5) {
+            alert("You can attach a maximum of 5 photos per post.");
+        }
+
+        const remainingSlots = 5 - currentComposerImages.length;
+        const toAdd = files.slice(0, remainingSlots);
+
+        for (const file of toAdd) {
+            await handleComposerImageFile(file);
+        }
+        fileInput.value = '';
     });
 
-    removeBtn?.addEventListener('click', () => {
-        clearTimelineComposerImage();
+    // Poll controls
+    pollToggleBtn?.addEventListener('click', () => {
+        const box = document.getElementById('composerPollBox');
+        if (!box) return;
+        isPollComposerOpen = !isPollComposerOpen;
+        if (isPollComposerOpen) {
+            box.classList.remove('hidden');
+        } else {
+            box.classList.add('hidden');
+        }
+    });
+
+    discardPollBtn?.addEventListener('click', () => {
+        isPollComposerOpen = false;
+        const box = document.getElementById('composerPollBox');
+        if (box) box.classList.add('hidden');
+        resetPollComposer();
+    });
+
+    addPollOptBtn?.addEventListener('click', () => {
+        const list = document.getElementById('pollOptionsList');
+        if (!list) return;
+        const count = list.querySelectorAll('.poll-option-row').length;
+        if (count >= 5) {
+            alert("Maximum of 5 options allowed for a poll.");
+            return;
+        }
+        const row = document.createElement('div');
+        row.className = 'poll-option-row';
+        row.innerHTML = `
+            <input type="text" class="poll-option-input" placeholder="Option ${count + 1}">
+            <button type="button" class="poll-remove-opt-btn" onclick="this.parentElement.remove()" title="Remove Option">✕</button>
+        `;
+        list.appendChild(row);
     });
 }
 
-function clearTimelineComposerImage() {
-    currentTimelineImageData = null;
-    const fileInput = document.getElementById('timelineImageInput');
-    const previewContainer = document.getElementById('composerImagePreviewContainer');
-    const previewImg = document.getElementById('composerPreviewImg');
-    const statusEl = document.getElementById('composerImageUploadStatus');
-    if (fileInput) fileInput.value = '';
-    if (previewImg) previewImg.src = '';
-    if (statusEl) {
-        statusEl.innerText = 'Ready to post';
-        statusEl.style.color = '#2563eb';
+function resetPollComposer() {
+    const qInput = document.getElementById('pollQuestionInput');
+    if (qInput) qInput.value = '';
+    const list = document.getElementById('pollOptionsList');
+    if (list) {
+        list.innerHTML = `
+            <div class="poll-option-row">
+                <input type="text" class="poll-option-input" placeholder="Option 1">
+            </div>
+            <div class="poll-option-row">
+                <input type="text" class="poll-option-input" placeholder="Option 2">
+            </div>
+        `;
     }
-    if (previewContainer) previewContainer.classList.add('hidden');
 }
 
-async function handleTimelineImageFile(file) {
+function clearTimelineComposerImages() {
+    currentComposerImages = [];
+    const container = document.getElementById('composerImagesContainer');
+    const strip = document.getElementById('composerImagesStrip');
+    if (strip) strip.innerHTML = '';
+    if (container) container.classList.add('hidden');
+}
+
+window.removeComposerImage = function(id) {
+    currentComposerImages = currentComposerImages.filter(img => img.id !== id);
+    renderComposerImagesStrip();
+};
+
+function renderComposerImagesStrip() {
+    const container = document.getElementById('composerImagesContainer');
+    const strip = document.getElementById('composerImagesStrip');
+    if (!container || !strip) return;
+
+    if (currentComposerImages.length === 0) {
+        container.classList.add('hidden');
+        strip.innerHTML = '';
+        return;
+    }
+
+    container.classList.remove('hidden');
+    strip.innerHTML = '';
+
+    currentComposerImages.forEach((item) => {
+        const chip = document.createElement('div');
+        chip.className = 'composer-image-chip';
+        chip.innerHTML = `
+            <img src="${item.dataUrl}" alt="${escapeHtml(item.fileName)}">
+            <button type="button" class="chip-remove-btn" onclick="window.removeComposerImage('${item.id}')" title="Remove Photo">&times;</button>
+            ${item.uploading ? `<span class="chip-uploading-badge">Uploading...</span>` : ''}
+        `;
+        strip.appendChild(chip);
+    });
+}
+
+async function handleComposerImageFile(file) {
     if (!file.type.startsWith('image/')) {
-        alert("Please select a valid image file.");
+        alert(`"${file.name}" is not a valid image file.`);
         return;
     }
 
     if (file.size > 15 * 1024 * 1024) {
-        alert("Image is too large. Please select an image under 15MB.");
+        alert(`"${file.name}" is too large (max 15MB).`);
         return;
     }
-
-    const previewContainer = document.getElementById('composerImagePreviewContainer');
-    const previewImg = document.getElementById('composerPreviewImg');
-    const fileNameEl = document.getElementById('composerImageFileName');
-    const statusEl = document.getElementById('composerImageUploadStatus');
-
-    if (fileNameEl) fileNameEl.innerText = file.name;
-    if (previewContainer) previewContainer.classList.remove('hidden');
 
     const reader = new FileReader();
     reader.onload = async (event) => {
         const dataUrl = event.target.result;
-        if (previewImg) previewImg.src = dataUrl;
-
-        currentTimelineImageData = {
+        const imgItem = {
+            id: 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
             file: file,
             dataUrl: dataUrl,
             finalUrl: dataUrl,
@@ -867,15 +972,15 @@ async function handleTimelineImageFile(file) {
             uploading: false
         };
 
+        currentComposerImages.push(imgItem);
+        renderComposerImagesStrip();
+
         const scriptUrl = timelineDriveConfig.scriptUrl || localStorage.getItem('timelineDriveScriptUrl') || localStorage.getItem('googleDriveScriptUrl') || '';
         const folderId = timelineDriveConfig.folderId || localStorage.getItem('timelineDriveFolderId') || '';
 
         if (scriptUrl) {
-            if (statusEl) {
-                statusEl.innerText = "⏳ Uploading to Google Drive...";
-                statusEl.style.color = "#d97706";
-            }
-            currentTimelineImageData.uploading = true;
+            imgItem.uploading = true;
+            renderComposerImagesStrip();
 
             try {
                 const base64Data = dataUrl.split(',')[1];
@@ -901,42 +1006,15 @@ async function handleTimelineImageFile(file) {
                 }
 
                 if (resJson && (resJson.url || resJson.directUrl || resJson.viewUrl)) {
-                    currentTimelineImageData.finalUrl = resJson.url || resJson.directUrl || resJson.viewUrl;
-                    if (statusEl) {
-                        statusEl.innerText = "✓ Uploaded to Google Drive (" + (folderId ? "Folder ID" : "TimelineDB") + ")";
-                        statusEl.style.color = "#16a34a";
-                    }
+                    imgItem.finalUrl = resJson.url || resJson.directUrl || resJson.viewUrl;
                 } else if (resJson && resJson.status === 'success' && resJson.fileId) {
-                    currentTimelineImageData.finalUrl = "https://lh3.googleusercontent.com/d/" + resJson.fileId;
-                    if (statusEl) {
-                        statusEl.innerText = "✓ Uploaded to Google Drive (" + (folderId ? "Folder ID" : "TimelineDB") + ")";
-                        statusEl.style.color = "#16a34a";
-                    }
-                } else if (resJson && resJson.status === 'error') {
-                    console.error("Google Drive Apps Script Error:", resJson.message);
-                    if (statusEl) {
-                        statusEl.innerText = "⚠️ Drive Error: " + resJson.message;
-                        statusEl.style.color = "#ef4444";
-                    }
-                } else {
-                    if (statusEl) {
-                        statusEl.innerText = "⚠️ Drive upload response unverified";
-                        statusEl.style.color = "#d97706";
-                    }
+                    imgItem.finalUrl = "https://lh3.googleusercontent.com/d/" + resJson.fileId;
                 }
             } catch (uploadErr) {
                 console.warn("Google Drive upload error:", uploadErr);
-                if (statusEl) {
-                    statusEl.innerText = "⚠️ Upload error (saved locally)";
-                    statusEl.style.color = "#d97706";
-                }
             } finally {
-                if (currentTimelineImageData) currentTimelineImageData.uploading = false;
-            }
-        } else {
-            if (statusEl) {
-                statusEl.innerText = "✓ Ready to post (Configure Drive ⚙️ for Drive upload)";
-                statusEl.style.color = "#2563eb";
+                imgItem.uploading = false;
+                renderComposerImagesStrip();
             }
         }
     };
@@ -950,27 +1028,63 @@ document.getElementById('submitPostBtn')?.addEventListener('click', async () => 
     const message = postMsgEl.value.trim();
     const targetClass = document.getElementById('postTargetClass') ? document.getElementById('postTargetClass').value : 'All';
 
-    if (!message && !currentTimelineImageData) return alert("You must write a message or attach a photo.");
+    // Poll Validation
+    let pollData = null;
+    if (isPollComposerOpen) {
+        const qInput = document.getElementById('pollQuestionInput');
+        const pollQ = (qInput?.value.trim()) || message;
+        const optInputs = Array.from(document.querySelectorAll('#pollOptionsList .poll-option-input'));
+        const options = optInputs.map((inp, idx) => ({
+            id: 'opt_' + idx,
+            text: inp.value.trim(),
+            voters: []
+        })).filter(o => o.text.length > 0);
 
-    if (currentTimelineImageData && currentTimelineImageData.uploading) {
-        alert("Photo is still uploading to Google Drive. Please wait a moment.");
+        if (options.length < 2) {
+            alert("A poll must have at least 2 valid options.");
+            return;
+        }
+
+        pollData = {
+            question: pollQ || "Poll",
+            options: options,
+            createdAt: new Date().toISOString()
+        };
+    }
+
+    if (!message && currentComposerImages.length === 0 && !pollData) {
+        return alert("You must write a message, attach a photo, or create a poll.");
+    }
+
+    const isUploading = currentComposerImages.some(img => img.uploading);
+    if (isUploading) {
+        alert("Photos are still uploading to Google Drive. Please wait a moment.");
         return;
     }
 
     try {
         const photoUrl = getUserPhotoUrl(currentUser.code, currentUser.name, currentUser.photoUrl);
+        const imageUrls = currentComposerImages.map(img => img.finalUrl).filter(Boolean);
+
         const postData = {
             authorCode: currentUser.code || '',
             authorName: currentUser.name || 'Student',
             authorPhotoUrl: photoUrl || '',
             isStaff: currentUser.type === 'staff',
             message: message,
-            targetClass: targetClass, // Saved class target
-            timestamp: new Date().toISOString()
+            targetClass: targetClass,
+            timestamp: new Date().toISOString(),
+            likes: [],
+            likeCount: 0
         };
 
-        if (currentTimelineImageData && currentTimelineImageData.finalUrl) {
-            postData.imageUrl = currentTimelineImageData.finalUrl;
+        if (imageUrls.length > 0) {
+            postData.imageUrls = imageUrls;
+            postData.imageUrl = imageUrls[0]; // backward compatibility
+        }
+
+        if (pollData) {
+            postData.poll = pollData;
         }
 
         const postRef = await addDoc(collection(db, "timeline_posts"), postData);
@@ -982,11 +1096,142 @@ document.getElementById('submitPostBtn')?.addEventListener('click', async () => 
 
         postMsgEl.value = '';
         postMsgEl.style.height = '80px';
-        clearTimelineComposerImage();
+        clearTimelineComposerImages();
+        if (isPollComposerOpen) {
+            document.getElementById('btnDiscardPoll')?.click();
+        }
     } catch (error) {
         alert("Failed to publish post: " + error.message);
     }
 });
+
+function renderPostPollHTML(postId, poll) {
+    if (!poll || !Array.isArray(poll.options)) return '';
+    const myId = currentUser ? (currentUser.code || currentUser.name) : '';
+    const totalVotes = poll.options.reduce((sum, opt) => sum + (Array.isArray(opt.votes) ? opt.votes.length : 0), 0);
+    let userVotedOptId = null;
+    poll.options.forEach(opt => {
+        if (Array.isArray(opt.votes) && myId && opt.votes.includes(myId)) {
+            userVotedOptId = opt.id;
+        }
+    });
+    const hasVoted = Boolean(userVotedOptId);
+
+    const optionsHTML = poll.options.map(opt => {
+        const optVotes = Array.isArray(opt.votes) ? opt.votes.length : 0;
+        const pct = totalVotes > 0 ? Math.round((optVotes / totalVotes) * 100) : 0;
+        const isSelected = (opt.id === userVotedOptId);
+
+        return `
+            <button type="button" class="poll-option-button ${isSelected ? 'selected' : ''}" 
+                onclick="window.voteOnPoll('${postId}', '${opt.id}')"
+                ${!currentUser ? 'disabled title="Sign in to vote"' : `title="Vote for ${escapeHtml(opt.text)}"`}>
+                ${hasVoted ? `<div class="poll-progress-fill" style="width: ${pct}%;"></div>` : ''}
+                <div class="poll-option-content">
+                    <span class="poll-option-text">
+                        ${isSelected ? '<span class="poll-check-mark">✓ </span>' : ''}${escapeHtml(opt.text)}
+                    </span>
+                    ${hasVoted ? `<span class="poll-option-pct">${pct}% (${optVotes})</span>` : ''}
+                </div>
+            </button>
+        `;
+    }).join('');
+
+    const statusNote = hasVoted ? 'You voted • Click another option to change' : 'Select an option to vote';
+
+    return `
+        <div class="timeline-poll-card" id="poll-${postId}">
+            <div class="poll-question-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color, #2563eb)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                <span>${escapeHtml(poll.question)}</span>
+            </div>
+            <div class="poll-options-list">
+                ${optionsHTML}
+            </div>
+            <div class="poll-meta-footer">
+                <span>${totalVotes} ${totalVotes === 1 ? 'vote' : 'votes'}</span>
+                <span>•</span>
+                <span>${statusNote}</span>
+            </div>
+        </div>
+    `;
+}
+
+window.voteOnPoll = async function(postId, optionId) {
+    if (!currentUser) return alert("Please sign in to vote.");
+    const myId = currentUser.code || currentUser.name;
+    if (!myId) return alert("User identifier not found.");
+
+    try {
+        const postRef = doc(db, "timeline_posts", postId);
+        const postSnap = await getDoc(postRef);
+        if (!postSnap.exists()) return;
+        const postData = postSnap.data();
+        if (!postData.poll || !Array.isArray(postData.poll.options)) return;
+
+        const poll = { ...postData.poll };
+        let changed = false;
+        poll.options = poll.options.map(opt => {
+            let votes = Array.isArray(opt.votes) ? [...opt.votes] : [];
+            const hadVote = votes.includes(myId);
+            if (opt.id === optionId) {
+                if (!hadVote) {
+                    votes.push(myId);
+                    changed = true;
+                }
+            } else {
+                if (hadVote) {
+                    votes = votes.filter(v => v !== myId);
+                    changed = true;
+                }
+            }
+            return { ...opt, votes };
+        });
+
+        if (changed) {
+            await updateDoc(postRef, { poll: poll });
+        }
+    } catch (err) {
+        console.error("Error voting on poll:", err);
+        alert("Failed to submit vote: " + err.message);
+    }
+};
+
+window.toggleLikePost = async function(postId) {
+    if (!currentUser) return alert("Please sign in to like posts.");
+    const myId = currentUser.code || currentUser.name;
+    if (!myId) return;
+
+    try {
+        const postRef = doc(db, "timeline_posts", postId);
+        const postSnap = await getDoc(postRef);
+        if (!postSnap.exists()) return;
+        const postData = postSnap.data();
+        let likes = Array.isArray(postData.likes) ? [...postData.likes] : [];
+        const index = likes.indexOf(myId);
+        let notify = false;
+        if (index >= 0) {
+            likes.splice(index, 1);
+        } else {
+            likes.push(myId);
+            notify = true;
+        }
+        await updateDoc(postRef, {
+            likes: likes,
+            likeCount: likes.length
+        });
+
+        if (notify && postData.authorName && postData.authorName !== currentUser.name) {
+            await sendNotification(postData.authorName, `${currentUser.name} liked your post.`, postId);
+        }
+    } catch (err) {
+        console.error("Error toggling like:", err);
+    }
+};
 
 function loadPosts() {
     if (!currentUser) return; 
@@ -1021,7 +1266,10 @@ function loadPosts() {
             const safeFullName = escapeHtml(fullAuthorName);
             const authorAvatarHTML = renderAvatarHTML(nickname, post.authorCode, post.authorPhotoUrl, post.isStaff);
 
-            const canDeletePost = (currentUser.type === 'staff') || (currentUser.code && post.authorCode === currentUser.code);
+            const canDeletePost = (currentUser.type === 'staff') || 
+                (currentUser.code && post.authorCode && post.authorCode === currentUser.code) ||
+                (currentUser.name && post.authorName && post.authorName === currentUser.name);
+
             let kebabMenuHTML = '';
             if (canDeletePost) {
                 kebabMenuHTML = `
@@ -1036,15 +1284,33 @@ function loadPosts() {
                 `;
             }
 
+            // Multi-photo layout (max 5 photos)
+            const allImages = Array.isArray(post.imageUrls) && post.imageUrls.length > 0 
+                ? post.imageUrls 
+                : (post.imageUrl ? [post.imageUrl] : []);
+
             let imageHTML = '';
-            if (post.imageUrl) {
-                const safeImgUrl = escapeHtml(post.imageUrl);
-                imageHTML = `
-                    <div class="post-image-container" style="margin-top: 10px;">
-                        <img src="${safeImgUrl}" class="post-attached-image" alt="Post Photo" loading="lazy" onclick="window.open('${safeImgUrl}', '_blank')">
+            if (allImages.length > 0) {
+                const gridClass = `grid-${Math.min(allImages.length, 5)}`;
+                const itemsHtml = allImages.map((u, i) => `
+                    <div class="photo-item" onclick="window.open('${escapeHtml(u)}', '_blank')" title="Click to view full photo">
+                        <img src="${escapeHtml(u)}" alt="Photo ${i + 1}" loading="lazy">
                     </div>
-                `;
+                `).join('');
+                imageHTML = `<div class="timeline-photo-grid ${gridClass}">${itemsHtml}</div>`;
             }
+
+            // Poll / Voting layout
+            let pollHTML = '';
+            if (post.poll && Array.isArray(post.poll.options) && post.poll.options.length >= 2) {
+                pollHTML = renderPostPollHTML(postId, post.poll);
+            }
+
+            // Like / Heart status
+            const likes = Array.isArray(post.likes) ? post.likes : [];
+            const myIdentifier = currentUser ? (currentUser.code || currentUser.name) : '';
+            const isLiked = Boolean(myIdentifier && likes.includes(myIdentifier));
+            const likeCount = likes.length;
 
             const postElement = document.createElement('div');
             postElement.className = 'timeline-post';
@@ -1068,10 +1334,20 @@ function loadPosts() {
 
                 ${post.message ? `<div class="post-body">${formatMessageMentions(post.message)}</div>` : ''}
                 ${imageHTML}
+                ${pollHTML}
                 
                 <div class="post-actions-bar">
-                    <button class="action-btn" onclick="toggleComments('${postId}')">
-                        <img src="https://lh3.googleusercontent.com/d/1mG_1QIzF-9Y1_wnSONpFkIMmqaIj7pgZ" alt="Comment" class="action-icon"> <span id="comment-count-${postId}">0</span> Comments
+                    <button type="button" class="action-btn like-btn ${isLiked ? 'liked' : ''}" onclick="window.toggleLikePost('${postId}')" title="${isLiked ? 'Unlike' : 'Like'}">
+                        <svg class="action-icon heart-icon" width="18" height="18" viewBox="0 0 24 24" fill="${isLiked ? '#ef4444' : 'none'}" stroke="${isLiked ? '#ef4444' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                        <span id="like-count-${postId}">${likeCount > 0 ? likeCount : '0'}</span>
+                    </button>
+                    <button type="button" class="action-btn comment-btn" onclick="toggleComments('${postId}')" title="Comments">
+                        <svg class="action-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span id="comment-count-${postId}">0</span>
                     </button>
                 </div>
 
@@ -1123,7 +1399,10 @@ function loadCommentsForPost(postId) {
             const commentTimeStr = formatTimeAgo(comment.timestamp);
             const commentAvatarHTML = renderAvatarHTML(nickname, comment.authorCode, comment.authorPhotoUrl, comment.isStaff, 'comment-avatar');
             
-            const canDeleteComment = (currentUser.type === 'staff') || (currentUser.code && comment.authorCode === currentUser.code);
+            const canDeleteComment = (currentUser.type === 'staff') || 
+                (currentUser.code && comment.authorCode && comment.authorCode === currentUser.code) ||
+                (currentUser.name && comment.authorName && comment.authorName === currentUser.name);
+
             let commentKebabHTML = '';
             if (canDeleteComment) {
                 commentKebabHTML = `
@@ -1198,24 +1477,6 @@ window.submitReply = async function(postId, postAuthorName) {
         msgInput.value = '';
     } catch (error) {
         alert("Failed to post comment: " + error.message);
-    }
-};
-
-// --- 6. SECURE DELETE FUNCTIONS ---
-
-window.deletePost = async function(postId) {
-    if (!currentUser || currentUser.type !== 'staff') return; 
-    if (confirm("Are you sure you want to delete this post and its comments?")) {
-        try { await deleteDoc(doc(db, "timeline_posts", postId)); } 
-        catch (error) { alert("Database Error: Could not delete post. " + error.message); }
-    }
-};
-
-window.deleteComment = async function(commentId) {
-    if (!currentUser || currentUser.type !== 'staff') return; 
-    if (confirm("Delete this reply?")) {
-        try { await deleteDoc(doc(db, "timeline_comments", commentId)); } 
-        catch (error) { alert("Database Error: Could not delete comment. " + error.message); }
     }
 };
 

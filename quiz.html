@@ -162,18 +162,28 @@
         }
 
         .quiz-student-avatar {
-            width: 50px;
-            height: 50px;
+            width: 52px;
+            height: 52px;
             border-radius: 14px;
             background: linear-gradient(135deg, #1e5eff 0%, #7c3aed 100%);
             color: #ffffff;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(30, 94, 255, 0.3);
             flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .quiz-student-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 14px;
+            display: block;
         }
 
         .quiz-student-meta {
@@ -739,6 +749,75 @@
             background: #3b82f6 !important;
         }
 
+        /* --- COMPLETED QUIZ CARD STYLES --- */
+        .available-quiz-card.is-completed {
+            background: rgba(248, 250, 252, 0.85) !important;
+            border-color: #e2e8f0 !important;
+            cursor: not-allowed !important;
+            opacity: 0.92;
+        }
+
+        .available-quiz-card.is-completed:hover {
+            border-color: #cbd5e1 !important;
+            transform: none !important;
+            box-shadow: none !important;
+            background: rgba(248, 250, 252, 0.95) !important;
+        }
+
+        body.dark-theme .available-quiz-card.is-completed {
+            background: rgba(17, 28, 68, 0.55) !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+
+        body.dark-theme .available-quiz-card.is-completed:hover {
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            background: rgba(17, 28, 68, 0.65) !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        .completed-quiz-notice {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #b45309;
+            background: #fef3c7;
+            border: 1px solid #fde68a;
+            padding: 4px 10px;
+            border-radius: 6px;
+            width: fit-content;
+            margin-top: 4px;
+        }
+
+        body.dark-theme .completed-quiz-notice {
+            color: #fbbf24;
+            background: rgba(245, 158, 11, 0.18);
+            border-color: rgba(245, 158, 11, 0.35);
+        }
+
+        .take-quiz-arrow-btn.completed-btn {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            border: 1px solid #cbd5e1 !important;
+            cursor: not-allowed !important;
+            box-shadow: none !important;
+        }
+
+        .available-quiz-card.is-completed:hover .take-quiz-arrow-btn.completed-btn {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        body.dark-theme .take-quiz-arrow-btn.completed-btn {
+            background: #1e293b !important;
+            color: #94a3b8 !important;
+            border-color: #334155 !important;
+        }
+
         /* --- REVIEW MODAL DETAIL STYLING --- */
         .review-question-item {
             background: var(--bg-body, #f8fafc);
@@ -1185,13 +1264,12 @@
                 <!-- Student Identity Banner -->
                 <div class="quiz-student-banner">
                     <div style="display: flex; align-items: center; gap: 14px;">
-                        <div id="dashStudentAvatar" class="quiz-student-avatar">S</div>
+                        <div id="dashStudentAvatar" class="quiz-student-avatar">
+                            <img id="dashStudentPhoto" class="hidden" alt="Student Photo">
+                            <span id="dashStudentInitial">S</span>
+                        </div>
                         <div class="quiz-student-meta">
                             <h2 class="quiz-student-name">Welcome, <span id="dashStudentName">Student</span>!</h2>
-                            <div class="quiz-student-badges">
-                                <span id="dashStudentClass" class="student-class-badge">Classroom</span>
-                                <span id="dashStudentCode" class="student-code-badge">ID: -----</span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1341,7 +1419,7 @@
         </main>
     </div>
 
-    <script type="module" src="quiz.js?v=384"></script>
+    <script type="module" src="quiz.js?v=386"></script>
     <script type="module" src="studentNav.js?v=376"></script>
 </body>
 

@@ -98,6 +98,34 @@ window.addEventListener('DOMContentLoaded', async () => {
     await initStudentQuizDashboard(code);
 });
 
+// --- HELPER FUNCTIONS FOR STUDENT PROFILE ---
+// Convert Google Drive share link to high-res direct embed URL
+function resolvePhotoUrl(rawUrl) {
+    if (!rawUrl || typeof rawUrl !== 'string') return '';
+    const trimmed = rawUrl.trim();
+    if (trimmed.startsWith('https://lh3.googleusercontent.com/d/') || trimmed.startsWith('data:image/')) {
+        return trimmed;
+    }
+    const driveMatch = trimmed.match(/\/d\/([a-zA-Z0-9_-]+)/) || trimmed.match(/id=([a-zA-Z0-9_-]+)/);
+    if (driveMatch && driveMatch[1]) {
+        return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+    }
+    return trimmed;
+}
+
+// Extract student nickname (checks nickname field or uses first name)
+function getStudentNickname(studentObj) {
+    if (!studentObj) return 'Student';
+    const explicit = (studentObj.nickname || studentObj.nickName || studentObj.shortName || '').trim();
+    if (explicit) return explicit;
+
+    const full = (studentObj.studentName || studentObj.name || '').trim();
+    if (!full) return 'Student';
+    if (full.toLowerCase() === 'administrator') return 'Administrator';
+    const parts = full.split(/\s+/);
+    return parts[0] || full;
+}
+
 // --- INIT STUDENT DASHBOARD ---
 async function initStudentQuizDashboard(code) {
     try {
@@ -111,22 +139,51 @@ async function initStudentQuizDashboard(code) {
         const data = snap.data();
         currentStudent = { code, ...data };
 
-        // Render Student Identity Banner
-        const studentName = currentStudent.studentName || 'Student';
-        const studentClass = currentStudent.studentClass || 'Unassigned';
-        const initial = studentName.charAt(0).toUpperCase() || 'S';
+        // Check sessionStorage cache for photo if not in current doc
+        let cachedPhoto = '';
+        const rawSession = sessionStorage.getItem('studentLoggedInSession') || sessionStorage.getItem('studentTimelineSession');
+        if (rawSession) {
+            try {
+                const sess = JSON.parse(rawSession);
+                cachedPhoto = sess.photoUrl || sess.photo || sess.avatar || '';
+            } catch (e) { }
+        }
 
-        const dashAvatar = document.getElementById('dashStudentAvatar');
-        if (dashAvatar) dashAvatar.innerText = initial;
+        // Render Student Identity Banner with nickname only
+        const studentName = currentStudent.studentName || currentStudent.name || 'Student';
+        const nickname = getStudentNickname(currentStudent);
+        const studentClass = currentStudent.studentClass || currentStudent.class || 'Unassigned';
+        const initial = (nickname || studentName).charAt(0).toUpperCase() || 'S';
 
+        // Synchronize photo with database
+        const rawPhoto = currentStudent.photoUrl || currentStudent.photo || currentStudent.avatar || cachedPhoto || '';
+        const photoUrl = resolvePhotoUrl(rawPhoto);
+
+        const dashPhoto = document.getElementById('dashStudentPhoto');
+        const dashInitial = document.getElementById('dashStudentInitial');
+
+        if (photoUrl && dashPhoto) {
+            dashPhoto.src = photoUrl;
+            dashPhoto.classList.remove('hidden');
+            if (dashInitial) dashInitial.classList.add('hidden');
+            dashPhoto.onerror = () => {
+                dashPhoto.classList.add('hidden');
+                if (dashInitial) {
+                    dashInitial.innerText = initial;
+                    dashInitial.classList.remove('hidden');
+                }
+            };
+        } else {
+            if (dashPhoto) dashPhoto.classList.add('hidden');
+            if (dashInitial) {
+                dashInitial.innerText = initial;
+                dashInitial.classList.remove('hidden');
+            }
+        }
+
+        // Set nickname in greeting
         const dashName = document.getElementById('dashStudentName');
-        if (dashName) dashName.innerText = studentName;
-
-        const dashClass = document.getElementById('dashStudentClass');
-        if (dashClass) dashClass.innerText = studentClass;
-
-        const dashCode = document.getElementById('dashStudentCode');
-        if (dashCode) dashCode.innerText = `ID: ${code}`;
+        if (dashName) dashName.innerText = nickname;
 
         const modalClass = document.getElementById('modalStudentClass');
         if (modalClass) modalClass.innerText = studentClass;
@@ -136,11 +193,9 @@ async function initStudentQuizDashboard(code) {
         document.getElementById('takeQuizSection')?.classList.add('hidden');
         document.getElementById('resultSection')?.classList.add('hidden');
 
-        // Load data in parallel
-        await Promise.all([
-            loadRecentQuizzes(code),
-            loadAvailableQuizzes(studentClass)
-        ]);
+        // Sequentially load recent quizzes first so recentQuizResults is ready for completion checks
+        await loadRecentQuizzes(code);
+        await loadAvailableQuizzes(studentClass);
 
     } catch (err) {
         console.error("Dashboard initialization error:", err);
@@ -174,9 +229,10 @@ async function loadRecentQuizzes(studentCode) {
             const qSnap = await getDocs(query(collection(db, "quiz_results"), where("studentCode", "==", studentCode)));
             qSnap.forEach(docSnap => {
                 const d = docSnap.data();
-                const key = (d.quizTitle || docSnap.id).trim().toLowerCase();
+                const key = (d.quizId || d.quizTitle || docSnap.id).trim().toLowerCase();
                 resultsMap.set(key, {
                     id: docSnap.id,
+                    quizId: d.quizId || null,
                     quizTitle: d.quizTitle || "Online Quiz",
                     subject: resolveSubject(d.subject, d.quizTitle),
                     score: d.score !== undefined ? d.score : 0,
@@ -374,6 +430,19 @@ document.getElementById('quizReviewModal')?.addEventListener('click', (e) => {
     }
 });
 
+// Check if a student has already completed a specific quiz
+function isQuizAlreadyCompleted(quiz) {
+    if (!quiz || !Array.isArray(recentQuizResults) || recentQuizResults.length === 0) return false;
+    const targetTitle = (quiz.title || '').trim().toLowerCase();
+    const targetId = quiz.id ? String(quiz.id).trim() : '';
+
+    return recentQuizResults.some(r => {
+        if (targetId && r.quizId && String(r.quizId).trim() === targetId) return true;
+        if (targetTitle && (r.quizTitle || '').trim().toLowerCase() === targetTitle) return true;
+        return false;
+    });
+}
+
 // --- LOAD AVAILABLE QUIZZES FOR CLASS ---
 async function loadAvailableQuizzes(studentClass) {
     const listContainer = document.getElementById('availableQuizzesList');
@@ -411,12 +480,41 @@ async function loadAvailableQuizzes(studentClass) {
             }
         });
 
+        // Calculate pending (not completed) vs completed quizzes
+        const quizList = Object.values(availableQuizzesMap);
+        const pendingQuizzes = quizList.filter(q => !isQuizAlreadyCompleted(q));
+        const pendingCount = pendingQuizzes.length;
+        const totalCount = quizList.length;
+
         if (ctaCount) {
-            ctaCount.innerText = `${count} Active Quiz${count === 1 ? '' : 'zes'} Available`;
+            if (totalCount === 0) {
+                ctaCount.innerText = "0 Quizzes Available";
+            } else if (pendingCount === 0) {
+                ctaCount.innerText = "All Quizzes Completed";
+            } else {
+                ctaCount.innerText = `${pendingCount} Active Quiz${pendingCount === 1 ? '' : 'zes'} Available`;
+            }
+        }
+
+        const ctaCard = document.getElementById('startQuizCtaCard');
+        if (ctaCard) {
+            const headingEl = ctaCard.querySelector('.cta-heading');
+            const btnEl = ctaCard.querySelector('.start-quiz-big-btn span');
+            if (headingEl) {
+                if (totalCount > 0 && pendingCount === 0) {
+                    headingEl.innerText = "You're All Caught Up!";
+                    if (btnEl) btnEl.innerText = "View Quizzes";
+                } else if (totalCount === 0) {
+                    headingEl.innerText = "No Quizzes Available";
+                    if (btnEl) btnEl.innerText = "Check Quizzes";
+                } else {
+                    headingEl.innerText = "Ready for a Quiz?";
+                    if (btnEl) btnEl.innerText = "Start Quiz";
+                }
+            }
         }
 
         // Render Cards inside the Available Quizzes Modal
-        const quizList = Object.values(availableQuizzesMap);
         if (quizList.length === 0) {
             listContainer.innerHTML = `
                 <div class="quiz-empty-box" style="padding: 30px 16px;">
@@ -433,7 +531,9 @@ async function loadAvailableQuizzes(studentClass) {
         listContainer.innerHTML = '';
         quizList.forEach(quiz => {
             const card = document.createElement('div');
-            card.className = 'available-quiz-card';
+            const isCompleted = isQuizAlreadyCompleted(quiz);
+
+            card.className = 'available-quiz-card' + (isCompleted ? ' is-completed' : '');
             card.setAttribute('data-id', quiz.id);
 
             const resolvedSub = resolveSubject(quiz.subject, quiz.title);
@@ -453,9 +553,16 @@ async function loadAvailableQuizzes(studentClass) {
 
             card.innerHTML = `
                 <div class="avail-quiz-info">
-                    <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                         <span class="subject-badge ${subClass}">${escapeHtml(resolvedSub)}</span>
-                        <span style="font-size: 12px; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 2px 7px; border-radius: 5px;">Active</span>
+                        ${isCompleted ? `
+                            <span style="font-size: 11.5px; font-weight: 700; color: #059669; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Completed
+                            </span>
+                        ` : `
+                            <span style="font-size: 12px; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 2px 7px; border-radius: 5px;">Active</span>
+                        `}
                     </div>
                     <h3 class="avail-quiz-title">${escapeHtml(quiz.title || 'Untitled Quiz')}</h3>
                     <div class="avail-quiz-meta">
@@ -463,19 +570,40 @@ async function loadAvailableQuizzes(studentClass) {
                         <span>•</span>
                         <span>${escapeHtml(typesText)}</span>
                     </div>
+                    ${isCompleted ? `
+                        <div class="completed-quiz-notice">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            <span>You've already did the quiz</span>
+                        </div>
+                    ` : ''}
                 </div>
 
-                <button class="take-quiz-arrow-btn">
-                    <span>Start</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                </button>
+                ${isCompleted ? `
+                    <button class="take-quiz-arrow-btn completed-btn" disabled title="You have already completed this quiz">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span>Done</span>
+                    </button>
+                ` : `
+                    <button class="take-quiz-arrow-btn">
+                        <span>Start</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                `}
             `;
 
-            // Click card to start quiz
-            card.addEventListener('click', () => {
+            // Click card to start quiz only if not completed
+            card.addEventListener('click', (e) => {
+                if (isCompleted) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    alert("You've already did the quiz. Each quiz can only be completed once.");
+                    return;
+                }
                 startQuizById(quiz.id);
             });
 
@@ -513,7 +641,13 @@ function startQuizById(quizId) {
         return;
     }
 
-    activeQuiz = availableQuizzesMap[quizId];
+    const targetQuiz = availableQuizzesMap[quizId];
+    if (isQuizAlreadyCompleted(targetQuiz)) {
+        alert("You've already did the quiz. Each quiz can only be completed once.");
+        return;
+    }
+
+    activeQuiz = targetQuiz;
 
     // Hide modals and dashboard, show assessment form
     document.getElementById('studentQuizModal')?.classList.add('hidden');
@@ -534,11 +668,12 @@ document.getElementById('cancelQuizBtn')?.addEventListener('click', () => {
 });
 
 // Return to Dashboard from Result Screen
-document.getElementById('returnToDashboardBtn')?.addEventListener('click', () => {
+document.getElementById('returnToDashboardBtn')?.addEventListener('click', async () => {
     document.getElementById('resultSection')?.classList.add('hidden');
     document.getElementById('quizDashboardSection')?.classList.remove('hidden');
     if (currentStudent && currentStudent.code) {
-        loadRecentQuizzes(currentStudent.code);
+        await loadRecentQuizzes(currentStudent.code);
+        await loadAvailableQuizzes(currentStudent.studentClass || currentStudent.class);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
@@ -757,6 +892,7 @@ document.getElementById('submitQuizBtn')?.addEventListener('click', async (e) =>
         await addDoc(collection(db, "quiz_results"), {
             studentCode: currentStudent.code,
             studentName: currentStudent.studentName || 'Student',
+            quizId: activeQuiz.id || null,
             quizTitle: activeQuiz.title || 'Online Quiz',
             subject: activeQuiz.subject || "General",
             score: score,

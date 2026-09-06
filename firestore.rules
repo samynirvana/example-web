@@ -64,17 +64,13 @@ service cloud.firestore {
       allow write: if isStaffOrAdmin();
     }
 
-    // 7. Timeline Posts & Comments
+    // 7. Timeline Posts & Comments (Posts, Likes, Polls, Self-Deletion)
     match /timeline_posts/{postId} {
-      allow read: if true;
-      allow create: if true;
-      allow update, delete: if isStaffOrAdmin();
+      allow read, create, update, delete: if true;
     }
 
     match /timeline_comments/{commentId} {
-      allow read: if true;
-      allow create: if true;
-      allow update, delete: if isStaffOrAdmin();
+      allow read, create, update, delete: if true;
     }
 
     // 8. Direct Messages & Notifications

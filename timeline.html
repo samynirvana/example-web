@@ -19,10 +19,10 @@
         rel="stylesheet">
 
     <!-- External Stylesheets -->
-    <link rel="stylesheet" href="style.css?v=375">
-    <link rel="stylesheet" href="admin.css?v=375">
-    <link rel="stylesheet" href="student.css?v=375">
-    <link rel="stylesheet" href="timeline.css?v=375">
+    <link rel="stylesheet" href="style.css?v=400">
+    <link rel="stylesheet" href="admin.css?v=400">
+    <link rel="stylesheet" href="student.css?v=400">
+    <link rel="stylesheet" href="timeline.css?v=400">
 </head>
 
 <body>
@@ -286,22 +286,36 @@
                         <textarea id="postMessage"
                             placeholder="Start a discussion or post an update... (Type @ to mention someone)"></textarea>
 
-                        <!-- IMAGE PREVIEW CONTAINER -->
-                        <div id="composerImagePreviewContainer" class="composer-image-preview-container hidden">
-                            <div class="composer-preview-img-wrapper">
-                                <img id="composerPreviewImg" src="" alt="Selected Photo">
-                                <button type="button" id="btnRemoveComposerImage" class="composer-remove-img-btn" title="Remove Photo">&times;</button>
+                        <!-- MULTI-IMAGE PREVIEW CONTAINER (UP TO 5 PHOTOS) -->
+                        <div id="composerImagesContainer" class="hidden" style="margin: 6px 0 10px 0;">
+                            <div id="composerImagesStrip" class="composer-images-strip"></div>
+                        </div>
+
+                        <!-- POLL COMPOSER BOX -->
+                        <div id="composerPollBox" class="composer-poll-box hidden">
+                            <div class="composer-poll-header">
+                                <span class="composer-poll-title">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                                    Create a Poll
+                                </span>
+                                <button type="button" id="btnDiscardPoll" class="composer-poll-discard-btn">✕ Remove Poll</button>
                             </div>
-                            <div class="composer-image-info">
-                                <span id="composerImageFileName" class="composer-image-name">photo.jpg</span>
-                                <span id="composerImageUploadStatus" class="composer-image-status" style="color: #2563eb;">Ready to post</span>
+                            <input type="text" id="pollQuestionInput" class="poll-option-input" placeholder="Poll question (optional, uses post message if blank)">
+                            <div id="pollOptionsList" style="display: flex; flex-direction: column; gap: 8px;">
+                                <div class="poll-option-row">
+                                    <input type="text" class="poll-option-input" placeholder="Option 1">
+                                </div>
+                                <div class="poll-option-row">
+                                    <input type="text" class="poll-option-input" placeholder="Option 2">
+                                </div>
                             </div>
+                            <button type="button" id="btnAddPollOption" class="poll-add-opt-btn">+ Add Option</button>
                         </div>
 
                         <div class="post-options-row">
                             <div class="composer-action-tools">
-                                <input type="file" id="timelineImageInput" accept="image/*" style="display: none;">
-                                <button type="button" id="btnAttachImage" class="btn-composer-tool" title="Attach a photo from your device">
+                                <input type="file" id="timelineImageInput" accept="image/*" multiple style="display: none;">
+                                <button type="button" id="btnAttachImage" class="btn-composer-tool" title="Attach up to 5 photos from your device">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                         <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -310,8 +324,17 @@
                                     <span>Photo</span>
                                 </button>
 
+                                <button type="button" id="btnTogglePollComposer" class="btn-composer-tool" title="Create a poll or vote">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                                    </svg>
+                                    <span>Poll</span>
+                                </button>
+
                                 <div class="target-selector-wrapper">
-                                    <select id="postTargetClass">
+                                    <select id="postTargetClass" aria-label="Target Class">
                                         <option value="All">All Classes</option>
                                     </select>
                                 </div>
@@ -403,7 +426,7 @@
         </div>
     </div>
 
-    <script type="module" src="timeline.js?v=359"></script>
+    <script type="module" src="timeline.js?v=360"></script>
     <script type="module" src="studentNav.js?v=359"></script>
 </body>
 

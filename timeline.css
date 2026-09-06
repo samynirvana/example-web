@@ -2,7 +2,7 @@
    1. COLOR VARIABLES & THEME DEFINITIONS
    ========================================================================== */
 :root {
-    --bg-color: oklch(96.8% 0.008 245);
+    --bg-color: #ffffff;
     --card-bg: #ffffff;
     --border-color: oklch(89% 0.015 250);
     --text-main: oklch(18% 0.03 255);
@@ -116,6 +116,12 @@ body {
     -webkit-overflow-scrolling: touch !important;
     padding: 16px 20px 80px !important;
     box-sizing: border-box !important;
+    background-color: #ffffff !important;
+}
+
+body.dark-theme .main-wrapper,
+body.dark-mode .main-wrapper {
+    background-color: #0f172a !important;
 }
 
 /* Post Message Textarea Auto-Expand & Hide Scrollbars */
@@ -300,11 +306,12 @@ body.dark-mode #timelineFeed {
 }
 
 .btn-composer-tool {
-    background: var(--input-bg, #f8fafc) !important;
-    border: 1px solid var(--border-color, #cbd5e1) !important;
-    border-radius: 20px !important;
-    padding: 6px 14px !important;
-    color: var(--text-main) !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+    padding: 6px 10px !important;
+    color: var(--text-muted, #64748b) !important;
     font-size: 13.5px !important;
     font-weight: 600 !important;
     cursor: pointer !important;
@@ -312,10 +319,10 @@ body.dark-mode #timelineFeed {
     align-items: center !important;
     justify-content: center !important;
     gap: 6px !important;
-    transition: all 0.2s ease !important;
-    height: 38px !important;
-    min-height: 38px !important;
-    max-height: 38px !important;
+    transition: all 0.15s ease !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
     width: auto !important;
     min-width: fit-content !important;
     box-sizing: border-box !important;
@@ -324,15 +331,22 @@ body.dark-mode #timelineFeed {
 }
 
 .btn-composer-tool:hover {
-    background: var(--card-bg, #ffffff) !important;
-    border-color: var(--primary-color, #2563eb) !important;
+    background: rgba(37, 99, 235, 0.08) !important;
     color: var(--primary-color, #2563eb) !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.btn-composer-tool svg {
+    color: var(--primary-color, #2563eb) !important;
+    stroke: var(--primary-color, #2563eb) !important;
 }
 
 .btn-composer-tool.icon-only {
-    width: 38px !important;
-    min-width: 38px !important;
-    height: 38px !important;
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
     padding: 0 !important;
     border-radius: 50% !important;
 }
@@ -497,23 +511,26 @@ body.dark-mode .post-box {
     min-width: 0 !important;
 }
 
-.btn-composer-tool {
-    background: var(--input-bg, #f8fafc) !important;
-    border: 1px solid var(--border-color, #cbd5e1) !important;
-    border-radius: 20px !important;
-    padding: 0 12px !important;
-    color: var(--text-main) !important;
+.btn-composer-tool,
+#btnAttachImage,
+#btnTogglePollComposer {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+    padding: 6px 10px !important;
+    color: var(--text-muted, #64748b) !important;
     font-size: 13px !important;
     font-weight: 600 !important;
     cursor: pointer !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 5px !important;
-    transition: all 0.2s ease !important;
-    height: 36px !important;
-    min-height: 36px !important;
-    max-height: 36px !important;
+    gap: 6px !important;
+    transition: all 0.15s ease !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
     width: auto !important;
     min-width: fit-content !important;
     box-sizing: border-box !important;
@@ -521,19 +538,26 @@ body.dark-mode .post-box {
     flex-shrink: 0 !important;
 }
 
-.btn-composer-tool:hover {
-    background: var(--card-bg, #ffffff) !important;
-    border-color: var(--primary-color, #2563eb) !important;
+.btn-composer-tool:hover,
+#btnAttachImage:hover,
+#btnTogglePollComposer:hover {
+    background: rgba(37, 99, 235, 0.08) !important;
     color: var(--primary-color, #2563eb) !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
 }
 
 .btn-composer-tool svg {
-    width: 16px !important;
-    height: 16px !important;
+    width: 17px !important;
+    height: 17px !important;
+    color: var(--primary-color, #2563eb) !important;
+    stroke: var(--primary-color, #2563eb) !important;
     flex-shrink: 0 !important;
 }
 
 .target-selector-wrapper {
+    position: relative !important;
     display: inline-flex !important;
     align-items: center !important;
     width: auto !important;
@@ -543,52 +567,524 @@ body.dark-mode .post-box {
 
 .target-selector-wrapper select,
 #postTargetClass {
-    padding: 0 24px 0 10px !important;
+    padding: 0 24px 0 12px !important;
     border-radius: 20px !important;
-    border: 1px solid var(--border-color, #cbd5e1) !important;
-    background: var(--input-bg, #f8fafc) !important;
+    border: 1.5px solid var(--border-color, #cbd5e1) !important;
+    background-color: var(--input-bg, #f8fafc) !important;
     color: var(--text-main, #0f172a) !important;
-    font-size: 13px !important;
+    font-size: 12.5px !important;
     font-weight: 600 !important;
     cursor: pointer !important;
-    height: 36px !important;
-    min-height: 36px !important;
-    max-height: 36px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
     width: auto !important;
-    max-width: 140px !important;
+    max-width: 145px !important;
     display: inline-block !important;
     box-sizing: border-box !important;
     outline: none !important;
     white-space: nowrap !important;
     text-overflow: ellipsis !important;
+    transition: all 0.2s ease !important;
+}
+
+.target-selector-wrapper select:hover,
+#postTargetClass:hover {
+    border-color: var(--primary-color, #2563eb) !important;
+    color: var(--primary-color, #2563eb) !important;
+    background-color: var(--card-bg, #ffffff) !important;
 }
 
 #submitPostBtn { 
-    background: var(--primary-color, #1e5eff) !important; 
-    color: #ffffff !important; 
+    background: transparent !important; 
+    color: var(--primary-color, #1e5eff) !important; 
     border: none !important; 
-    padding: 0 18px !important; 
-    border-radius: 20px !important; 
+    box-shadow: none !important;
+    padding: 6px 14px !important; 
+    border-radius: 8px !important; 
     cursor: pointer !important; 
     font-weight: 700 !important; 
-    font-size: 13.5px !important;
-    height: 36px !important;
-    min-height: 36px !important;
-    max-height: 36px !important;
+    font-size: 14.5px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
     width: auto !important; 
-    min-width: 58px !important;
+    min-width: fit-content !important;
     flex-shrink: 0 !important;
     margin-left: auto !important;
-    box-shadow: 0 2px 6px rgba(30, 94, 255, 0.25) !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.15s ease !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
 }
 
 #submitPostBtn:hover {
-    background: var(--primary-hover, #113f9f) !important;
-    transform: translateY(-1px) !important;
+    background: rgba(30, 94, 255, 0.08) !important;
+    color: var(--primary-hover, #113f9f) !important;
+    transform: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* --- MULTI-PHOTO COMPOSER STRIP --- */
+.composer-images-strip {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0 6px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.composer-images-strip::-webkit-scrollbar {
+    height: 5px;
+}
+
+.composer-images-strip::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.composer-image-chip {
+    position: relative;
+    width: 86px;
+    height: 86px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1.5px solid var(--border-color, #e2e8f0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    background: #0f172a10;
+}
+
+.composer-image-chip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.composer-image-chip .chip-remove-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.75);
+    color: #ffffff;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    line-height: 1;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.composer-image-chip .chip-remove-btn:hover {
+    background: #ef4444;
+    transform: scale(1.1);
+}
+
+.composer-image-chip .chip-uploading-badge {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.82);
+    color: #38bdf8;
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+    padding: 2px 4px;
+}
+
+/* --- POLL COMPOSER BOX --- */
+.composer-poll-box {
+    background: rgba(37, 99, 235, 0.04);
+    border: 1.5px dashed rgba(37, 99, 235, 0.35);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+body.dark-theme .composer-poll-box,
+body.dark-mode .composer-poll-box {
+    background: rgba(37, 99, 235, 0.1);
+    border-color: rgba(96, 165, 250, 0.35);
+}
+
+.composer-poll-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.composer-poll-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--primary-color, #2563eb);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.composer-poll-discard-btn {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.composer-poll-discard-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.poll-option-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.poll-option-input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #cbd5e1);
+    background: var(--card-bg, #ffffff);
+    color: var(--text-main);
+    font-size: 13.5px;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.poll-option-input:focus {
+    border-color: var(--primary-color, #2563eb);
+}
+
+.poll-remove-opt-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.poll-remove-opt-btn:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.poll-add-opt-btn {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px dashed var(--primary-color, #2563eb);
+    color: var(--primary-color, #2563eb);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.15s ease;
+}
+
+.poll-add-opt-btn:hover {
+    background: rgba(37, 99, 235, 0.08);
+}
+
+/* --- MULTI-PHOTO FEED GRIDS (1 to 5 PHOTOS) --- */
+.timeline-photo-grid {
+    display: grid;
+    gap: 6px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.timeline-photo-grid .photo-item {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background: #0f172a15;
+    border-radius: 8px;
+}
+
+.timeline-photo-grid .photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.25s ease;
+}
+
+.timeline-photo-grid .photo-item:hover img {
+    transform: scale(1.025);
+}
+
+/* 1 Photo */
+.timeline-photo-grid.grid-1 {
+    grid-template-columns: 1fr;
+    max-height: 480px;
+}
+.timeline-photo-grid.grid-1 .photo-item {
+    max-height: 480px;
+}
+
+/* 2 Photos: 2 columns side-by-side */
+.timeline-photo-grid.grid-2 {
+    grid-template-columns: 1fr 1fr;
+    aspect-ratio: 16 / 9;
+    max-height: 380px;
+}
+
+/* 3 Photos: 1 big left, 2 stacked right */
+.timeline-photo-grid.grid-3 {
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    aspect-ratio: 16 / 10;
+    max-height: 400px;
+}
+.timeline-photo-grid.grid-3 .photo-item:nth-child(1) {
+    grid-row: span 2;
+}
+
+/* 4 Photos: 2x2 symmetrical grid */
+.timeline-photo-grid.grid-4 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    aspect-ratio: 1 / 1;
+    max-height: 420px;
+}
+
+/* 5 Photos: Top row 2 items (span 3 cols each), Bottom row 3 items (span 2 cols each) */
+.timeline-photo-grid.grid-5 {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 1.3fr 1fr;
+    aspect-ratio: 16 / 11;
+    max-height: 440px;
+}
+.timeline-photo-grid.grid-5 .photo-item:nth-child(1),
+.timeline-photo-grid.grid-5 .photo-item:nth-child(2) {
+    grid-column: span 3;
+}
+.timeline-photo-grid.grid-5 .photo-item:nth-child(3),
+.timeline-photo-grid.grid-5 .photo-item:nth-child(4),
+.timeline-photo-grid.grid-5 .photo-item:nth-child(5) {
+    grid-column: span 2;
+}
+
+/* --- FEED POLL COMPONENT --- */
+.timeline-poll-card {
+    background: rgba(15, 23, 42, 0.02);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+body.dark-theme .timeline-poll-card,
+body.dark-mode .timeline-poll-card {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.poll-question {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.poll-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.poll-option-button {
+    position: relative;
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color, #e2e8f0);
+    background: var(--card-bg, #ffffff);
+    color: var(--text-main);
+    text-align: left;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 600;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.poll-option-button:hover:not(.voted-state) {
+    border-color: var(--primary-color, #2563eb);
+    background: rgba(37, 99, 235, 0.04);
+}
+
+body.dark-theme .poll-option-button,
+body.dark-mode .poll-option-button {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+.poll-option-button.voted-state {
+    cursor: default;
+    background: rgba(15, 23, 42, 0.03);
+}
+
+body.dark-theme .poll-option-button.voted-state,
+body.dark-mode .poll-option-button.voted-state {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.poll-option-button.my-vote {
+    border-color: #10b981 !important;
+    font-weight: 700;
+}
+
+.poll-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(37, 99, 235, 0.14);
+    border-radius: 8px;
+    transition: width 0.4s var(--ease-out-quint, ease-out);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.poll-option-button.my-vote .poll-progress-fill {
+    background: rgba(16, 185, 129, 0.18);
+}
+
+.poll-option-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.poll-meta-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding-top: 4px;
+}
+
+/* --- POST ACTIONS BAR (LIKE & COMMENT SIDE-BY-SIDE) --- */
+.post-actions-bar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    margin-top: 10px !important;
+    padding-top: 8px !important;
+    border-top: 1px solid var(--border-color, #e2e8f0) !important;
+}
+
+.post-actions-bar .action-btn,
+.post-actions-bar button,
+.action-btn.like-btn,
+.action-btn.comment-btn {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 6px 12px !important;
+    border-radius: 8px !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: var(--text-muted) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.18s ease !important;
+}
+
+.post-actions-bar .action-btn:hover,
+.post-actions-bar button:hover,
+.action-btn.like-btn:hover,
+.action-btn.comment-btn:hover {
+    background: rgba(15, 23, 42, 0.05) !important;
+    color: var(--text-main) !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+body.dark-theme .post-actions-bar .action-btn:hover,
+body.dark-mode .post-actions-bar .action-btn:hover,
+body.dark-theme .action-btn.like-btn:hover,
+body.dark-mode .action-btn.like-btn:hover,
+body.dark-theme .action-btn.comment-btn:hover,
+body.dark-mode .action-btn.comment-btn:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.action-btn.like-btn:hover {
+    color: #ef4444 !important;
+    background: rgba(239, 68, 68, 0.08) !important;
+}
+
+.action-btn.like-btn.liked {
+    color: #ef4444 !important;
+}
+
+.action-btn.like-btn.liked svg {
+    fill: #ef4444 !important;
+    stroke: #ef4444 !important;
+    animation: heartPulse 0.35s ease-out;
+}
+
+@keyframes heartPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.32); }
+    100% { transform: scale(1); }
+}
+
+.action-btn.comment-btn:hover {
+    color: var(--primary-color, #2563eb) !important;
+    background: rgba(37, 99, 235, 0.08) !important;
 }
 
 /* ==========================================================================
@@ -853,12 +1349,12 @@ body.dark-mode .kebab-item:hover {
    6. ACTIONS & COMMENTARY SECTION
    ========================================================================== */
 .post-actions-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 4px; /* Reduced top padding */
-    border-top: none; /* REMOVED: Divider border line between post text and button */
-    margin-top: 4px;  /* Reduced top margin */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    padding-top: 8px !important;
+    margin-top: 8px !important;
 }
 
 .action-btn {
@@ -1291,23 +1787,33 @@ body.dark-mode .notif-btn svg {
     }
 
     .btn-composer-tool {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
         height: 34px !important;
         min-height: 34px !important;
         max-height: 34px !important;
-        padding: 0 10px !important;
+        padding: 0 8px !important;
         font-size: 12.5px !important;
-        border-radius: 18px !important;
+        border-radius: 8px !important;
         gap: 4px !important;
         flex-shrink: 0 !important;
         white-space: nowrap !important;
     }
 
+    .btn-composer-tool:hover {
+        background: rgba(37, 99, 235, 0.08) !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
     .btn-composer-tool svg {
-        width: 15px !important;
-        height: 15px !important;
+        width: 16px !important;
+        height: 16px !important;
     }
 
     .target-selector-wrapper {
+        position: relative !important;
         display: inline-flex !important;
         align-items: center !important;
         min-width: 0 !important;
@@ -1331,13 +1837,18 @@ body.dark-mode .notif-btn svg {
     }
 
     #submitPostBtn {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
         height: 34px !important;
         min-height: 34px !important;
         max-height: 34px !important;
-        padding: 0 16px !important;
-        font-size: 13px !important;
-        border-radius: 18px !important;
-        min-width: 55px !important;
+        padding: 0 10px !important;
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        color: var(--primary-color, #1e5eff) !important;
+        border-radius: 8px !important;
+        min-width: fit-content !important;
         flex-shrink: 0 !important;
         margin-left: auto !important;
     }
