@@ -757,17 +757,91 @@ document.getElementById('notifToggleBtn')?.addEventListener('click', () => {
 });
 
 window.openNotification = async function(notifId, postId) {
-    document.getElementById('notifDropdown').style.display = 'none';
+    const notifDropdown = document.getElementById('notifDropdown');
+    if (notifDropdown) notifDropdown.style.display = 'none';
     try { await updateDoc(doc(db, "timeline_notifications", notifId), { read: true }); } catch(e) {}
     
-    const postEl = document.getElementById('post-' + postId);
-    if (postEl) {
-        postEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        postEl.style.borderColor = '#2563eb';
-        setTimeout(() => postEl.style.borderColor = 'var(--border-color)', 2500); 
-    } else {
-        alert("This post may have been deleted.");
+    // 1. Locate the post in allCachedPosts, or fetch directly from Firestore
+    let post = allCachedPosts.find(p => p.id === postId);
+    if (!post) {
+        try {
+            const docSnap = await getDoc(doc(db, "timeline_posts", postId));
+            if (docSnap.exists()) {
+                post = { id: docSnap.id, ...docSnap.data() };
+                allCachedPosts.unshift(post);
+            }
+        } catch (err) {
+            console.warn("Could not fetch post for notification:", err);
+        }
     }
+
+    if (!post) {
+        alert("This post may have been deleted.");
+        return;
+    }
+
+    const isStaff = currentUser?.type === 'staff';
+    const postTarget = (post.targetClass || 'All').trim();
+    const isAll = postTarget === 'All' || postTarget.toLowerCase() === 'all classes';
+
+    // 2. Automatically select the corresponding tab and class filter
+    if (isAll) {
+        currentTimelineTab = 'all';
+    } else {
+        currentTimelineTab = 'class';
+        if (isStaff) {
+            currentStaffSelectedClass = postTarget;
+            const tabSelect = document.getElementById('tabClassSelect');
+            if (tabSelect) {
+                let matchFound = false;
+                for (let i = 0; i < tabSelect.options.length; i++) {
+                    if (tabSelect.options[i].value.toLowerCase() === postTarget.toLowerCase()) {
+                        tabSelect.selectedIndex = i;
+                        currentStaffSelectedClass = tabSelect.options[i].value;
+                        matchFound = true;
+                        break;
+                    }
+                }
+                if (!matchFound) {
+                    const opt = document.createElement('option');
+                    opt.value = postTarget;
+                    opt.textContent = postTarget;
+                    opt.selected = true;
+                    tabSelect.appendChild(opt);
+                }
+            }
+        }
+    }
+
+    updateActiveTabUI();
+
+    // 3. Check post index in filtered list and expand pagination limit if needed
+    const filtered = getFilteredTimelinePosts();
+    const targetIndex = filtered.findIndex(p => p.id === postId);
+
+    if (targetIndex !== -1 && targetIndex >= currentRenderedLimit) {
+        currentRenderedLimit = Math.ceil((targetIndex + 1) / TIMELINE_PAGE_SIZE) * TIMELINE_PAGE_SIZE;
+    }
+
+    // Re-render feed retaining rendered count
+    renderTimelineFeed(false);
+
+    // 4. Scroll to target post and apply focus animation
+    setTimeout(() => {
+        const postEl = document.getElementById('post-' + postId);
+        if (postEl) {
+            postEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            postEl.style.transition = 'border-color 0.3s ease, box-shadow 0.3s ease';
+            postEl.style.borderColor = '#2563eb';
+            postEl.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.2)';
+            setTimeout(() => {
+                postEl.style.borderColor = '';
+                postEl.style.boxShadow = '';
+            }, 2500);
+        } else {
+            alert("This post may have been deleted.");
+        }
+    }, 150);
 };
 
 // --- 5. POSTING & RENDERING (WITH KEBAB MENU) ---
@@ -1248,7 +1322,11 @@ window.toggleLikePost = async function(postId) {
     }
 };
 
-// --- TIMELINE FILTER TABS (CLASS vs ALL POSTS) ---
+// --- TIMELINE FILTER TABS (CLASS vs ALL POSTS) & PAGINATION ---
+const TIMELINE_PAGE_SIZE = 10;
+let currentRenderedLimit = TIMELINE_PAGE_SIZE;
+let timelineIntersectionObserver = null;
+let isLoadingMoreTimelinePosts = false;
 let currentTimelineTab = 'all'; // 'class' or 'all'
 let currentStaffSelectedClass = '';
 let allCachedPosts = [];
@@ -1280,13 +1358,13 @@ async function renderTimelineTabs() {
         document.getElementById('tabBtnMyClass')?.addEventListener('click', () => {
             currentTimelineTab = 'class';
             updateActiveTabUI();
-            renderTimelineFeed();
+            renderTimelineFeed(true);
         });
 
         document.getElementById('tabBtnAllPosts')?.addEventListener('click', () => {
             currentTimelineTab = 'all';
             updateActiveTabUI();
-            renderTimelineFeed();
+            renderTimelineFeed(true);
         });
     } else {
         // Teacher / Admin View: "Class: [Select Class ▾]" and "All Posts"
@@ -1312,7 +1390,7 @@ async function renderTimelineTabs() {
             if (e.target !== classSelect) {
                 currentTimelineTab = 'class';
                 updateActiveTabUI();
-                renderTimelineFeed();
+                renderTimelineFeed(true);
             }
         });
 
@@ -1320,13 +1398,13 @@ async function renderTimelineTabs() {
             currentStaffSelectedClass = e.target.value;
             currentTimelineTab = 'class';
             updateActiveTabUI();
-            renderTimelineFeed();
+            renderTimelineFeed(true);
         });
 
         allPostsBtn?.addEventListener('click', () => {
             currentTimelineTab = 'all';
             updateActiveTabUI();
-            renderTimelineFeed();
+            renderTimelineFeed(true);
         });
     }
 }
@@ -1355,19 +1433,15 @@ function loadPosts() {
         snapshot.forEach((docSnap) => {
             allCachedPosts.push({ id: docSnap.id, ...docSnap.data() });
         });
-        renderTimelineFeed();
+        renderTimelineFeed(false);
     });
 }
 
-function renderTimelineFeed() {
-    const feed = document.getElementById('timelineFeed');
-    if (!feed) return;
-    feed.innerHTML = '';
-
+function getFilteredTimelinePosts() {
     const isStaff = currentUser?.type === 'staff';
     const studentClass = (currentUser?.studentClass || '').trim();
 
-    const filtered = allCachedPosts.filter(post => {
+    return allCachedPosts.filter(post => {
         const postTarget = (post.targetClass || 'All').trim();
         const isAll = postTarget === 'All' || postTarget.toLowerCase() === 'all classes';
 
@@ -1386,6 +1460,26 @@ function renderTimelineFeed() {
             }
         }
     });
+}
+
+function renderTimelineFeed(resetPagination = true) {
+    const feed = document.getElementById('timelineFeed');
+    if (!feed) return;
+
+    if (resetPagination) {
+        currentRenderedLimit = TIMELINE_PAGE_SIZE;
+    }
+
+    if (timelineIntersectionObserver) {
+        timelineIntersectionObserver.disconnect();
+        timelineIntersectionObserver = null;
+    }
+
+    feed.innerHTML = '';
+
+    const isStaff = currentUser?.type === 'staff';
+    const studentClass = (currentUser?.studentClass || '').trim();
+    const filtered = getFilteredTimelinePosts();
 
     if (filtered.length === 0) {
         const tabTitle = currentTimelineTab === 'all' 
@@ -1401,12 +1495,94 @@ function renderTimelineFeed() {
         return;
     }
 
-    filtered.forEach(post => {
+    const postsToRender = filtered.slice(0, currentRenderedLimit);
+    postsToRender.forEach(post => {
         renderSinglePostElement(post, feed);
     });
+
+    if (filtered.length > currentRenderedLimit) {
+        attachTimelineInfiniteScroll(feed);
+    }
 }
 
-function renderSinglePostElement(post, feed) {
+function attachTimelineInfiniteScroll(feed) {
+    const existingSentinel = document.getElementById('timelineScrollSentinel');
+    if (existingSentinel) existingSentinel.remove();
+
+    const sentinel = document.createElement('div');
+    sentinel.id = 'timelineScrollSentinel';
+    sentinel.className = 'timeline-scroll-sentinel';
+    sentinel.style.cssText = 'padding: 24px 16px; text-align: center; color: var(--text-muted, #94a3b8); font-size: 13.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;';
+    sentinel.innerHTML = `
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 0.8s linear infinite;">
+            <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+            <path d="M12 2a10 10 0 0 1 10 10" stroke="#1e5eff"></path>
+        </svg>
+        <span>Loading more posts...</span>
+    `;
+    feed.appendChild(sentinel);
+
+    if ('IntersectionObserver' in window) {
+        timelineIntersectionObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                loadNextTimelineBatch();
+            }
+        }, {
+            root: null,
+            rootMargin: '250px 0px',
+            threshold: 0.05
+        });
+        timelineIntersectionObserver.observe(sentinel);
+    }
+}
+
+function loadNextTimelineBatch() {
+    if (isLoadingMoreTimelinePosts) return;
+    isLoadingMoreTimelinePosts = true;
+
+    const feed = document.getElementById('timelineFeed');
+    const sentinel = document.getElementById('timelineScrollSentinel');
+    if (!feed) {
+        isLoadingMoreTimelinePosts = false;
+        return;
+    }
+
+    const filtered = getFilteredTimelinePosts();
+    const nextStartIndex = currentRenderedLimit;
+    const nextEndIndex = nextStartIndex + TIMELINE_PAGE_SIZE;
+    const nextSlice = filtered.slice(nextStartIndex, nextEndIndex);
+
+    currentRenderedLimit = nextEndIndex;
+
+    if (nextSlice.length > 0) {
+        nextSlice.forEach(post => {
+            renderSinglePostElement(post, feed, sentinel);
+        });
+    }
+
+    if (currentRenderedLimit >= filtered.length) {
+        if (timelineIntersectionObserver) {
+            timelineIntersectionObserver.disconnect();
+            timelineIntersectionObserver = null;
+        }
+        if (sentinel) sentinel.remove();
+    }
+
+    isLoadingMoreTimelinePosts = false;
+}
+
+// Fallback window scroll listener for loading next batches smoothly
+window.addEventListener('scroll', () => {
+    const sentinel = document.getElementById('timelineScrollSentinel');
+    if (sentinel && !isLoadingMoreTimelinePosts) {
+        const rect = sentinel.getBoundingClientRect();
+        if (rect.top <= window.innerHeight + 300) {
+            loadNextTimelineBatch();
+        }
+    }
+}, { passive: true });
+
+function renderSinglePostElement(post, feed, insertBeforeElement = null) {
     const postId = post.id;
     const postTarget = post.targetClass || 'All';
     const dateStr = formatTimeAgo(post.timestamp);
@@ -1514,7 +1690,11 @@ function renderSinglePostElement(post, feed) {
         </div>
     `;
     
-    feed.appendChild(postElement);
+    if (insertBeforeElement && insertBeforeElement.parentNode === feed) {
+        feed.insertBefore(postElement, insertBeforeElement);
+    } else {
+        feed.appendChild(postElement);
+    }
     loadCommentsForPost(postId);
 }
 

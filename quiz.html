@@ -131,34 +131,46 @@
             }
         }
 
-        /* --- QUIZ DASHBOARD HUB LAYOUT --- */
+        /* --- QUIZ DASHBOARD HUB UNIFIED WRAPPER LAYOUT --- */
         #quizDashboardSection {
             max-width: 860px;
             margin: 20px auto 60px auto;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        /* Student Identity Header Card */
-        .quiz-student-banner {
             background: var(--card-bg, #ffffff);
             border: 1px solid var(--border-color, #e2e8f0);
-            border-radius: 18px;
-            padding: 20px 24px;
+            border-radius: 20px;
+            padding: 24px 26px;
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            box-sizing: border-box;
+        }
+
+        body.dark-theme #quizDashboardSection {
+            background: #111c44;
+            border-color: #1b254b;
+            box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Student Identity Header Inside Unified Wrapper */
+        .quiz-student-banner {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+            box-shadow: none;
             flex-wrap: wrap;
         }
 
         body.dark-theme .quiz-student-banner {
-            background: #111c44;
-            border-color: #1b254b;
-            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+            background: transparent;
+            border-color: transparent;
+            box-shadow: none;
         }
 
         .quiz-student-avatar {
@@ -263,76 +275,53 @@
             background: rgba(96, 165, 250, 0.1);
         }
 
-        /* --- TABS BAR --- */
-        .quiz-tabs-bar {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 2px solid var(--border-color, #e2e8f0);
-            padding-bottom: 2px;
-            margin-top: 6px;
+        /* --- RECENT QUIZZES UNIFIED SECTION INSIDE WRAPPER --- */
+        .recent-quizzes-card-box {
+            background: transparent !important;
+            border: none !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            box-shadow: none !important;
         }
 
-        body.dark-theme .quiz-tabs-bar {
+        body.dark-theme .recent-quizzes-card-box {
+            background: transparent !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .recent-quizzes-box-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            border-bottom: 1px solid var(--border-color, #e2e8f0);
+            padding-bottom: 10px;
+        }
+
+        body.dark-theme .recent-quizzes-box-header {
             border-bottom-color: #1b254b;
         }
 
-        .quiz-tab-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: transparent;
-            border: none;
-            border-bottom: 2.5px solid transparent;
-            padding: 10px 16px;
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-gray, #64748b);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            bottom: -2px;
-        }
-
-        .quiz-tab-pill.active {
-            color: var(--primary-blue, #1e5eff);
-            border-bottom-color: var(--primary-blue, #1e5eff);
-        }
-
-        body.dark-theme .quiz-tab-pill {
-            color: #94a3b8;
-        }
-
-        body.dark-theme .quiz-tab-pill.active {
-            color: #60a5fa;
-            border-bottom-color: #60a5fa;
+        body.dark-theme .recent-quizzes-box-header h3 {
+            color: #f8fafc !important;
         }
 
         .quiz-count-badge {
             font-size: 11.5px;
             font-weight: 700;
-            background: #e2e8f0;
-            color: #475569;
+            background: rgba(30, 94, 255, 0.12);
+            color: var(--primary-blue, #1e5eff);
             padding: 2px 8px;
             border-radius: 12px;
         }
 
-        .quiz-tab-pill.active .quiz-count-badge {
-            background: rgba(30, 94, 255, 0.12);
-            color: var(--primary-blue, #1e5eff);
-        }
-
         body.dark-theme .quiz-count-badge {
-            background: #1b254b;
-            color: #94a3b8;
-        }
-
-        body.dark-theme .quiz-tab-pill.active .quiz-count-badge {
             background: rgba(96, 165, 250, 0.2);
             color: #60a5fa;
         }
 
-        /* --- RECENT QUIZZES CONTAINER & CARDS --- */
         .recent-quizzes-list {
             display: flex;
             flex-direction: column;
@@ -340,34 +329,34 @@
         }
 
         .recent-quiz-card {
-            background: var(--card-bg, #ffffff);
+            background: var(--bg-card-sub, #f8fafc);
             border: 1px solid var(--border-color, #e2e8f0);
-            border-radius: 16px;
-            padding: 18px 22px;
+            border-radius: 12px;
+            padding: 14px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
             transition: transform 220ms var(--ease-out-quint, ease-out), box-shadow 220ms var(--ease-out-quint, ease-out), border-color 220ms ease;
-            box-shadow: 0 4px 14px -3px rgba(15, 23, 42, 0.04);
+            box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.03);
             flex-wrap: wrap;
         }
 
         .recent-quiz-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 6px 18px -3px rgba(15, 23, 42, 0.06);
             border-color: rgba(30, 94, 255, 0.3);
         }
 
         body.dark-theme .recent-quiz-card {
-            background: #111c44;
+            background: #0b1437;
             border-color: #1b254b;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         body.dark-theme .recent-quiz-card:hover {
             border-color: rgba(96, 165, 250, 0.35);
-            box-shadow: 0 10px 28px -4px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 6px 20px -3px rgba(0, 0, 0, 0.35);
         }
 
         .recent-quiz-info {
@@ -533,19 +522,18 @@
             color: #60a5fa;
         }
 
-        /* --- START QUIZ CTA CARD (POSITIONED DIRECTLY BELOW STUDENT NAME) --- */
+        /* --- START QUIZ CTA CARD (EMBEDDED INSIDE UNIFIED WRAPPER) --- */
         .start-quiz-cta-card {
-            background: linear-gradient(135deg, rgba(30, 94, 255, 0.06) 0%, rgba(124, 58, 237, 0.08) 100%);
-            border: 1.5px solid rgba(37, 99, 235, 0.22);
-            border-radius: 18px;
-            padding: 20px 24px;
+            background: linear-gradient(135deg, rgba(30, 94, 255, 0.05) 0%, rgba(124, 58, 237, 0.07) 100%);
+            border: 1.5px solid rgba(37, 99, 235, 0.16);
+            border-radius: 14px;
+            padding: 16px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 18px;
-            margin-top: 0;
-            margin-bottom: 6px;
-            box-shadow: 0 10px 30px -8px rgba(30, 94, 255, 0.08);
+            gap: 16px;
+            margin: 0;
+            box-shadow: none;
             position: relative;
             overflow: hidden;
             flex-wrap: wrap;
@@ -553,9 +541,9 @@
         }
 
         body.dark-theme .start-quiz-cta-card {
-            background: linear-gradient(135deg, rgba(30, 94, 255, 0.14) 0%, rgba(124, 58, 237, 0.18) 100%);
-            border-color: rgba(96, 165, 250, 0.32);
-            box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, rgba(30, 94, 255, 0.12) 0%, rgba(124, 58, 237, 0.16) 100%);
+            border-color: rgba(96, 165, 250, 0.28);
+            box-shadow: none;
         }
 
         .cta-content-left {
@@ -1146,6 +1134,16 @@
                     <span class="menu-label">Classroom Timeline</span>
                 </a>
 
+                <a href="board.html" class="menu-btn" data-label="Board" style="text-decoration: none;">
+                    <svg class="menu-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                    </svg>
+                    <span class="menu-label">Board</span>
+                </a>
+
                 <a href="profile.html" class="menu-btn" data-label="My Profile"
                     style="text-decoration: none;">
                     <svg class="menu-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
@@ -1235,6 +1233,14 @@
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                         <span>Classroom Feed</span>
                     </a>
+                    <a href="board.html" class="kebab-item nav-board">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                        </svg>
+                        <span>Board</span>
+                    </a>
                     <a href="profile.html" class="kebab-item nav-profile">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         <span>My Profile</span>
@@ -1300,28 +1306,31 @@
                 </div>
 
                 <!-- Tabs Navigation -->
-                <div class="quiz-tabs-bar">
-                    <button class="quiz-tab-pill active" id="tabRecentQuizzes">
-                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                        <span>Recent Quizzes</span>
-                        <span id="recentQuizCountBadge" class="quiz-count-badge">0</span>
-                    </button>
-                </div>
-
-                <!-- Recent Quizzes Container -->
-                <div id="recentQuizzesContainer" class="recent-quizzes-list">
-                    <!-- Populated dynamically via quiz.js -->
-                    <div class="quiz-empty-box">
-                        <div class="quiz-empty-icon">
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
+                <!-- Combined Recent Quizzes Card Box -->
+                <div class="box recent-quizzes-card-box">
+                    <div class="recent-quizzes-box-header">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary-blue, #1e5eff);">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
                             </svg>
+                            <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--text-dark, #0f172a);">Recent Quizzes</h3>
+                            <span id="recentQuizCountBadge" class="quiz-count-badge">0</span>
                         </div>
-                        <h4 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--text-dark);">Loading Recent Quizzes...</h4>
+                    </div>
+
+                    <!-- Recent Quizzes List Inside Unified Box -->
+                    <div id="recentQuizzesContainer" class="recent-quizzes-list">
+                        <!-- Populated dynamically via quiz.js -->
+                        <div class="quiz-empty-box">
+                            <div class="quiz-empty-icon">
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                            </div>
+                            <h4 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--text-dark);">Loading Recent Quizzes...</h4>
+                        </div>
                     </div>
                 </div>
             </div>

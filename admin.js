@@ -1003,10 +1003,10 @@ window.renderDbStudentsTable = function () {
                 <div class="kebab-menu">
                     <button class="kebab-btn" onclick="toggleMenu(event, 'dbstudent-${student.id}')">⋮</button>
                     <div id="menu-dbstudent-${student.id}" class="dropdown-menu">
-                        <button class="dropdown-item" onclick="viewStudentCode('${student.id}', '${safeName}', '${safeClass}')">👁️ View Student Code</button>
-                        <button class="dropdown-item" onclick="openEditStudentModal('${student.id}')">✏️ Edit Student Profile</button>
-                        <button class="dropdown-item" onclick="generateNewUniqueCode('${student.id}')">🔄 Generate New Code</button>
-                        <button class="dropdown-item danger" onclick="deleteStudentProfile('${student.id}')">🗑️ Delete Student</button>
+                        <button class="dropdown-item" onclick="viewStudentCode('${student.id}', '${safeName}', '${safeClass}')">View Student Code</button>
+                        <button class="dropdown-item" onclick="openEditStudentModal('${student.id}')">Edit Student Profile</button>
+                        <button class="dropdown-item" onclick="generateNewUniqueCode('${student.id}')">Generate New Code</button>
+                        <button class="dropdown-item danger" onclick="deleteStudentProfile('${student.id}')">Delete Student</button>
                     </div>
                 </div>
             </td>

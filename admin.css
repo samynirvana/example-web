@@ -3527,7 +3527,7 @@ input[type="text"],
 input[type="number"],
 input[type="url"],
 textarea,
-select {
+select:not(.fmt-select) {
     padding: 10px 14px !important;
     /* Internal spacing pushing text away from borders */
     box-sizing: border-box !important;
@@ -3730,7 +3730,7 @@ body.dark-theme .multi-select-option-row:hover {
 /* ======================================================
    ROUNDED PILL BUTTON STYLING SYSTEM (LIGHT & DARK THEME)
    ====================================================== */
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders),
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch),
 .btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle),
 .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle),
 .add-btn,
@@ -3753,7 +3753,7 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     transition: all 0.2s ease !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):hover,
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):hover,
 .btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle):hover,
 .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle):hover,
 .add-btn:hover,
@@ -3766,14 +3766,14 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):active,
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-zoom-btn):not(.fmt-btn):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):active,
 .btn:not(.dropdown-item):not(.kebab-item):active {
     transform: translateY(0) !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 /* Dark Theme Overrides for Admin Buttons */
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders),
+body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn),
 body.dark-theme .btn:not(.dropdown-item):not(.kebab-item),
 body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn),
 body.dark-theme .add-btn,
@@ -3786,7 +3786,7 @@ body.dark-theme .modal-btn {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):hover,
+body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):hover,
 body.dark-theme .btn:not(.dropdown-item):not(.kebab-item):hover,
 body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):hover,
 body.dark-theme .add-btn:hover,
@@ -3937,7 +3937,7 @@ body.dark-theme .toggle-mode-btn.active {
 /* ======================================================
    MODERN CUSTOM DROPDOWN STYLING SYSTEM
    ====================================================== */
-select {
+select:not(.fmt-select) {
     appearance: none !important;
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
@@ -3953,14 +3953,14 @@ select {
     transition: all 0.2s ease !important;
 }
 
-select:hover {
+select:not(.fmt-select):hover {
     border-color: var(--primary-blue, #1e5eff) !important;
 }
 
-body.dark-theme select,
-body.dark-mode select,
-.dark-theme select,
-.dark-mode select {
+body.dark-theme select:not(.fmt-select),
+body.dark-mode select:not(.fmt-select),
+.dark-theme select:not(.fmt-select),
+.dark-mode select:not(.fmt-select) {
     background-color: #0b1437 !important;
     color: #ffffff !important;
     border-color: #1b254b !important;

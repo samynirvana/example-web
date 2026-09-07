@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Interactive Board - Student Portal</title>
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1o_7O1hdx1SJOXfoFw9ZKxpl4zSOD_VYd">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=380">
+    <link rel="stylesheet" href="admin.css?v=380">
+    <link rel="stylesheet" href="student.css?v=380">
+    <link rel="stylesheet" href="board.css?v=380">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- TOP NAVIGATION HEADER BAR (FACEBOOK STYLE) -->
+        <header class="sidebar student-sidebar">
+            <div class="brand">
+                <div class="brand-logo-container">
+                    <img id="brandLogoImg"
+                        src="https://lh3.googleusercontent.com/d/1o_7O1hdx1SJOXfoFw9ZKxpl4zSOD_VYd"
+                        alt="Logo">
+                </div>
+                <div>
+                    <h2>MITRA KASIH SCHOOL</h2>
+                    <p>Student Portal System</p>
+                </div>
+            </div>
+
+            <!-- DESKTOP NAVIGATION ITEMS -->
+            <div class="menu-bar desktop-menu-bar">
+                <a href="index.html" class="menu-btn" data-label="Dashboard" style="text-decoration: none;">
+                    <svg class="menu-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span class="menu-label">Dashboard</span>
+                </a>
+
+                <a href="quiz.html" class="menu-btn" data-label="Online Quiz" style="text-decoration: none;">
+                    <svg class="menu-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span class="menu-label">Online Quiz</span>
+                </a>
+
+                <a href="timeline.html" class="menu-btn" data-label="Classroom Feed" style="text-decoration: none;">
+                    <svg class="menu-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                    <span class="menu-label">Classroom Timeline</span>
+                </a>
+
+                <a href="board.html" class="menu-btn active" data-label="Board" style="text-decoration: none;">
+                    <svg class="menu-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                    </svg>
+                    <span class="menu-label">Board</span>
+                </a>
+
+                <a href="profile.html" class="menu-btn" data-label="My Profile" style="text-decoration: none;">
+                    <svg class="menu-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span class="menu-label">My Profile</span>
+                </a>
+
+                <a href="scores.html" class="menu-btn" data-label="My Scores" style="text-decoration: none;">
+                    <svg class="menu-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    <span class="menu-label">My Scores</span>
+                </a>
+            </div>
+
+            <!-- USER PROFILE & ACTIONS RIGHT -->
+            <div class="user-profile-bottom desktop-user-actions"
+                style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                <!-- 1. Dark Mode / Light Mode Toggle (Circular) -->
+                <button id="themeToggleBtn" class="theme-toggle-btn btn-circle" title="Toggle Dark/Light Mode" aria-label="Toggle Dark/Light Mode">
+                    <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+
+                <!-- 2. For Teacher (Circular) -->
+                <button onclick="window.location.href='admin.html'" class="teacher-btn btn-circle" title="For Teacher" aria-label="For Teacher">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                </button>
+
+                <!-- 3. Logout (Circular) -->
+                <button id="studentLogoutBtn" class="logout-btn btn-circle" title="Logout" aria-label="Logout">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- MOBILE KEBAB MENU BUTTON & DROPDOWN (VISIBLE ON <= 768px) -->
+            <div class="mobile-kebab-container">
+                <button id="mobileTopbarKebabBtn" class="mobile-kebab-btn" aria-label="Toggle Menu" title="Menu">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                        <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                        <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                        <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                    </svg>
+                </button>
+
+                <div id="mobileTopbarDropdown" class="mobile-topbar-dropdown hidden">
+                    <div class="kebab-group-label">NAVIGATION</div>
+                    <a href="index.html" class="kebab-item nav-dashboard">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="quiz.html" class="kebab-item nav-quiz">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        <span>Online Quiz</span>
+                    </a>
+                    <a href="timeline.html" class="kebab-item nav-timeline">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                        <span>Classroom Feed</span>
+                    </a>
+                    <a href="board.html" class="kebab-item nav-board active">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                        </svg>
+                        <span>Board</span>
+                    </a>
+                    <a href="profile.html" class="kebab-item nav-profile">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="scores.html" class="kebab-item nav-scores">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        <span>My Scores</span>
+                    </a>
+
+                    <div class="kebab-divider"></div>
+                    <div class="kebab-group-label">ACTIONS</div>
+                    <button id="mobileKebabThemeBtn" class="kebab-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <span>Toggle Theme</span>
+                    </button>
+                    <a href="admin.html" class="kebab-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        </svg>
+                        <span>For Teacher</span>
+                    </a>
+                    <button id="mobileKebabLogoutBtn" class="kebab-item kebab-item-danger">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN HUB CONTENT (VIEW 1: LIBRARY) -->
+        <main id="boardHubView" class="main-wrapper">
+            <div class="board-hub-container">
+                <!-- Header Banner -->
+                <div class="board-hub-header-card">
+                    <div class="board-hub-title-group">
+                        <div class="board-hub-icon-badge">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 style="font-size: 22px; font-weight: 800; margin: 0; color: var(--text-dark, #0f172a); font-family: 'Outfit', sans-serif;">
+                                Interactive Board & Brainstorming Studio
+                            </h1>
+                            <p style="margin: 4px 0 0 0; font-size: 13.5px; color: var(--text-gray, #64748b);">
+                                Welcome back, <b id="hubUserName">Student</b>! Create sticky notes, mind maps, sketches, and view teacher shared boards.
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <button id="btnCreateBlankBoard" class="board-create-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            New Board
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Starter Templates Strip -->
+                <div>
+                    <h3 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-gray, #64748b); margin: 0 0 12px 0;">
+                        Quick Starter Templates
+                    </h3>
+                    <div class="board-templates-strip">
+                        <div class="board-template-card" onclick="window.createNewBoard('Blank Board')">
+                            <div class="board-template-icon" style="background: rgba(30, 94, 255, 0.1); color: #1e5eff;">
+                                📄
+                            </div>
+                            <div>
+                                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark, #0f172a);">Blank Canvas</div>
+                                <div style="font-size: 11.5px; color: var(--text-gray, #64748b);">Start from scratch</div>
+                            </div>
+                        </div>
+
+                        <div class="board-template-card" onclick="window.createNewBoard('Sticky Brainstorming')">
+                            <div class="board-template-icon" style="background: rgba(254, 240, 138, 0.5); color: #854d0e;">
+                                💡
+                            </div>
+                            <div>
+                                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark, #0f172a);">Sticky Brainstorm</div>
+                                <div style="font-size: 11.5px; color: var(--text-gray, #64748b);">Idea cards & clusters</div>
+                            </div>
+                        </div>
+
+                        <div class="board-template-card" onclick="window.createNewBoard('Cornell Notes')">
+                            <div class="board-template-icon" style="background: rgba(187, 247, 208, 0.5); color: #15803d;">
+                                📝
+                            </div>
+                            <div>
+                                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark, #0f172a);">Cornell Notes</div>
+                                <div style="font-size: 11.5px; color: var(--text-gray, #64748b);">Cues, notes & summary</div>
+                            </div>
+                        </div>
+
+                        <div class="board-template-card" onclick="window.createNewBoard('Mind Map')">
+                            <div class="board-template-icon" style="background: rgba(251, 207, 232, 0.5); color: #9d174d;">
+                                🧠
+                            </div>
+                            <div>
+                                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark, #0f172a);">Mind Map</div>
+                                <div style="font-size: 11.5px; color: var(--text-gray, #64748b);">Visual concept trees</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs: My Personal Boards vs Shared Teacher Boards -->
+                <div class="board-tabs-nav">
+                    <button id="tabMyBoards" class="board-tab-btn active">
+                        📁 My Boards
+                        <span id="myBoardsCount" class="board-tab-count">0</span>
+                    </button>
+                    <button id="tabTeacherBoards" class="board-tab-btn">
+                        🎓 Teacher Boards
+                        <span id="teacherBoardsCount" class="board-tab-count">0</span>
+                    </button>
+                </div>
+
+                <!-- Boards Grid Container -->
+                <div id="myBoardsGrid" class="boards-grid"></div>
+                <div id="teacherBoardsGrid" class="boards-grid hidden"></div>
+            </div>
+        </main>
+
+        <!-- FULLSCREEN WHITEBOARD WORKSPACE (VIEW 2: CANVAS STUDIO) -->
+        <div id="boardWorkspaceView" class="board-workspace-view hidden">
+            <!-- Topbar Controls -->
+            <div class="board-topbar">
+                <div class="board-topbar-left">
+                    <button id="btnBoardBack" class="board-back-btn" title="Back to Boards Hub">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        <span>Boards</span>
+                    </button>
+                    <input type="text" id="boardTitleInput" class="board-title-input" value="Untitled Board" spellcheck="false" placeholder="Board Title" />
+                    <div id="boardSyncStatus" class="board-sync-status">✓ Saved</div>
+                </div>
+
+                <div class="board-topbar-actions">
+                    <!-- Undo -->
+                    <button id="btnUndo" class="board-icon-btn" title="Undo (Ctrl+Z)" aria-label="Undo">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 7v6h6"></path>
+                            <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Redo -->
+                    <button id="btnRedo" class="board-icon-btn" title="Redo (Ctrl+Y)" aria-label="Redo">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 7v6h-6"></path>
+                            <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3L21 13"></path>
+                        </svg>
+                    </button>
+                    
+                    <div class="board-topbar-divider"></div>
+
+                    <!-- Clear -->
+                    <button id="btnClearBoard" class="board-icon-btn board-btn-danger" title="Clear Board Canvas" aria-label="Clear">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                    </button>
+
+                    <!-- Save -->
+                    <button id="btnSaveBoard" class="board-icon-btn" title="Save to Cloud" aria-label="Save">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                    </button>
+
+                    <!-- Export PNG -->
+                    <button id="btnExportPng" class="board-icon-btn" title="Export as PNG Image" aria-label="Export">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Left Floating Tool Dock (Single unified wrapper with dividers) -->
+            <div class="board-tools-dock">
+                <!-- Group 1: Navigation / Selection -->
+                <button class="tool-btn active" data-tool="select" title="Select & Move (V)" aria-label="Select Tool">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3l7 18 3-7 7-3L3 3z"></path>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="pan" title="Pan / Hand Tool (H / Space)" aria-label="Hand Tool">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 11V6a2 2 0 00-4 0v5"></path>
+                        <path d="M14 10V4a2 2 0 00-4 0v6"></path>
+                        <path d="M10 10.5V6a2 2 0 00-4 0v8"></path>
+                        <path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"></path>
+                    </svg>
+                </button>
+
+                <div class="tool-divider"></div>
+
+                <!-- Group 2: Elements (Sticky, Shape, Text) -->
+                <button class="tool-btn" data-tool="sticky" title="Sticky Note (S)" aria-label="Sticky Note">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15.5 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8.5L15.5 3z"></path>
+                        <path d="M15 3v6h6"></path>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="shape" title="Shapes (Rectangle, Circle, Star, etc.)" aria-label="Shapes">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="text" title="Text Box (T)" aria-label="Text Box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                        <line x1="9" y1="20" x2="15" y2="20"></line>
+                        <line x1="12" y1="4" x2="12" y2="20"></line>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="line" title="Straight Connector Line (L)" aria-label="Line">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="19" x2="19" y2="5"></line>
+                        <circle cx="5" cy="19" r="2" fill="currentColor"></circle>
+                        <circle cx="19" cy="5" r="2" fill="currentColor"></circle>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="arrow" title="Flowchart Connector Arrow (A)" aria-label="Arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="19" x2="19" y2="5"></line>
+                        <polyline points="10 5 19 5 19 14"></polyline>
+                    </svg>
+                </button>
+
+                <div class="tool-divider"></div>
+
+                <!-- Group 3: Freehand Drawing (Pen, Highlighter, Eraser) -->
+                <button class="tool-btn" data-tool="pen" title="Draw / Pen (P)" aria-label="Pen">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="highlighter" title="Highlighter" aria-label="Highlighter">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m9 11-6 6v3h3l6-6"></path>
+                        <path d="m22 2-2.5 2.5a2.12 2.12 0 01-3 0l-1.5-1.5a2.12 2.12 0 010-3L17.5 0"></path>
+                        <path d="m14 6 4 4"></path>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="eraser" title="Eraser (E)" aria-label="Eraser">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"></path>
+                        <path d="M22 21H7"></path>
+                        <path d="m5 11 9 9"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Floating Rich Text & Element Formatting Toolbar -->
+            <div id="boardFormattingBar" class="board-formatting-bar hidden">
+                <!-- Font Family (75+ Curated Google Fonts) -->
+                <select id="fmtFontFamily" class="fmt-select" title="Font Family">
+                    <optgroup label="✍️ Handwriting & Notes">
+                        <option value="'Caveat', cursive, sans-serif" selected>Caveat</option>
+                        <option value="'Kalam', cursive, sans-serif">Kalam</option>
+                        <option value="'Patrick Hand', cursive, sans-serif">Patrick Hand</option>
+                        <option value="'Shadows Into Light', cursive, sans-serif">Shadows Into Light</option>
+                        <option value="'Indie Flower', cursive, sans-serif">Indie Flower</option>
+                        <option value="'Dancing Script', cursive, sans-serif">Dancing Script</option>
+                        <option value="'Pacifico', cursive, sans-serif">Pacifico</option>
+                        <option value="'Permanent Marker', cursive, sans-serif">Permanent Marker</option>
+                        <option value="'Architects Daughter', cursive, sans-serif">Architects Daughter</option>
+                        <option value="'Covered By Your Grace', cursive, sans-serif">Covered By Your Grace</option>
+                        <option value="'Satisfy', cursive, sans-serif">Satisfy</option>
+                        <option value="'Sacramento', cursive, sans-serif">Sacramento</option>
+                        <option value="'Amatic SC', cursive, sans-serif">Amatic SC</option>
+                        <option value="'Gloria Hallelujah', cursive, sans-serif">Gloria Hallelujah</option>
+                        <option value="'Gochi Hand', cursive, sans-serif">Gochi Hand</option>
+                        <option value="'Reenie Beanie', cursive, sans-serif">Reenie Beanie</option>
+                        <option value="'Homemade Apple', cursive, sans-serif">Homemade Apple</option>
+                        <option value="'Bad Script', cursive, sans-serif">Bad Script</option>
+                        <option value="'Marck Script', cursive, sans-serif">Marck Script</option>
+                        <option value="'Nanum Pen Script', cursive, sans-serif">Nanum Pen Script</option>
+                    </optgroup>
+                    <optgroup label="✨ Modern Sans-Serif">
+                        <option value="'Outfit', sans-serif">Outfit</option>
+                        <option value="'Inter', sans-serif">Inter</option>
+                        <option value="'Roboto', sans-serif">Roboto</option>
+                        <option value="'Open Sans', sans-serif">Open Sans</option>
+                        <option value="'Lato', sans-serif">Lato</option>
+                        <option value="'Montserrat', sans-serif">Montserrat</option>
+                        <option value="'Poppins', sans-serif">Poppins</option>
+                        <option value="'Nunito', sans-serif">Nunito</option>
+                        <option value="'Raleway', sans-serif">Raleway</option>
+                        <option value="'Work Sans', sans-serif">Work Sans</option>
+                        <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
+                        <option value="'DM Sans', sans-serif">DM Sans</option>
+                        <option value="'Rubik', sans-serif">Rubik</option>
+                        <option value="'Quicksand', sans-serif">Quicksand</option>
+                        <option value="'Lexend', sans-serif">Lexend</option>
+                        <option value="'Urbanist', sans-serif">Urbanist</option>
+                        <option value="'Figtree', sans-serif">Figtree</option>
+                        <option value="'Manrope', sans-serif">Manrope</option>
+                        <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
+                        <option value="'Kanit', sans-serif">Kanit</option>
+                    </optgroup>
+                    <optgroup label="🎨 Display & Creative">
+                        <option value="'Comic Neue', cursive, sans-serif">Comic Neue</option>
+                        <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
+                        <option value="'Anton', sans-serif">Anton</option>
+                        <option value="'Lobster', cursive, sans-serif">Lobster</option>
+                        <option value="'Righteous', cursive, sans-serif">Righteous</option>
+                        <option value="'Bangers', cursive, sans-serif">Bangers</option>
+                        <option value="'Fredoka', sans-serif">Fredoka</option>
+                        <option value="'Comfortaa', cursive, sans-serif">Comfortaa</option>
+                        <option value="'Titan One', cursive, sans-serif">Titan One</option>
+                        <option value="'Concert One', cursive, sans-serif">Concert One</option>
+                        <option value="'Bungee', cursive, sans-serif">Bungee</option>
+                        <option value="'Shrikhand', cursive, sans-serif">Shrikhand</option>
+                        <option value="'Chewy', cursive, sans-serif">Chewy</option>
+                        <option value="'Luckiest Guy', cursive, sans-serif">Luckiest Guy</option>
+                        <option value="'Press Start 2P', cursive, sans-serif">Press Start 2P</option>
+                        <option value="'VT323', monospace">VT323 (Retro)</option>
+                        <option value="'Creepster', cursive, sans-serif">Creepster</option>
+                        <option value="'Special Elite', cursive, sans-serif">Special Elite</option>
+                    </optgroup>
+                    <optgroup label="📖 Classic Serif">
+                        <option value="'Merriweather', serif">Merriweather</option>
+                        <option value="'Playfair Display', serif">Playfair Display</option>
+                        <option value="'Lora', serif">Lora</option>
+                        <option value="'Cinzel', serif">Cinzel</option>
+                        <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
+                        <option value="'PT Serif', serif">PT Serif</option>
+                        <option value="'EB Garamond', serif">EB Garamond</option>
+                        <option value="'Libre Baskerville', serif">Libre Baskerville</option>
+                        <option value="'Bitter', serif">Bitter</option>
+                        <option value="'Bodoni Moda', serif">Bodoni Moda</option>
+                        <option value="'Spectral', serif">Spectral</option>
+                        <option value="'Abril Fatface', serif">Abril Fatface</option>
+                    </optgroup>
+                    <optgroup label="💻 Monospace & Code">
+                        <option value="'Roboto Mono', monospace">Roboto Mono</option>
+                        <option value="'Fira Code', monospace">Fira Code</option>
+                        <option value="'Source Code Pro', monospace">Source Code Pro</option>
+                        <option value="'Space Mono', monospace">Space Mono</option>
+                        <option value="'Courier Prime', monospace">Courier Prime</option>
+                        <option value="'Inconsolata', monospace">Inconsolata</option>
+                        <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
+                    </optgroup>
+                </select>
+
+                <!-- Font Size -->
+                <div class="fmt-btn-group">
+                    <button id="fmtSizeDown" class="fmt-btn" title="Decrease Font Size">-</button>
+                    <span id="fmtSizeVal" class="fmt-val">18px</span>
+                    <button id="fmtSizeUp" class="fmt-btn" title="Increase Font Size">+</button>
+                </div>
+
+                <div class="fmt-divider"></div>
+
+                <!-- Bold & Italic -->
+                <button id="fmtBold" class="fmt-btn" title="Bold (Ctrl+B)"><b>B</b></button>
+                <button id="fmtItalic" class="fmt-btn" title="Italic (Ctrl+I)"><i>I</i></button>
+
+                <!-- Text Alignment -->
+                <div class="fmt-btn-group">
+                    <button id="fmtAlignLeft" class="fmt-btn" title="Align Left">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="17" y1="10" x2="3" y2="10"></line>
+                            <line x1="21" y1="6" x2="3" y2="6"></line>
+                            <line x1="21" y1="14" x2="3" y2="14"></line>
+                            <line x1="17" y1="18" x2="3" y2="18"></line>
+                        </svg>
+                    </button>
+                    <button id="fmtAlignCenter" class="fmt-btn" title="Align Center">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="10" x2="6" y2="10"></line>
+                            <line x1="21" y1="6" x2="3" y2="6"></line>
+                            <line x1="21" y1="14" x2="3" y2="14"></line>
+                            <line x1="18" y1="18" x2="6" y2="18"></line>
+                        </svg>
+                    </button>
+                    <button id="fmtAlignRight" class="fmt-btn" title="Align Right">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="21" y1="10" x2="7" y2="10"></line>
+                            <line x1="21" y1="6" x2="3" y2="6"></line>
+                            <line x1="21" y1="14" x2="3" y2="14"></line>
+                            <line x1="21" y1="18" x2="7" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="fmt-divider"></div>
+
+                <!-- Shape Border Thickness (Shown for Shapes / Lines) -->
+                <div id="fmtBorderGroup" class="fmt-btn-group" title="Border Thickness">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 2px 0 4px; opacity: 0.7;">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    </svg>
+                    <button id="fmtBorderDown" class="fmt-btn" title="Thinner Border">-</button>
+                    <span id="fmtBorderVal" class="fmt-val">2px</span>
+                    <button id="fmtBorderUp" class="fmt-btn" title="Thicker Border">+</button>
+                </div>
+
+                <div id="fmtBorderDivider" class="fmt-divider"></div>
+
+                <!-- Color Palette Popover Button -->
+                <div class="fmt-color-picker-wrapper">
+                    <button id="fmtColorBtn" class="fmt-btn fmt-color-btn" title="Colors (Fill, Border, Text)">
+                        <span id="fmtColorIndicator" class="fmt-color-indicator" title="Fill Color"></span>
+                        <span id="fmtBorderIndicator" class="fmt-border-indicator" title="Border Color"></span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div id="fmtColorPopover" class="fmt-color-popover hidden">
+                        <div class="fmt-popover-title">FILL / STICKY COLOR</div>
+                        <div class="fmt-color-grid">
+                            <div class="fmt-color-swatch fmt-color-none" data-bg="transparent" data-text="#0f172a" title="Transparent (No Fill)">🚫</div>
+                            <div class="fmt-color-swatch" data-bg="#fef08a" data-text="#713f12" style="background: #fef08a;" title="Yellow"></div>
+                            <div class="fmt-color-swatch" data-bg="#fbcfe8" data-text="#831843" style="background: #fbcfe8;" title="Pink"></div>
+                            <div class="fmt-color-swatch" data-bg="#bbf7d0" data-text="#14532d" style="background: #bbf7d0;" title="Green"></div>
+                            <div class="fmt-color-swatch" data-bg="#bae6fd" data-text="#0c4a6e" style="background: #bae6fd;" title="Blue"></div>
+                            <div class="fmt-color-swatch" data-bg="#e9d5ff" data-text="#581c87" style="background: #e9d5ff;" title="Purple"></div>
+                            <div class="fmt-color-swatch" data-bg="#fed7aa" data-text="#7c2d12" style="background: #fed7aa;" title="Orange"></div>
+                            <div class="fmt-color-swatch" data-bg="#ffffff" data-text="#0f172a" style="background: #ffffff; border: 1px solid #cbd5e1;" title="White"></div>
+                            <div class="fmt-color-swatch" data-bg="#334155" data-text="#f8fafc" style="background: #334155;" title="Charcoal"></div>
+                        </div>
+
+                        <div class="fmt-popover-title" style="margin-top: 10px;">SHAPE BORDER COLOR</div>
+                        <div class="fmt-color-grid">
+                            <div class="fmt-border-color-swatch fmt-color-none" data-border="transparent" title="No Border">🚫</div>
+                            <div class="fmt-border-color-swatch" data-border="#1e5eff" style="background: #1e5eff;" title="Blue"></div>
+                            <div class="fmt-border-color-swatch" data-border="#0f172a" style="background: #0f172a;" title="Dark Slate"></div>
+                            <div class="fmt-border-color-swatch" data-border="#10b981" style="background: #10b981;" title="Green"></div>
+                            <div class="fmt-border-color-swatch" data-border="#ef4444" style="background: #ef4444;" title="Red"></div>
+                            <div class="fmt-border-color-swatch" data-border="#8b5cf6" style="background: #8b5cf6;" title="Purple"></div>
+                            <div class="fmt-border-color-swatch" data-border="#f59e0b" style="background: #f59e0b;" title="Amber"></div>
+                            <div class="fmt-border-color-swatch" data-border="#ffffff" style="background: #ffffff; border: 1px solid #cbd5e1;" title="White"></div>
+                        </div>
+
+                        <div class="fmt-popover-title" style="margin-top: 10px;">TEXT COLOR</div>
+                        <div class="fmt-color-grid">
+                            <div class="fmt-text-color-swatch" data-text="#0f172a" style="background: #0f172a;" title="Dark"></div>
+                            <div class="fmt-text-color-swatch" data-text="#1e5eff" style="background: #1e5eff;" title="Blue"></div>
+                            <div class="fmt-text-color-swatch" data-text="#10b981" style="background: #10b981;" title="Green"></div>
+                            <div class="fmt-text-color-swatch" data-text="#ef4444" style="background: #ef4444;" title="Red"></div>
+                            <div class="fmt-text-color-swatch" data-text="#8b5cf6" style="background: #8b5cf6;" title="Purple"></div>
+                            <div class="fmt-text-color-swatch" data-text="#f59e0b" style="background: #f59e0b;" title="Amber"></div>
+                            <div class="fmt-text-color-swatch" data-text="#ffffff" style="background: #ffffff; border: 1px solid #cbd5e1;" title="White"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fmt-divider"></div>
+
+                <!-- Duplicate -->
+                <button id="fmtDuplicate" class="fmt-btn" title="Duplicate Element (Ctrl+D)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+
+                <!-- Layer: Bring to Front / Send to Back -->
+                <button id="fmtBringFront" class="fmt-btn" title="Bring to Front">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                </button>
+                <button id="fmtSendBack" class="fmt-btn" title="Send to Back">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+
+                <div class="fmt-divider"></div>
+
+                <!-- Delete Element Button -->
+                <button id="fmtDelete" class="fmt-btn fmt-btn-danger" title="Delete Element (Delete / Backspace)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Sticky Note Color Sub-palette -->
+            <div id="stickySubPalette" class="board-sub-palette hidden">
+                <div class="sticky-color-dot active" data-color="#fef08a" style="background: #fef08a;" title="Yellow"></div>
+                <div class="sticky-color-dot" data-color="#fbcfe8" style="background: #fbcfe8;" title="Pink"></div>
+                <div class="sticky-color-dot" data-color="#bbf7d0" style="background: #bbf7d0;" title="Green"></div>
+                <div class="sticky-color-dot" data-color="#bae6fd" style="background: #bae6fd;" title="Blue"></div>
+                <div class="sticky-color-dot" data-color="#e9d5ff" style="background: #e9d5ff;" title="Purple"></div>
+                <div class="sticky-color-dot" data-color="#fed7aa" style="background: #fed7aa;" title="Orange"></div>
+                <div class="sticky-color-dot" data-color="#334155" style="background: #334155;" title="Charcoal"></div>
+            </div>
+
+            <!-- Shapes Sub-palette (Flowcharts & Diagramming) -->
+            <div id="shapeSubPalette" class="board-sub-palette board-shape-palette hidden">
+                <div class="shape-palette-title">FLOWCHART & SHAPES</div>
+                <div class="shape-grid">
+                    <button class="shape-choice-btn active" data-shape="rectangle" title="Process / Rectangle">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="16" rx="2"></rect>
+                        </svg>
+                        <span>Rectangle</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="pill" title="Start/End / Pill">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="7"></rect>
+                        </svg>
+                        <span>Pill / End</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="diamond" title="Decision / Diamond">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12,2 22,10 12,18 2,10"></polygon>
+                        </svg>
+                        <span>Decision</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="parallelogram" title="Input/Output / Parallelogram">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="6,3 22,3 18,17 2,17"></polygon>
+                        </svg>
+                        <span>Data In/Out</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="circle" title="State / Circle">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="10" r="8"></circle>
+                        </svg>
+                        <span>Circle</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="cylinder" title="Database / Storage">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M4 5c0-1.7 3.6-3 8-3s8 1.3 8 3v10c0 1.7-3.6 3-8 3s-8-1.3-8-3V5z"></path>
+                            <ellipse cx="12" cy="5" rx="8" ry="3"></ellipse>
+                        </svg>
+                        <span>Database</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="hexagon" title="Preparation / Hexagon">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="6,2 18,2 22,10 18,18 6,18 2,10"></polygon>
+                        </svg>
+                        <span>Hexagon</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="document" title="Document / Report">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M3 3h18v11c-4.5-3-9 2-18-2V3z"></path>
+                        </svg>
+                        <span>Document</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="triangle" title="Warning / Triangle">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12,2 22,18 2,18"></polygon>
+                        </svg>
+                        <span>Triangle</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="star" title="Goal / Star">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <polygon points="12,2 15,8 22,9 17,14 18,20 12,17 6,20 7,14 2,9 9,8"></polygon>
+                        </svg>
+                        <span>Star</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="cloud" title="Cloud / Network">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M18 10h-1.26A5 5 0 0 0 7 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4h11a3 3 0 0 0 0-6z"></path>
+                        </svg>
+                        <span>Cloud</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="bubble" title="Speech Bubble / Callout">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                        </svg>
+                        <span>Bubble</span>
+                    </button>
+                    <button class="shape-choice-btn" data-shape="block-arrow" title="Right Arrow / Step">
+                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="2,7 14,7 14,3 22,10 14,17 14,13 2,13"></polygon>
+                        </svg>
+                        <span>Arrow Block</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pen & Drawing Sub-palette -->
+            <div id="penSubPalette" class="board-sub-palette board-tool-sub-palette hidden">
+                <div class="palette-mini-label">PEN COLOR</div>
+                <div class="palette-colors-row">
+                    <div class="pen-color-dot active" data-color="#1e293b" style="background: #1e293b;" title="Charcoal"></div>
+                    <div class="pen-color-dot" data-color="#1e5eff" style="background: #1e5eff;" title="Blue"></div>
+                    <div class="pen-color-dot" data-color="#10b981" style="background: #10b981;" title="Green"></div>
+                    <div class="pen-color-dot" data-color="#ef4444" style="background: #ef4444;" title="Red"></div>
+                    <div class="pen-color-dot" data-color="#8b5cf6" style="background: #8b5cf6;" title="Purple"></div>
+                    <div class="pen-color-dot" data-color="#f59e0b" style="background: #f59e0b;" title="Amber"></div>
+                    <div class="pen-color-dot" data-color="#ffffff" style="background: #ffffff; border: 1px solid #cbd5e1;" title="White"></div>
+                    <div class="pen-color-dot" data-color="#facc15" style="background: #facc15;" title="Highlighter Yellow"></div>
+                </div>
+                <div class="palette-mini-label" style="margin-top: 8px;">PEN SIZE</div>
+                <div class="palette-size-row">
+                    <button class="pen-size-btn" data-size="2" title="Thin (2px)"><span style="width: 4px; height: 4px;"></span>2px</button>
+                    <button class="pen-size-btn active" data-size="4" title="Medium (4px)"><span style="width: 7px; height: 7px;"></span>4px</button>
+                    <button class="pen-size-btn" data-size="8" title="Thick (8px)"><span style="width: 10px; height: 10px;"></span>8px</button>
+                    <button class="pen-size-btn" data-size="14" title="Marker (14px)"><span style="width: 14px; height: 14px;"></span>14px</button>
+                </div>
+            </div>
+
+            <!-- Line & Connector Sub-palette -->
+            <div id="lineSubPalette" class="board-sub-palette board-tool-sub-palette hidden">
+                <div class="palette-mini-label">CONNECTOR STYLE</div>
+                <div class="palette-size-row">
+                    <button id="btnLineTypeStraight" class="line-style-btn active" data-type="line" title="Straight Line">Straight</button>
+                    <button id="btnLineTypeArrow" class="line-style-btn" data-type="arrow" title="Flowchart Arrow">Arrow ➔</button>
+                </div>
+                <div class="palette-mini-label" style="margin-top: 8px;">LINE COLOR</div>
+                <div class="palette-colors-row">
+                    <div class="line-color-dot active" data-color="#1e5eff" style="background: #1e5eff;" title="Blue"></div>
+                    <div class="line-color-dot" data-color="#0f172a" style="background: #0f172a;" title="Dark"></div>
+                    <div class="line-color-dot" data-color="#10b981" style="background: #10b981;" title="Green"></div>
+                    <div class="line-color-dot" data-color="#ef4444" style="background: #ef4444;" title="Red"></div>
+                    <div class="line-color-dot" data-color="#8b5cf6" style="background: #8b5cf6;" title="Purple"></div>
+                    <div class="line-color-dot" data-color="#f59e0b" style="background: #f59e0b;" title="Amber"></div>
+                </div>
+                <div class="palette-mini-label" style="margin-top: 8px;">LINE THICKNESS</div>
+                <div class="palette-size-row">
+                    <button class="line-width-btn" data-width="1.5">1.5px</button>
+                    <button class="line-width-btn active" data-width="2.5">2.5px</button>
+                    <button class="line-width-btn" data-width="4">4px</button>
+                    <button class="line-width-btn" data-width="6">6px</button>
+                </div>
+            </div>
+
+            <!-- Canvas Surface Area -->
+            <div id="boardCanvasSurface" class="board-canvas-surface grid-dots">
+                <canvas id="whiteboardCanvas"></canvas>
+            </div>
+
+            <!-- Floating Zoom Controls (Bottom Right) -->
+            <div class="board-zoom-widget">
+                <button id="btnZoomOut" class="board-zoom-btn" title="Zoom Out (-)" aria-label="Zoom Out">-</button>
+                <span id="boardZoomValue" class="board-zoom-val" title="Click to Reset Zoom">100%</span>
+                <button id="btnZoomIn" class="board-zoom-btn" title="Zoom In (+)" aria-label="Zoom In">+</button>
+                <button id="btnZoomReset" class="board-zoom-btn" title="Reset Zoom" aria-label="Reset Zoom">⟲</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="board.js?v=380"></script>
+    <script src="studentNav.js?v=380"></script>
+</body>
+
+</html>
