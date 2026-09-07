@@ -9654,7 +9654,6 @@ async function loadReminderStudents() {
                     ${avatarHtml}
                     <div style="overflow: hidden; line-height: 1.2; flex: 1;">
                         <div style="font-size: 13px; font-weight: 700; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(s.name)}</div>
-                        <div style="font-size: 11px; color: var(--text-gray); font-family: monospace;">${escapeHtml(s.code)}</div>
                     </div>
                 </label>
             `;
@@ -9895,7 +9894,6 @@ function renderAssignmentRemindersTable() {
                 </td>
                 <td>
                     <div style="font-weight: 700; color: var(--text-dark);">${escapeHtml(item.studentName || 'Student')}</div>
-                    <div style="font-size: 11px; color: var(--text-gray); font-family: monospace;">${escapeHtml(item.studentCode || '')}</div>
                 </td>
                 <td><span style="font-weight: 600;">${escapeHtml(item.studentClass || '')}</span></td>
                 <td><span style="background: rgba(30,94,255,0.08); color: var(--primary-blue); padding: 2px 7px; border-radius: 4px; font-weight: 700; font-size: 11.5px;">${escapeHtml(item.subject || '')}</span></td>

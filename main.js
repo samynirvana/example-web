@@ -893,7 +893,7 @@ function listenStudentAssignmentReminders(studentCode) {
             });
 
             if (headerCount) {
-                headerCount.innerText = `${reminders.length} Pending`;
+                headerCount.style.display = 'none';
             }
 
             if (container) {
@@ -918,7 +918,11 @@ function listenStudentAssignmentReminders(studentCode) {
                         lateTierClass = 'reminder-late-critical';
                         lateBadgeHtml = `
                             <div class="reminder-badge-critical">
-                                <span class="reminder-badge-fire">🚨</span>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" class="reminder-badge-fire">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
                                 <span class="reminder-late-text-animated">CRITICAL: ${daysLate} DAYS LATE!</span>
                             </div>
                         `;
@@ -927,7 +931,11 @@ function listenStudentAssignmentReminders(studentCode) {
                         lateTierClass = 'reminder-late-2days';
                         lateBadgeHtml = `
                             <div class="reminder-badge-2days">
-                                <span>⚠️</span>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
                                 <span class="reminder-late-text-animated">2 DAYS LATE!</span>
                             </div>
                         `;
@@ -936,7 +944,11 @@ function listenStudentAssignmentReminders(studentCode) {
                         lateTierClass = 'reminder-late-1day';
                         lateBadgeHtml = `
                             <div class="reminder-badge-1day">
-                                <span>⚠️</span>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
                                 <span>Late by 1 day</span>
                             </div>
                         `;
@@ -945,7 +957,10 @@ function listenStudentAssignmentReminders(studentCode) {
                         lateTierClass = 'reminder-due-today';
                         lateBadgeHtml = `
                             <div class="reminder-badge-today">
-                                <span>⏳</span>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
                                 <span>Due Today</span>
                             </div>
                         `;
@@ -955,7 +970,12 @@ function listenStudentAssignmentReminders(studentCode) {
                         lateTierClass = 'reminder-due-future';
                         lateBadgeHtml = `
                             <div class="reminder-badge-future">
-                                <span>📅</span>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
                                 <span>Due in ${daysLeft} day${daysLeft > 1 ? 's' : ''}</span>
                             </div>
                         `;
@@ -975,7 +995,17 @@ function listenStudentAssignmentReminders(studentCode) {
                                 </svg>
                                 <span>Due: <strong>${escapeHtml(formattedDueDate)}</strong></span>
                             </div>
-                            ${r.notes ? `<div class="reminder-notes-text">📝 ${escapeHtml(r.notes)}</div>` : ''}
+                            ${r.notes ? `
+                                <div class="reminder-notes-text">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                    <span>${escapeHtml(r.notes)}</span>
+                                </div>` : ''}
                         </div>
                     `;
                 });

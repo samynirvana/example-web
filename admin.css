@@ -3182,7 +3182,6 @@ body.dark-theme .kebab-dropdown .kebab-item.danger:hover {
 }
 
 /* 2. Prevent header dropdowns from expanding to 100% full width */
-.box div[style*="display: flex"] select,
 .box header select,
 #sortPoints,
 #sortStudents,
@@ -3194,6 +3193,53 @@ body.dark-theme .kebab-dropdown .kebab-item.danger:hover {
     max-width: 220px !important;
     display: inline-block !important;
     margin: 0 !important;
+}
+
+/* Centered Form Stacks (Single Score, View Score, Behavior, Attendance, Reminders) */
+.single-score-centered-container,
+.view-score-centered-container,
+.behavior-form-centered-container,
+.attendance-form-centered-container,
+.reminder-form-centered-container {
+    max-width: 580px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+}
+
+.single-score-centered-container select,
+.single-score-centered-container input,
+.view-score-centered-container select,
+.view-score-centered-container input,
+.behavior-form-centered-container select,
+.behavior-form-centered-container input,
+.attendance-form-centered-container select,
+.attendance-form-centered-container input,
+.reminder-form-centered-container select,
+.reminder-form-centered-container input,
+#directSubjectSelect,
+#directClassSelect,
+#directQuizSelect,
+#ledgerSubjectSelect,
+#ledgerClassSelect,
+#ledgerQuizSelect,
+#ledgerSortSelect,
+#attSessionSubject,
+#attSessionClass {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+.single-score-centered-container button,
+#loadDirectStudentsBtn {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 /* 3. Keep inputs inside flex rows (side-by-side forms) aligned without bottom margins */
@@ -6463,11 +6509,11 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
 .reminder-deploy-split-pill {
     display: inline-flex;
     align-items: stretch;
-    background: var(--card-bg, #ffffff) !important;
-    color: var(--text-dark, #0f172a) !important;
-    border: 1.5px solid var(--border-color, #cbd5e1) !important;
-    border-radius: 9999px !important;
-    box-shadow: none !important;
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25) !important;
     overflow: hidden;
     height: 38px !important;
     min-height: 38px !important;
@@ -6475,12 +6521,12 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
     width: auto !important;
     margin: 0 !important;
     padding: 0 !important;
-    transition: border-color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .reminder-deploy-split-pill:hover {
-    border-color: #94a3b8 !important;
-    box-shadow: none !important;
+    background: #dc2626 !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35) !important;
 }
 
 .reminder-deploy-main-btn,
@@ -6501,7 +6547,7 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
 
 .reminder-deploy-main-btn {
     background: transparent !important;
-    color: var(--text-dark, #0f172a) !important;
+    color: #ffffff !important;
     border: none !important;
     height: 38px !important;
     min-height: 38px !important;
@@ -6522,13 +6568,13 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
 }
 
 .reminder-deploy-main-btn:hover {
-    background: #f1f5f9 !important;
-    color: var(--primary-blue, #1e5eff) !important;
+    background: rgba(0, 0, 0, 0.12) !important;
+    color: #ffffff !important;
 }
 
 .reminder-deploy-divider {
     width: 1px;
-    background: var(--border-color, #cbd5e1) !important;
+    background: rgba(255, 255, 255, 0.25) !important;
     align-self: stretch;
     flex-shrink: 0;
     margin: 0 !important;
@@ -6553,7 +6599,7 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
 
 .reminder-deploy-arrow-btn {
     background: transparent !important;
-    color: var(--text-dark, #0f172a) !important;
+    color: #ffffff !important;
     border: none !important;
     height: 38px !important;
     min-height: 38px !important;
@@ -6570,8 +6616,8 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
 }
 
 .reminder-deploy-arrow-btn:hover {
-    background: #f1f5f9 !important;
-    color: var(--primary-blue, #1e5eff) !important;
+    background: rgba(0, 0, 0, 0.12) !important;
+    color: #ffffff !important;
 }
 
 .reminder-deploy-arrow-btn svg {
@@ -6584,41 +6630,44 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
 
 body.dark-theme .reminder-deploy-split-pill,
 body.dark-mode .reminder-deploy-split-pill {
-    background: #111c44 !important;
-    border-color: #1b254b !important;
-    box-shadow: none !important;
+    background: #ef4444 !important;
+    border: none !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
 }
 
 body.dark-theme .reminder-deploy-split-pill:hover,
 body.dark-mode .reminder-deploy-split-pill:hover {
-    border-color: #2e3d75 !important;
+    background: #dc2626 !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
 }
 
 body.dark-theme .reminder-deploy-main-btn,
 body.dark-mode .reminder-deploy-main-btn {
-    color: #f4f7fe !important;
+    color: #ffffff !important;
 }
 
 body.dark-theme .reminder-deploy-main-btn:hover,
 body.dark-mode .reminder-deploy-main-btn:hover {
-    background: #172250 !important;
-    color: #60a5fa !important;
+    background: rgba(0, 0, 0, 0.16) !important;
+    color: #ffffff !important;
 }
 
 body.dark-theme .reminder-deploy-divider,
 body.dark-mode .reminder-deploy-divider {
-    background: #1b254b !important;
+    background: rgba(255, 255, 255, 0.25) !important;
 }
 
 body.dark-theme .reminder-deploy-arrow-btn,
 body.dark-mode .reminder-deploy-arrow-btn {
-    color: #f4f7fe !important;
+    color: #ffffff !important;
 }
 
 body.dark-theme .reminder-deploy-arrow-btn:hover,
 body.dark-mode .reminder-deploy-arrow-btn:hover {
-    background: #172250 !important;
-    color: #60a5fa !important;
+    background: rgba(0, 0, 0, 0.16) !important;
+    color: #ffffff !important;
 }
 
 /* 5. Dropdown Menu for Deploy Options */

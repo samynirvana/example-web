@@ -16,7 +16,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="admin.css?v=384">
+    <link rel="stylesheet" href="admin.css?v=388">
 </head>
 
 <body>
@@ -827,29 +827,27 @@
 
                             <!-- Single / Direct Score Input Mode -->
                             <div id="scoreInputSingleView">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="directSubjectSelect">Subject:</label>
-                                        <select id="directSubjectSelect">
+                                <div class="single-score-centered-container" style="max-width: 580px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 15px;">
+                                    <div class="form-group" style="margin: 0; width: 100%;">
+                                        <label for="directSubjectSelect" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Subject:</label>
+                                        <select id="directSubjectSelect" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                             <option value="">-- Select Subject --</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="directClassSelect">Class:</label>
-                                        <select id="directClassSelect">
+                                    <div class="form-group" style="margin: 0; width: 100%;">
+                                        <label for="directClassSelect" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Class:</label>
+                                        <select id="directClassSelect" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                             <option value="">-- Select Class --</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="directQuizSelect">Quiz Name:</label>
-                                        <select id="directQuizSelect">
+                                    <div class="form-group" style="margin: 0; width: 100%;">
+                                        <label for="directQuizSelect" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Quiz Name:</label>
+                                        <select id="directQuizSelect" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                             <option value="">-- Select Quiz --</option>
                                         </select>
                                     </div>
-                                    <div style="flex: 0 0 auto;">
-                                        <button id="loadDirectStudentsBtn" style="background: var(--primary-blue);">Load
-                                            Class
-                                            Roster</button>
+                                    <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px; width: 100%;">
+                                        <button id="loadDirectStudentsBtn" style="background: var(--primary-blue); height: 44px; padding: 0 28px; border-radius: 10px; font-size: 14px; font-weight: 700; color: #fff; border: none; cursor: pointer;">Load Class Roster</button>
                                     </div>
                                 </div>
 
@@ -1131,39 +1129,38 @@
                         <div class="box">
                             <h3 style="margin-top:0; margin-bottom: 16px;">View Score</h3>
 
-                            <div class="form-row">
-                                <!-- ADDED: Subject Dropdown -->
-                                <div class="form-group">
-                                    <label for="ledgerSubjectSelect">Subject:</label>
-                                    <select id="ledgerSubjectSelect">
+                            <div class="view-score-centered-container" style="max-width: 580px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 15px;">
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="ledgerSubjectSelect" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Subject:</label>
+                                    <select id="ledgerSubjectSelect" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                         <option value="">-- Choose a Subject --</option>
                                     </select>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="ledgerClassSelect">Class:</label>
-                                    <select id="ledgerClassSelect">
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="ledgerClassSelect" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Class:</label>
+                                    <select id="ledgerClassSelect" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                         <option value="">-- Choose a Class --</option>
                                     </select>
                                 </div>
 
-                                <div class="form-group" style="flex: 1.5;">
-                                    <label for="ledgerQuizSelect">Quiz / Review:</label>
-                                    <select id="ledgerQuizSelect">
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="ledgerQuizSelect" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Quiz / Review:</label>
+                                    <select id="ledgerQuizSelect" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                         <option value="">-- Choose a Quiz / Review --</option>
                                     </select>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="ledgerSortSelect">Sort Order:</label>
-                                    <select id="ledgerSortSelect">
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="ledgerSortSelect" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Sort Order:</label>
+                                    <select id="ledgerSortSelect" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                         <option value="name_asc">Name (A-Z)</option>
                                         <option value="score_desc">Highest Score</option>
                                         <option value="score_asc">Lowest Score</option>
                                     </select>
                                 </div>
 
-                                <div style="flex: 0 0 auto; display: flex; align-items: flex-end;">
+                                <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px; width: 100%;">
                                     <div class="score-ledger-split-wrap"
                                         style="position: relative; display: inline-flex; align-items: center;">
                                         <div class="score-ledger-split-pill">
@@ -1268,155 +1265,123 @@
                                 </div>
                             </div>
 
-                            <!-- Form Controls Grid -->
-                            <div class="form-row" style="margin-bottom: 16px;">
-                                <div class="form-group" style="flex: 1; min-width: 180px;">
-                                    <label for="reminderSubjectSelect">Subject: <span
-                                            style="color: #ef4444;">*</span></label>
-                                    <select id="reminderSubjectSelect">
+                            <!-- Form Controls (Login-Style Centered Stacked Layout) -->
+                            <div class="reminder-form-centered-container" style="max-width: 580px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 15px;">
+                                <!-- 1. Subject -->
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="reminderSubjectSelect" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Subject: <span style="color: #ef4444;">*</span></label>
+                                    <select id="reminderSubjectSelect" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                         <option value="">-- Select Subject --</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="flex: 1; min-width: 180px;">
-                                    <label for="reminderClassSelect">Class: <span
-                                            style="color: #ef4444;">*</span></label>
-                                    <select id="reminderClassSelect">
+
+                                <!-- 2. Class -->
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="reminderClassSelect" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Class: <span style="color: #ef4444;">*</span></label>
+                                    <select id="reminderClassSelect" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                         <option value="">-- Select Class --</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="flex: 1.5; min-width: 220px;">
-                                    <label for="reminderAssignmentSelect">Assignment Name: <span
-                                            style="color: #ef4444;">*</span></label>
-                                    <select id="reminderAssignmentSelect">
+
+                                <!-- 3. Assignment -->
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="reminderAssignmentSelect" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Assignment: <span style="color: #ef4444;">*</span></label>
+                                    <select id="reminderAssignmentSelect" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                         <option value="">-- Choose Subject & Class First --</option>
                                     </select>
                                 </div>
-                            </div>
 
-                            <!-- Optional Custom Assignment Name (shown when user chooses "+ Enter Custom Assignment Name") -->
-                            <div id="reminderCustomAssignmentWrapper" class="hidden" style="margin-bottom: 16px;">
-                                <label for="reminderCustomAssignmentInput">Custom Assignment Title: <span
-                                        style="color: #ef4444;">*</span></label>
-                                <input type="text" id="reminderCustomAssignmentInput"
-                                    placeholder="e.g. Science Chapter 3 Lab Report">
-                            </div>
-
-                            <!-- Due Date & Instructions Row -->
-                            <div class="form-row" style="margin-bottom: 18px;">
-                                <div class="form-group" style="flex: 1; min-width: 180px;">
-                                    <label for="reminderDueDateInput">Submission Due Date: <span
-                                            style="color: #ef4444;">*</span></label>
-                                    <input type="date" id="reminderDueDateInput"
-                                        style="height: 42px; border-radius: 8px;">
+                                <!-- Optional Custom Assignment Name (shown when user chooses "+ Enter Custom Assignment Name") -->
+                                <div id="reminderCustomAssignmentWrapper" class="hidden" style="margin: 0; width: 100%;">
+                                    <label for="reminderCustomAssignmentInput" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Custom Assignment Title: <span style="color: #ef4444;">*</span></label>
+                                    <input type="text" id="reminderCustomAssignmentInput" placeholder="e.g. Science Chapter 3 Lab Report" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                 </div>
-                                <div class="form-group" style="flex: 2; min-width: 240px;">
-                                    <label for="reminderNotesInput">Additional Instructions / Notes (Optional):</label>
-                                    <input type="text" id="reminderNotesInput"
-                                        placeholder="e.g. Submit via Google Classroom or printed worksheet">
-                                </div>
-                            </div>
 
-                            <!-- Student Roster Selector Box -->
-                            <!-- Student Roster Selector Box -->
-                            <div class="reminder-roster-box" style="margin-bottom: 20px;">
-                                <div class="reminder-roster-header"
-                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <label
-                                            style="margin: 0; font-size: 13.5px; font-weight: 700; color: var(--text-dark);">
-                                            Select Students for Reminder:
-                                        </label>
-                                        <span id="reminderStudentCountBadge"
-                                            style="background: rgba(30, 94, 255, 0.1); color: var(--primary-blue, #1e5eff); font-weight: 700; font-size: 12px; padding: 2px 10px; border-radius: 20px;">
-                                            0 Selected
-                                        </span>
+                                <!-- 4. Due Date -->
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="reminderDueDateInput" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Due Date: <span style="color: #ef4444;">*</span></label>
+                                    <input type="date" id="reminderDueDateInput" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
+                                </div>
+
+                                <!-- 5. Notes -->
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="reminderNotesInput" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Notes:</label>
+                                    <input type="text" id="reminderNotesInput" placeholder="e.g. Submit via Google Classroom or printed worksheet" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
+                                </div>
+
+                                <!-- Student Roster Selector Box -->
+                                <div class="reminder-roster-box" style="margin-top: 6px; width: 100%;">
+                                    <div class="reminder-roster-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <label style="margin: 0; font-size: 13px; font-weight: 700; color: var(--text-dark); text-align: left;">
+                                                Select Students:
+                                            </label>
+                                            <span id="reminderStudentCountBadge" style="background: rgba(30, 94, 255, 0.1); color: var(--primary-blue, #1e5eff); font-weight: 700; font-size: 12px; padding: 2px 10px; border-radius: 20px;">
+                                                0 Selected
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Scrollable Checkbox Grid -->
+                                    <div id="reminderStudentListContainer" style="max-height: 280px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; padding: 8px; border: 1px solid var(--border-color, #e2e8f0); border-radius: 10px; background: var(--bg-hover, #f8fafc);">
+                                        <div style="grid-column: 1 / -1; text-align: center; color: var(--text-gray); padding: 20px; font-size: 13px;">
+                                            Please select a Class above to load students.
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- Scrollable Checkbox Grid -->
-                                <div id="reminderStudentListContainer"
-                                    style="max-height: 280px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; padding: 6px 2px;">
-                                    <div
-                                        style="grid-column: 1 / -1; text-align: center; color: var(--text-gray); padding: 20px; font-size: 13px;">
-                                        Please select a Class above to load students.
-                                    </div>
-                                </div>
-                            </div>
+                                <!-- Deploy Button Section (Centered, compact split pill with dropdown menu) -->
+                                <div class="reminder-deploy-bar" style="display: flex; justify-content: center; align-items: center; margin-top: 10px; width: 100%;">
+                                    <div class="reminder-deploy-split-wrap" style="position: relative; display: inline-flex; align-items: center;">
+                                        <div class="reminder-deploy-split-pill">
+                                            <button type="button" id="btnDeployReminders" class="reminder-deploy-main-btn" title="Deploy Assignment Reminder to selected students">
+                                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M22 2L11 13"></path>
+                                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                                </svg>
+                                                <span>Deploy</span>
+                                            </button>
+                                            <div class="reminder-deploy-divider"></div>
+                                            <button type="button" id="btnReminderDeployMenuToggle" class="reminder-deploy-arrow-btn" aria-label="More deploy options" aria-haspopup="true" aria-expanded="false" title="Choose options">
+                                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                                </svg>
+                                            </button>
+                                        </div>
 
-                            <!-- Deploy Button Section (Centered, compact split pill with dropdown menu) -->
-                            <div class="reminder-deploy-bar"
-                                style="display: flex; justify-content: center; align-items: center; margin-top: 14px; width: 100%;">
-                                <div class="reminder-deploy-split-wrap"
-                                    style="position: relative; display: inline-flex; align-items: center;">
-                                    <div class="reminder-deploy-split-pill">
-                                        <button type="button" id="btnDeployReminders" class="reminder-deploy-main-btn"
-                                            title="Deploy Assignment Reminder to selected students">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path d="M22 2L11 13"></path>
-                                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                                            </svg>
-                                            <span>Deploy</span>
-                                        </button>
-                                        <div class="reminder-deploy-divider"></div>
-                                        <button type="button" id="btnReminderDeployMenuToggle"
-                                            class="reminder-deploy-arrow-btn" aria-label="More deploy options"
-                                            aria-haspopup="true" aria-expanded="false" title="Choose options">
-                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2.4">
-                                                <polyline points="6 9 12 15 18 9"></polyline>
-                                            </svg>
-                                        </button>
-                                    </div>
-
-                                    <!-- Floating Dropdown Menu -->
-                                    <div id="reminderDeployDropdownMenu" class="reminder-deploy-dropdown hidden">
-                                        <button type="button" id="reminderSelectAllBtn"
-                                            class="reminder-deploy-dropdown-item" title="Select all students in list">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <polyline points="9 11 12 14 22 4"></polyline>
-                                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11">
-                                                </path>
-                                            </svg>
-                                            <span>Select All</span>
-                                        </button>
-                                        <button type="button" id="reminderDeselectAllBtn"
-                                            class="reminder-deploy-dropdown-item" title="Clear selection">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                                            </svg>
-                                            <span>Clear</span>
-                                        </button>
-                                        <div class="reminder-deploy-dropdown-divider"></div>
-                                        <button type="button" id="btnMenuDeploySelected"
-                                            class="reminder-deploy-dropdown-item"
-                                            title="Deploy reminder to currently selected students">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <polyline points="20 6 9 17 4 12"></polyline>
-                                            </svg>
-                                            <span>Deploy to Selected (<span id="reminderDropdownCount">0</span>)</span>
-                                        </button>
-                                        <button type="button" id="btnMenuDeployAllClass"
-                                            class="reminder-deploy-dropdown-item"
-                                            title="Select all students in class and deploy reminder">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                                <circle cx="9" cy="7" r="4"></circle>
-                                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                            </svg>
-                                            <span>Deploy to Entire Class</span>
-                                        </button>
+                                        <!-- Floating Dropdown Menu -->
+                                        <div id="reminderDeployDropdownMenu" class="reminder-deploy-dropdown hidden">
+                                            <button type="button" id="reminderSelectAllBtn" class="reminder-deploy-dropdown-item" title="Select all students in list">
+                                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="9 11 12 14 22 4"></polyline>
+                                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                                                </svg>
+                                                <span>Select All</span>
+                                            </button>
+                                            <button type="button" id="reminderDeselectAllBtn" class="reminder-deploy-dropdown-item" title="Clear selection">
+                                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                                <span>Clear</span>
+                                            </button>
+                                            <div class="reminder-deploy-dropdown-divider"></div>
+                                            <button type="button" id="btnMenuDeploySelected" class="reminder-deploy-dropdown-item" title="Deploy reminder to currently selected students">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                                <span>Deploy to Selected (<span id="reminderDropdownCount">0</span>)</span>
+                                            </button>
+                                            <button type="button" id="btnMenuDeployAllClass" class="reminder-deploy-dropdown-item" title="Select all students in class and deploy reminder">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                    <circle cx="9" cy="7" r="4"></circle>
+                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                </svg>
+                                                <span>Deploy to Entire Class</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1476,8 +1441,7 @@
                                 </div>
                                 <div class="form-group" style="flex: 1.5; min-width: 200px; margin: 0;">
                                     <label for="filterReminderSearch"
-                                        style="font-size: 11.5px; font-weight: 600; margin-bottom: 4px;">Search Student
-                                        or Assignment:</label>
+                                        style="font-size: 11.5px; font-weight: 600; margin-bottom: 4px;">Search:</label>
                                     <input type="text" id="filterReminderSearch" placeholder="Type to filter..."
                                         style="height: 38px; font-size: 12.5px; margin: 0;">
                                 </div>
@@ -1523,42 +1487,44 @@
                         <div class="box" style="grid-column: 1 / -1;">
                             <h3 style="margin-top: 0; margin-bottom: 20px;">Behavior Point</h3>
 
-                            <div class="behavior-form-container">
+                            <div class="behavior-form-centered-container" style="max-width: 580px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 15px;">
 
-                                <!-- Side-by-Side Inputs for Student Name & Reason -->
-                                <div class="behavior-form-row-split">
-                                    <!-- Student Name Row -->
-                                    <div class="form-group">
-                                        <label for="pointStudentName">Student Name:</label>
-                                        <div class="autocomplete-container">
-                                            <input type="text" id="pointStudentName"
-                                                placeholder="Search Student Name..." autocomplete="off">
-                                            <div id="nameAutocompleteList" class="autocomplete-items hidden"></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Reason Row -->
-                                    <div class="form-group">
-                                        <label for="pointReason">Reason / Event:</label>
-                                        <div class="autocomplete-container">
-                                            <input type="text" id="pointReason"
-                                                placeholder="Reason (Type to search past reasons...)"
-                                                autocomplete="off">
-                                            <div id="reasonAutocompleteList" class="autocomplete-items hidden"></div>
-                                        </div>
+                                <!-- Student Name Row -->
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="pointStudentName" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Student Name:</label>
+                                    <div class="autocomplete-container" style="position: relative; width: 100%;">
+                                        <input type="text" id="pointStudentName"
+                                            placeholder="Search Student Name..." autocomplete="off"
+                                            style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
+                                        <div id="nameAutocompleteList" class="autocomplete-items hidden"></div>
                                     </div>
                                 </div>
 
-                                <!-- Behavior Points Input and Action Row -->
-                                <div class="form-group">
-                                    <label for="customPointValue">Point Amount & Action:</label>
-                                    <div class="behavior-action-row">
-                                        <input type="number" id="customPointValue"
-                                            placeholder="Custom +/- (e.g. 5 or -2)" step="0.1">
-                                        <button id="saveCustomPointBtn" style="background: var(--purple-header);">
-                                            Submit Points
-                                        </button>
+                                <!-- Reason Row -->
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="pointReason" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Reason / Event:</label>
+                                    <div class="autocomplete-container" style="position: relative; width: 100%;">
+                                        <input type="text" id="pointReason"
+                                            placeholder="Reason (Type to search past reasons...)"
+                                            autocomplete="off"
+                                            style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
+                                        <div id="reasonAutocompleteList" class="autocomplete-items hidden"></div>
                                     </div>
+                                </div>
+
+                                <!-- Behavior Points Input Row -->
+                                <div class="form-group" style="margin: 0; width: 100%;">
+                                    <label for="customPointValue" style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Point Amount & Action:</label>
+                                    <input type="number" id="customPointValue"
+                                        placeholder="Custom +/- (e.g. 5 or -2)" step="0.1"
+                                        style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
+                                </div>
+
+                                <!-- Submit Points Button Centered -->
+                                <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px; width: 100%;">
+                                    <button id="saveCustomPointBtn" style="background: var(--purple-header); height: 44px; padding: 0 28px; border-radius: 10px; font-size: 14px; font-weight: 700; color: #fff; border: none; cursor: pointer;">
+                                        Submit Points
+                                    </button>
                                 </div>
 
                             </div>
@@ -2577,13 +2543,12 @@
                             </div>
                         </div>
 
-                        <div
-                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 18px;">
+                        <div class="attendance-form-centered-container" style="max-width: 580px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 15px;">
                             <!-- Date -->
-                            <div>
-                                <label
-                                    style="font-size: 12px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 5px; margin-bottom: 5px;">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            <div class="form-group" style="margin: 0; width: 100%;">
+                                <label for="attSessionDate"
+                                    style="font-size: 13px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 6px; margin-bottom: 6px; text-align: left;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.2">
                                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                                         <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -2592,28 +2557,28 @@
                                     </svg>
                                     Session Date
                                 </label>
-                                <input type="date" id="attSessionDate" style="width: 100%; height: 42px; margin: 0;">
+                                <input type="date" id="attSessionDate" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                             </div>
                             <!-- Subject -->
-                            <div>
-                                <label
-                                    style="font-size: 12px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 5px; margin-bottom: 5px;">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            <div class="form-group" style="margin: 0; width: 100%;">
+                                <label for="attSessionSubject"
+                                    style="font-size: 13px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 6px; margin-bottom: 6px; text-align: left;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.2">
                                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                                         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                                     </svg>
                                     Subject
                                 </label>
-                                <select id="attSessionSubject" style="width: 100%; height: 42px; margin: 0;">
+                                <select id="attSessionSubject" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                     <option value="">-- Select Subject --</option>
                                 </select>
                             </div>
                             <!-- Class -->
-                            <div>
-                                <label
-                                    style="font-size: 12px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 5px; margin-bottom: 5px;">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            <div class="form-group" style="margin: 0; width: 100%;">
+                                <label for="attSessionClass"
+                                    style="font-size: 13px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 6px; margin-bottom: 6px; text-align: left;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.2">
                                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="9" cy="7" r="4"></circle>
@@ -2622,15 +2587,15 @@
                                     </svg>
                                     Target Class
                                 </label>
-                                <select id="attSessionClass" style="width: 100%; height: 42px; margin: 0;">
+                                <select id="attSessionClass" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                     <option value="">-- Select Class --</option>
                                 </select>
                             </div>
                             <!-- Session Title / Notes -->
-                            <div>
-                                <label
-                                    style="font-size: 12px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 5px; margin-bottom: 5px;">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            <div class="form-group" style="margin: 0; width: 100%;">
+                                <label for="attSessionTitle"
+                                    style="font-size: 13px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 6px; margin-bottom: 6px; text-align: left;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.2">
                                         <path
                                             d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
@@ -2640,78 +2605,78 @@
                                     Notes
                                 </label>
                                 <input type="text" id="attSessionTitle" placeholder="e.g. Regular Class / Period 1"
-                                    value="Regular Class" style="width: 100%; height: 42px; margin: 0;">
+                                    value="Regular Class" style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                             </div>
-                        </div>
 
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-                            <div id="attActiveSessionInfo"
-                                style="font-size: 12.5px; color: var(--text-gray); font-style: italic;"></div>
-                            <div class="att-split-btn-wrapper"
-                                style="position: relative; display: inline-flex; align-items: center;">
-                                <div class="att-split-pill">
-                                    <button type="button" id="btnDeployAttendanceSession" class="att-split-main-btn"
-                                        title="Deploy Attendance Call">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2.4">
-                                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                                        </svg>
-                                        <span>Deploy Attendance Call</span>
-                                    </button>
-                                    <div class="att-split-divider"></div>
-                                    <button type="button" id="btnAttendanceMenuToggle" class="att-split-arrow-btn"
-                                        aria-label="More session actions" aria-haspopup="true" aria-expanded="false"
-                                        onclick="toggleAttendanceActionsDropdown(event)" title="More options">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2.5">
-                                            <polyline points="6 9 12 15 18 9"></polyline>
-                                        </svg>
-                                    </button>
-                                </div>
+                            <!-- Centered Deploy Action Bar -->
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 5px; width: 100%; gap: 8px;">
+                                <div id="attActiveSessionInfo"
+                                    style="font-size: 12.5px; color: var(--text-gray); font-style: italic; text-align: center;"></div>
+                                <div class="att-split-btn-wrapper"
+                                    style="position: relative; display: inline-flex; align-items: center;">
+                                    <div class="att-split-pill">
+                                        <button type="button" id="btnDeployAttendanceSession" class="att-split-main-btn"
+                                            title="Deploy Attendance Call">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2.4">
+                                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                            </svg>
+                                            <span>Deploy Attendance Call</span>
+                                        </button>
+                                        <div class="att-split-divider"></div>
+                                        <button type="button" id="btnAttendanceMenuToggle" class="att-split-arrow-btn"
+                                            aria-label="More session actions" aria-haspopup="true" aria-expanded="false"
+                                            onclick="toggleAttendanceActionsDropdown(event)" title="More options">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2.5">
+                                                <polyline points="6 9 12 15 18 9"></polyline>
+                                            </svg>
+                                        </button>
+                                    </div>
 
-                                <!-- Floating Dropdown Menu for Remaining Actions -->
-                                <div id="attActionDropdownMenu" class="att-actions-dropdown hidden">
-                                    <button type="button" id="btnRefreshAttendance" class="att-action-dropdown-item">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2.2">
-                                            <path
-                                                d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
-                                        </svg>
-                                        <span>Refresh Attendance</span>
-                                    </button>
-                                    <button type="button" id="btnExportAttendanceExcel"
-                                        class="att-action-dropdown-item">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#107c41"
-                                            stroke-width="2.2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                            <polyline points="14 2 14 8 20 8"></polyline>
-                                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                                            <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                        <span>Export Excel</span>
-                                    </button>
-                                    <button type="button" id="btnPrintAttendance" class="att-action-dropdown-item">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569"
-                                            stroke-width="2.2">
-                                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                                            <path
-                                                d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
-                                            </path>
-                                            <rect x="6" y="14" width="12" height="8"></rect>
-                                        </svg>
-                                        <span>Print Sheet</span>
-                                    </button>
-                                    <div id="attCloseSessionDivider" class="att-dropdown-divider hidden"></div>
-                                    <button type="button" id="btnCloseAttendanceSession"
-                                        class="att-action-dropdown-item att-danger-item hidden">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ef4444"
-                                            stroke-width="2.2">
-                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                        </svg>
-                                        <span>Close / End Session</span>
-                                    </button>
+                                    <!-- Floating Dropdown Menu for Remaining Actions -->
+                                    <div id="attActionDropdownMenu" class="att-actions-dropdown hidden">
+                                        <button type="button" id="btnRefreshAttendance" class="att-action-dropdown-item">
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2.2">
+                                                <path
+                                                    d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
+                                            </svg>
+                                            <span>Refresh Attendance</span>
+                                        </button>
+                                        <button type="button" id="btnExportAttendanceExcel"
+                                            class="att-action-dropdown-item">
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#107c41"
+                                                stroke-width="2.2">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                <polyline points="14 2 14 8 20 8"></polyline>
+                                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                                <polyline points="10 9 9 9 8 9"></polyline>
+                                            </svg>
+                                            <span>Export Excel</span>
+                                        </button>
+                                        <button type="button" id="btnPrintAttendance" class="att-action-dropdown-item">
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569"
+                                                stroke-width="2.2">
+                                                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                                <path
+                                                    d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+                                                </path>
+                                                <rect x="6" y="14" width="12" height="8"></rect>
+                                            </svg>
+                                            <span>Print Sheet</span>
+                                        </button>
+                                        <div id="attCloseSessionDivider" class="att-dropdown-divider hidden"></div>
+                                        <button type="button" id="btnCloseAttendanceSession"
+                                            class="att-action-dropdown-item att-danger-item hidden">
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ef4444"
+                                                stroke-width="2.2">
+                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                            </svg>
+                                            <span>Close / End Session</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -3584,7 +3549,7 @@
 
     <!-- Navigation & Core Scripts -->
     <script src="studentNav.js?v=379"></script>
-    <script type="module" src="admin.js?v=388"></script>
+    <script type="module" src="admin.js?v=392"></script>
 </body>
 
 </html>
