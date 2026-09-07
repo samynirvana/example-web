@@ -9381,17 +9381,7 @@ function initAssignmentReminderTab() {
             }
         });
 
-        // Search student input
-        document.getElementById('reminderStudentSearchInput')?.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            const items = document.querySelectorAll('.reminder-student-item');
-            items.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                item.style.display = text.includes(query) ? 'flex' : 'none';
-            });
-        });
-
-        // Select All / Deselect All
+        // Select All / Deselect All (Inside Split Button Dropdown Menu)
         document.getElementById('reminderSelectAllBtn')?.addEventListener('click', () => {
             document.querySelectorAll('.reminder-student-cb').forEach(cb => {
                 const parent = cb.closest('.reminder-student-item');
@@ -9400,28 +9390,70 @@ function initAssignmentReminderTab() {
                 }
             });
             updateReminderSelectedCount();
+            closeReminderDeployDropdown();
         });
 
         document.getElementById('reminderDeselectAllBtn')?.addEventListener('click', () => {
             document.querySelectorAll('.reminder-student-cb').forEach(cb => cb.checked = false);
             updateReminderSelectedCount();
+            closeReminderDeployDropdown();
         });
 
-        // Deploy Reminders Button
+        // Deploy Reminders Split Button & Options
         document.getElementById('btnDeployReminders')?.addEventListener('click', deployAssignmentReminders);
+        const menuToggleBtn = document.getElementById('btnReminderDeployMenuToggle');
+        if (menuToggleBtn) {
+            menuToggleBtn.onclick = (e) => {
+                toggleReminderDeployDropdown(e);
+            };
+        }
 
-        // Tracker Table Filters
+        document.getElementById('btnMenuDeploySelected')?.addEventListener('click', () => {
+            closeReminderDeployDropdown();
+            deployAssignmentReminders();
+        });
+
+        document.getElementById('btnMenuDeployAllClass')?.addEventListener('click', () => {
+            closeReminderDeployDropdown();
+            document.querySelectorAll('.reminder-student-cb').forEach(cb => {
+                const parent = cb.closest('.reminder-student-item');
+                if (!parent || parent.style.display !== 'none') {
+                    cb.checked = true;
+                }
+            });
+            updateReminderSelectedCount();
+            deployAssignmentReminders();
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const wrap = document.querySelector('.reminder-deploy-split-wrap');
+            if (wrap && !wrap.contains(e.target)) {
+                closeReminderDeployDropdown();
+            }
+        });
+
+        // Tracker Table Filters & Checkboxes
         document.getElementById('filterReminderClass')?.addEventListener('change', renderAssignmentRemindersTable);
         document.getElementById('filterReminderSubject')?.addEventListener('change', renderAssignmentRemindersTable);
         document.getElementById('filterReminderStatus')?.addEventListener('change', renderAssignmentRemindersTable);
         document.getElementById('filterReminderSearch')?.addEventListener('input', debounce(renderAssignmentRemindersTable, 150));
-        document.getElementById('refreshRemindersBtn')?.addEventListener('click', () => {
-            listenAssignmentReminders();
-        });
+        
+        const reminderTable = document.getElementById('assignmentReminderTable');
+        if (reminderTable) {
+            ['change', 'click', 'input'].forEach(evt => {
+                reminderTable.addEventListener(evt, (e) => {
+                    if (e.target && e.target.classList.contains('reminder-table-row-cb')) {
+                        window.updateBulkDeleteRemindersUI?.();
+                    }
+                });
+            });
+        }
     }
 
     // 4. Start real-time listener for reminder ledger
     listenAssignmentReminders();
+    window.updateBulkDeleteRemindersUI?.();
 }
 
 function populateAssignmentReminderDropdowns() {
@@ -9638,11 +9670,39 @@ async function loadReminderStudents() {
 }
 
 function updateReminderSelectedCount() {
-    const badge = document.getElementById('reminderStudentCountBadge');
-    if (!badge) return;
     const total = document.querySelectorAll('.reminder-student-cb:checked').length;
-    badge.innerText = `${total} Selected`;
+    const badge = document.getElementById('reminderStudentCountBadge');
+    if (badge) {
+        badge.innerText = `${total} Selected`;
+    }
+    const dropdownCount = document.getElementById('reminderDropdownCount');
+    if (dropdownCount) {
+        dropdownCount.innerText = total;
+    }
 }
+
+function toggleReminderDeployDropdown(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    const menu = document.getElementById('reminderDeployDropdownMenu');
+    const btn = document.getElementById('btnReminderDeployMenuToggle');
+    if (!menu) return;
+    const isHidden = menu.classList.contains('hidden');
+    menu.classList.toggle('hidden');
+    if (btn) btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+}
+
+function closeReminderDeployDropdown() {
+    const menu = document.getElementById('reminderDeployDropdownMenu');
+    const btn = document.getElementById('btnReminderDeployMenuToggle');
+    if (menu) menu.classList.add('hidden');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+window.toggleReminderDeployDropdown = toggleReminderDeployDropdown;
+window.closeReminderDeployDropdown = closeReminderDeployDropdown;
 
 async function deployAssignmentReminders() {
     const subject = document.getElementById('reminderSubjectSelect')?.value.trim();
@@ -9720,11 +9780,11 @@ async function deployAssignmentReminders() {
         if (deployBtn) {
             deployBtn.disabled = false;
             deployBtn.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M22 2L11 13"></path>
                     <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                 </svg>
-                <span>Deploy Assignment Reminder</span>`;
+                <span>Deploy</span>`;
         }
     }
 }
@@ -9794,7 +9854,8 @@ function renderAssignmentRemindersTable() {
     });
 
     if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 24px; color: var(--text-gray);">No assignment reminders match your filters.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 24px; color: var(--text-gray);">No assignment reminders match your filters.</td></tr>`;
+        window.updateBulkDeleteRemindersUI?.();
         return;
     }
 
@@ -9829,6 +9890,9 @@ function renderAssignmentRemindersTable() {
 
         html += `
             <tr style="${isCompleted ? 'opacity: 0.65;' : ''}">
+                <td style="text-align: center; padding: 8px 6px;">
+                    <input type="checkbox" class="reminder-table-row-cb" value="${escapeHtml(item.id)}" onchange="window.updateBulkDeleteRemindersUI()" style="width: 16px; height: 16px; cursor: pointer; accent-color: var(--primary-blue); margin: 0;">
+                </td>
                 <td>
                     <div style="font-weight: 700; color: var(--text-dark);">${escapeHtml(item.studentName || 'Student')}</div>
                     <div style="font-size: 11px; color: var(--text-gray); font-family: monospace;">${escapeHtml(item.studentCode || '')}</div>
@@ -9862,6 +9926,7 @@ function renderAssignmentRemindersTable() {
     });
 
     tbody.innerHTML = html;
+    window.updateBulkDeleteRemindersUI?.();
 }
 
 window.toggleReminderKebabMenu = function (e, id) {
@@ -9908,6 +9973,91 @@ window.deleteAssignmentReminder = async function (reminderId) {
         await deleteDoc(doc(db, "assignment_reminders", reminderId));
     } catch (e) {
         alert("Error deleting reminder: " + e.message);
+    }
+};
+
+window.deleteSelectedReminders = async function () {
+    const checkedBoxes = Array.from(document.querySelectorAll('.reminder-table-row-cb:checked'));
+    if (checkedBoxes.length === 0) {
+        alert("Please select at least one reminder to delete.");
+        return;
+    }
+
+    const count = checkedBoxes.length;
+    if (!confirm(`Are you sure you want to delete ${count} selected assignment reminder(s)? This action cannot be undone.`)) {
+        return;
+    }
+
+    const bulkBtn = document.getElementById('btnBulkDeleteReminders');
+    if (bulkBtn) {
+        bulkBtn.disabled = true;
+        bulkBtn.innerHTML = `<span>Deleting ${count}...</span>`;
+    }
+
+    try {
+        const deletePromises = checkedBoxes.map(cb => deleteDoc(doc(db, "assignment_reminders", cb.value)));
+        await Promise.all(deletePromises);
+
+        // Reset master checkbox and selected UI
+        const masterCb = document.getElementById('selectAllRemindersTableCb');
+        if (masterCb) masterCb.checked = false;
+        window.updateBulkDeleteRemindersUI?.();
+
+        alert(`Successfully deleted ${count} assignment reminder(s)!`);
+    } catch (err) {
+        console.error("Error bulk deleting assignment reminders:", err);
+        alert("Failed to delete reminders: " + err.message);
+    } finally {
+        if (bulkBtn) {
+            bulkBtn.disabled = false;
+            window.updateBulkDeleteRemindersUI?.();
+        }
+    }
+};
+
+window.toggleSelectAllReminders = function (masterCb) {
+    const isChecked = !!(masterCb && masterCb.checked);
+    document.querySelectorAll('.reminder-table-row-cb').forEach(cb => {
+        cb.checked = isChecked;
+    });
+    window.updateBulkDeleteRemindersUI?.();
+};
+
+window.updateBulkDeleteRemindersUI = function () {
+    const allRowCbs = document.querySelectorAll('.reminder-table-row-cb');
+    const checked = document.querySelectorAll('.reminder-table-row-cb:checked');
+    const bulkBtn = document.getElementById('btnBulkDeleteReminders');
+    const masterCb = document.getElementById('selectAllRemindersTableCb');
+
+    const count = checked ? checked.length : 0;
+
+    if (bulkBtn) {
+        bulkBtn.innerHTML = `
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span>Delete Selected (<span id="bulkDeleteReminderCount">${count}</span>)</span>`;
+
+        if (count > 0) {
+            bulkBtn.disabled = false;
+            bulkBtn.classList.remove('disabled', 'hidden');
+            bulkBtn.removeAttribute('disabled');
+        } else {
+            bulkBtn.disabled = true;
+            bulkBtn.classList.add('disabled');
+            bulkBtn.setAttribute('disabled', 'true');
+        }
+    }
+
+    if (masterCb) {
+        if (allRowCbs.length === 0) {
+            masterCb.checked = false;
+            masterCb.indeterminate = false;
+        } else {
+            masterCb.checked = (allRowCbs.length === count);
+            masterCb.indeterminate = (count > 0 && count < allRowCbs.length);
+        }
     }
 };
 

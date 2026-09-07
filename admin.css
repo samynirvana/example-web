@@ -25,6 +25,7 @@
     --border-color-hover: oklch(75% 0.06 255);
     --card-bg: #ffffff;
     --card-bg-tint: oklch(99.2% 0.004 245);
+    --bg-hover: #f1f5f9;
 
     /* Dedicated Input & Box Variables */
     --input-bg: oklch(98.5% 0.005 245);
@@ -2792,6 +2793,7 @@ body.dark-mode {
     --border-color: #1b254b;
     --sidebar-bg: #080f28;
     --sidebar-hover: #152046;
+    --bg-hover: #162252;
 
     /* Dedicated Input & Box Variables for Dark Mode */
     --input-bg: #1b254b;
@@ -3682,7 +3684,7 @@ body.dark-theme .multi-select-option-row:hover {
 /* ======================================================
    ROUNDED PILL BUTTON STYLING SYSTEM (LIGHT & DARK THEME)
    ====================================================== */
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn),
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders),
 .btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle),
 .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle),
 .add-btn,
@@ -3705,7 +3707,7 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     transition: all 0.2s ease !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):hover,
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):hover,
 .btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle):hover,
 .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle):hover,
 .add-btn:hover,
@@ -3718,14 +3720,14 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):active,
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):active,
 .btn:not(.dropdown-item):not(.kebab-item):active {
     transform: translateY(0) !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 /* Dark Theme Overrides for Admin Buttons */
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass),
+body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders),
 body.dark-theme .btn:not(.dropdown-item):not(.kebab-item),
 body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn),
 body.dark-theme .add-btn,
@@ -3738,7 +3740,7 @@ body.dark-theme .modal-btn {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):hover,
+body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):hover,
 body.dark-theme .btn:not(.dropdown-item):not(.kebab-item):hover,
 body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):hover,
 body.dark-theme .add-btn:hover,
@@ -6298,6 +6300,449 @@ body.dark-mode .desktop-user-actions .theme-icon-moon,
 body.dark-mode .desktop-user-actions svg.theme-icon-moon {
     display: none !important;
 }
+
+/* ==========================================================================
+   ASSIGNMENT REMINDER - ROSTER BOX & CONTROLS REFINEMENT
+   ========================================================================== */
+
+/* 1. Student Roster Box Container (No extra nested card or background) */
+.reminder-roster-box {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 16px;
+    box-shadow: none !important;
+}
+
+body.dark-theme .reminder-roster-box,
+body.dark-mode .reminder-roster-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 2. Roster Header & Search/Select Controls */
+.reminder-roster-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.reminder-select-pill-group {
+    display: inline-flex;
+    align-items: stretch;
+    background: var(--card-bg, #ffffff);
+    border: 1.5px solid var(--border-color, #cbd5e1);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 34px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+body.dark-theme .reminder-select-pill-group,
+body.dark-mode .reminder-select-pill-group {
+    background: #15214d !important;
+    border-color: #243269 !important;
+}
+
+.reminder-select-pill-btn,
+.reminder-select-pill-btn:hover,
+.reminder-select-pill-btn:focus,
+.reminder-select-pill-btn:active {
+    outline: none !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.reminder-select-pill-btn {
+    background: transparent !important;
+    color: var(--text-dark, #334155) !important;
+    border: none !important;
+    height: 100% !important;
+    width: auto !important;
+    padding: 0 12px !important;
+    margin: 0 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.reminder-select-pill-btn:hover {
+    background: var(--bg-hover, #f1f5f9) !important;
+    color: var(--primary-blue, #1e5eff) !important;
+}
+
+body.dark-theme .reminder-select-pill-btn,
+body.dark-mode .reminder-select-pill-btn {
+    color: #cbd5e1 !important;
+}
+
+body.dark-theme .reminder-select-pill-btn:hover,
+body.dark-mode .reminder-select-pill-btn:hover {
+    background: #1e2e6b !important;
+    color: #60a5fa !important;
+}
+
+.reminder-select-pill-divider {
+    width: 1px;
+    background: var(--border-color, #cbd5e1);
+    align-self: stretch;
+}
+
+body.dark-theme .reminder-select-pill-divider,
+body.dark-mode .reminder-select-pill-divider {
+    background: #243269 !important;
+}
+
+/* 3. Student Checkbox Items */
+.reminder-student-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.reminder-student-item:hover {
+    border-color: var(--primary-blue, #1e5eff) !important;
+}
+
+.reminder-student-item:has(.reminder-student-cb:checked) {
+    border-color: var(--primary-blue, #1e5eff) !important;
+    background: rgba(30, 94, 255, 0.08) !important;
+}
+
+body.dark-theme .reminder-student-item,
+body.dark-mode .reminder-student-item {
+    background: #111c44 !important;
+    border-color: #1e2a5a !important;
+    color: #f4f7fe !important;
+}
+
+body.dark-theme .reminder-student-item:hover,
+body.dark-mode .reminder-student-item:hover {
+    background: #172458 !important;
+    border-color: #3b82f6 !important;
+}
+
+body.dark-theme .reminder-student-item:has(.reminder-student-cb:checked),
+body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
+    background: rgba(30, 94, 255, 0.2) !important;
+    border-color: #3b82f6 !important;
+}
+
+/* 4. Centered Split Pill Deploy Button */
+.reminder-deploy-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+    width: 100%;
+}
+
+.reminder-deploy-split-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: auto !important;
+}
+
+.reminder-deploy-split-pill {
+    display: inline-flex;
+    align-items: stretch;
+    background: var(--card-bg, #ffffff) !important;
+    color: var(--text-dark, #0f172a) !important;
+    border: 1.5px solid var(--border-color, #cbd5e1) !important;
+    border-radius: 9999px !important;
+    box-shadow: none !important;
+    overflow: hidden;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transition: border-color 0.2s ease;
+}
+
+.reminder-deploy-split-pill:hover {
+    border-color: #94a3b8 !important;
+    box-shadow: none !important;
+}
+
+.reminder-deploy-main-btn,
+.reminder-deploy-main-btn:hover,
+.reminder-deploy-main-btn:focus,
+.reminder-deploy-main-btn:active {
+    outline: none !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.reminder-deploy-main-btn {
+    background: transparent !important;
+    color: var(--text-dark, #0f172a) !important;
+    border: none !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    width: auto !important;
+    align-self: stretch !important;
+    padding: 0 18px !important;
+    margin: 0 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+}
+
+.reminder-deploy-main-btn:hover {
+    background: #f1f5f9 !important;
+    color: var(--primary-blue, #1e5eff) !important;
+}
+
+.reminder-deploy-divider {
+    width: 1px;
+    background: var(--border-color, #cbd5e1) !important;
+    align-self: stretch;
+    flex-shrink: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.reminder-deploy-arrow-btn,
+.reminder-deploy-arrow-btn:hover,
+.reminder-deploy-arrow-btn:focus,
+.reminder-deploy-arrow-btn:active {
+    outline: none !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.reminder-deploy-arrow-btn {
+    background: transparent !important;
+    color: var(--text-dark, #0f172a) !important;
+    border: none !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    width: auto !important;
+    align-self: stretch !important;
+    padding: 0 12px !important;
+    margin: 0 !important;
+    cursor: pointer;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.reminder-deploy-arrow-btn:hover {
+    background: #f1f5f9 !important;
+    color: var(--primary-blue, #1e5eff) !important;
+}
+
+.reminder-deploy-arrow-btn svg {
+    transition: transform 0.2s ease;
+}
+
+.reminder-deploy-arrow-btn[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+}
+
+body.dark-theme .reminder-deploy-split-pill,
+body.dark-mode .reminder-deploy-split-pill {
+    background: #111c44 !important;
+    border-color: #1b254b !important;
+    box-shadow: none !important;
+}
+
+body.dark-theme .reminder-deploy-split-pill:hover,
+body.dark-mode .reminder-deploy-split-pill:hover {
+    border-color: #2e3d75 !important;
+}
+
+body.dark-theme .reminder-deploy-main-btn,
+body.dark-mode .reminder-deploy-main-btn {
+    color: #f4f7fe !important;
+}
+
+body.dark-theme .reminder-deploy-main-btn:hover,
+body.dark-mode .reminder-deploy-main-btn:hover {
+    background: #172250 !important;
+    color: #60a5fa !important;
+}
+
+body.dark-theme .reminder-deploy-divider,
+body.dark-mode .reminder-deploy-divider {
+    background: #1b254b !important;
+}
+
+body.dark-theme .reminder-deploy-arrow-btn,
+body.dark-mode .reminder-deploy-arrow-btn {
+    color: #f4f7fe !important;
+}
+
+body.dark-theme .reminder-deploy-arrow-btn:hover,
+body.dark-mode .reminder-deploy-arrow-btn:hover {
+    background: #172250 !important;
+    color: #60a5fa !important;
+}
+
+/* 5. Dropdown Menu for Deploy Options */
+.reminder-deploy-dropdown {
+    position: absolute;
+    top: calc(100% + 6px) !important;
+    bottom: auto !important;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 250px;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #cbd5e1);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    padding: 6px;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.reminder-deploy-dropdown.hidden {
+    display: none !important;
+}
+
+body.dark-theme .reminder-deploy-dropdown,
+body.dark-mode .reminder-deploy-dropdown {
+    background: #111c44 !important;
+    border-color: #243269 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+}
+
+.reminder-deploy-dropdown-item {
+    background: transparent !important;
+    color: var(--text-dark, #1e293b) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
+    width: 100% !important;
+    text-align: left;
+    padding: 9px 12px !important;
+    margin: 0 !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    gap: 9px;
+    transition: background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+}
+
+.reminder-deploy-dropdown-item:hover {
+    background: var(--bg-hover, #f1f5f9) !important;
+    color: var(--primary-blue, #1e5eff) !important;
+}
+
+body.dark-theme .reminder-deploy-dropdown-item,
+body.dark-mode .reminder-deploy-dropdown-item {
+    color: #e2e8f0 !important;
+}
+
+body.dark-theme .reminder-deploy-dropdown-item:hover,
+body.dark-mode .reminder-deploy-dropdown-item:hover {
+    background: #172458 !important;
+    color: #60a5fa !important;
+}
+
+.reminder-deploy-dropdown-divider {
+    height: 1px;
+    background: var(--border-color, #e2e8f0);
+    margin: 4px 0;
+}
+
+body.dark-theme .reminder-deploy-dropdown-divider,
+body.dark-mode .reminder-deploy-dropdown-divider {
+    background: #243269 !important;
+}
+
+/* 6. Bulk Delete Button in Reminders Table */
+#btnBulkDeleteReminders {
+    width: auto !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    padding: 0 16px !important;
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25) !important;
+    transition: all 0.2s ease !important;
+    margin: 0 !important;
+}
+
+#btnBulkDeleteReminders:hover:not(:disabled) {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+    transform: none !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35) !important;
+}
+
+#btnBulkDeleteReminders:disabled,
+#btnBulkDeleteReminders.disabled {
+    opacity: 0.45 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+    pointer-events: none !important;
+}
+
+#btnBulkDeleteReminders.hidden {
+    display: none !important;
+}
+
 
 
 
