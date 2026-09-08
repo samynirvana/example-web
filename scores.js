@@ -46,9 +46,21 @@ document.getElementById('studentLogoutBtn')?.addEventListener('click', () => {
 
 let quizTypeCatalog = {};
 
-// --- FETCH QUIZ TYPES FROM DATABASE CATALOG ---
+// --- FETCH QUIZ TYPES FROM DATABASE CATALOG (CACHED) ---
 async function fetchQuizTypeCatalog() {
     try {
+        const cacheKey = 'scores_quiz_type_catalog';
+        const cacheTimeKey = 'scores_quiz_type_catalog_time';
+        const cached = localStorage.getItem(cacheKey);
+        const cachedTime = localStorage.getItem(cacheTimeKey);
+        const now = Date.now();
+        if (cached && cachedTime && (now - Number(cachedTime) < 60 * 60 * 1000)) {
+            try {
+                quizTypeCatalog = JSON.parse(cached);
+                return;
+            } catch (e) {}
+        }
+
         const [qSnap, sysSnap] = await Promise.all([
             getDocs(collection(db, "quizzes")),
             getDocs(collection(db, "system_quizzes"))
@@ -63,6 +75,9 @@ async function fetchQuizTypeCatalog() {
             const title = (data.name || data.title || data.quizName || d.id).trim().toLowerCase();
             if (data.type && title) quizTypeCatalog[title] = data.type;
         });
+
+        localStorage.setItem(cacheKey, JSON.stringify(quizTypeCatalog));
+        localStorage.setItem(cacheTimeKey, now.toString());
     } catch (e) {
         console.warn("Could not fetch quiz catalog:", e);
     }
@@ -120,6 +135,9 @@ function initRealTimeScoresListener(studentCode) {
 
     const scoreQuery = query(collection(db, "exam_scores"), where("studentCode", "==", upperCode));
 
+    let hasCheckedLegacy = false;
+    let cachedLegacyRecords = [];
+
     unsubscribeScoresListener = onSnapshot(scoreQuery, async (snapshot) => {
         const scoresMap = new Map();
         const optionsSet = new Set();
@@ -143,8 +161,8 @@ function initRealTimeScoresListener(studentCode) {
             if (subject) subjectsSet.add(subject);
         });
 
-        // 1. Check lowercase studentCode in exam_scores if different
-        if (upperCode !== lowerCode) {
+        // 1. Check lowercase studentCode in exam_scores if different (only if upper had no scores)
+        if (upperCode !== lowerCode && scoresMap.size === 0) {
             try {
                 const lowerSnap = await getDocs(query(collection(db, "exam_scores"), where("studentCode", "==", lowerCode)));
                 lowerSnap.forEach(docSnap => {
@@ -169,32 +187,41 @@ function initRealTimeScoresListener(studentCode) {
             } catch (e) { }
         }
 
-        // 2. Check legacy "scores" collection ONLY for exams not already in exam_scores
-        try {
-            const legacySnap = await getDocs(query(collection(db, "scores"), where("studentCode", "==", upperCode)));
-            legacySnap.forEach(docSnap => {
-                const data = docSnap.data();
-                const examTitle = (data.quizTitle || data.examName || docSnap.id).trim();
-                const normTitle = examTitle.toLowerCase();
+        // 2. Check legacy "scores" collection ONLY once on initial snapshot
+        if (!hasCheckedLegacy) {
+            try {
+                const legacySnap = await getDocs(query(collection(db, "scores"), where("studentCode", "==", upperCode)));
+                cachedLegacyRecords = [];
+                legacySnap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    cachedLegacyRecords.push({ id: docSnap.id, ...data });
+                });
+                hasCheckedLegacy = true;
+            } catch (e) { }
+        }
 
-                if (!scoresMap.has(normTitle) && data.score !== undefined && data.score !== null && !isNaN(parseFloat(data.score))) {
-                    const subject = resolveSubject(data.subject, examTitle);
-                    scoresMap.set(normTitle, {
-                        id: docSnap.id,
-                        examName: examTitle,
-                        quizName: examTitle,
-                        subject: subject,
-                        score: data.score,
-                        studentCode: upperCode,
-                        studentName: data.studentName,
-                        studentClass: data.studentClass,
-                        type: data.type || resolveScoreType(data)
-                    });
-                    if (examTitle) optionsSet.add(examTitle);
-                    if (subject) subjectsSet.add(subject);
-                }
-            });
-        } catch (e) { }
+        // Merge cached legacy records if not already in exam_scores
+        cachedLegacyRecords.forEach(data => {
+            const examTitle = (data.quizTitle || data.examName || data.id).trim();
+            const normTitle = examTitle.toLowerCase();
+
+            if (!scoresMap.has(normTitle) && data.score !== undefined && data.score !== null && !isNaN(parseFloat(data.score))) {
+                const subject = resolveSubject(data.subject, examTitle);
+                scoresMap.set(normTitle, {
+                    id: data.id,
+                    examName: examTitle,
+                    quizName: examTitle,
+                    subject: subject,
+                    score: data.score,
+                    studentCode: upperCode,
+                    studentName: data.studentName,
+                    studentClass: data.studentClass,
+                    type: data.type || resolveScoreType(data)
+                });
+                if (examTitle) optionsSet.add(examTitle);
+                if (subject) subjectsSet.add(subject);
+            }
+        });
 
         cachedExamScores = Array.from(scoresMap.values());
 

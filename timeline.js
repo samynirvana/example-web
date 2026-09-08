@@ -1,4 +1,4 @@
-import { collection, addDoc, query, where, orderBy, onSnapshot, getDoc, getDocs, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { collection, addDoc, query, where, orderBy, limit, onSnapshot, getDoc, getDocs, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { db, auth } from "./firebase.js";
 import { escapeHtml, formatTimeAgo } from "./utils.js";
@@ -9,6 +9,7 @@ let unsubscribeNotifs = null;
 let allUserNames = [];
 let unsubscribeStudents = null;
 const userPhotoMap = new Map();
+const activeCommentUnsubs = new Map();
 
 // Helper to convert Google Drive share link to direct high-res image link
 export function resolvePhotoUrl(rawUrl) {
@@ -509,32 +510,27 @@ function updateComposerAvatar() {
     }
 }
 
-// Live real-time listener to keep student photos synced with Firestore picture database
+// Live real-time listener to keep CURRENT user student photo synced (targeted 1-doc listener instead of entire collection)
 function listenStudentsDirectory() {
     if (unsubscribeStudents) unsubscribeStudents();
+    if (!currentUser || !currentUser.code) return;
     try {
-        unsubscribeStudents = onSnapshot(collection(db, "students"), (snapshot) => {
-            snapshot.forEach(docSnap => {
+        const studentDocRef = doc(db, "students", currentUser.code.toUpperCase());
+        unsubscribeStudents = onSnapshot(studentDocRef, (docSnap) => {
+            if (docSnap.exists()) {
                 const sData = docSnap.data();
                 const pUrl = resolvePhotoUrl(sData.photoUrl || sData.photo || sData.avatar || '');
-                if (pUrl) {
-                    userPhotoMap.set(docSnap.id.toUpperCase(), pUrl);
-                    if (sData.studentName) {
-                        userPhotoMap.set(sData.studentName.trim().toLowerCase(), pUrl);
-                    }
+                if (pUrl && currentUser.photoUrl !== pUrl) {
+                    currentUser.photoUrl = pUrl;
+                    userPhotoMap.set(currentUser.code.toUpperCase(), pUrl);
+                    updateComposerAvatar();
                 }
-                if (currentUser && currentUser.code && currentUser.code.toUpperCase() === docSnap.id.toUpperCase()) {
-                    if (pUrl && currentUser.photoUrl !== pUrl) {
-                        currentUser.photoUrl = pUrl;
-                        updateComposerAvatar();
-                    }
-                }
-            });
+            }
         }, (err) => {
-            console.warn("Real-time students photo sync error:", err);
+            console.warn("Real-time student photo sync error:", err);
         });
     } catch (e) {
-        console.warn("Could not listen to students collection:", e);
+        console.warn("Could not listen to student doc:", e);
     }
 }
 
@@ -549,6 +545,10 @@ function handleTimelineLogout() {
     if (unsubscribeStudents) unsubscribeStudents();
     if (unsubscribePosts) unsubscribePosts(); 
     if (unsubscribeNotifs) unsubscribeNotifs();
+    activeCommentUnsubs.forEach(unsub => {
+        try { unsub(); } catch (e) {}
+    });
+    activeCommentUnsubs.clear();
     if (auth.currentUser) signOut(auth);
     window.location.href = 'index.html';
 }
@@ -559,8 +559,25 @@ document.getElementById('studentLogoutBtn')?.addEventListener('click', handleTim
 // --- 3. @MENTION AUTOCOMPLETE ---
 
 async function fetchAllNames() {
+    const cacheKey = 'timeline_users_directory_cache';
+    const cacheTimeKey = 'timeline_users_directory_cache_time';
+    const cachedData = sessionStorage.getItem(cacheKey);
+    const cachedTime = sessionStorage.getItem(cacheTimeKey);
+    const now = Date.now();
+
+    if (cachedData && cachedTime && (now - Number(cachedTime) < 20 * 60 * 1000)) {
+        try {
+            const parsed = JSON.parse(cachedData);
+            allUserNames = parsed.names || [];
+            allUserDirectory = parsed.directory || [];
+            (parsed.photos || []).forEach(([k, v]) => userPhotoMap.set(k, v));
+            return;
+        } catch (e) {}
+    }
+
     let names = [];
     let directory = [];
+    let photosList = [];
     try {
         const usersSnap = await getDocs(collection(db, "users"));
         usersSnap.forEach(docSnap => {
@@ -582,6 +599,7 @@ async function fetchAllNames() {
                     userPhotoMap.set(data.email.toLowerCase(), pUrl);
                     userPhotoMap.set(data.email.toUpperCase(), pUrl);
                     userPhotoMap.set(name.trim().toLowerCase(), pUrl);
+                    photosList.push([data.email.toLowerCase(), pUrl], [data.email.toUpperCase(), pUrl], [name.trim().toLowerCase(), pUrl]);
                 }
             }
         });
@@ -606,6 +624,7 @@ async function fetchAllNames() {
                 if (pUrl) {
                     userPhotoMap.set(docSnap.id.toUpperCase(), pUrl);
                     userPhotoMap.set(sData.studentName.trim().toLowerCase(), pUrl);
+                    photosList.push([docSnap.id.toUpperCase(), pUrl], [sData.studentName.trim().toLowerCase(), pUrl]);
                 }
             }
         });
@@ -615,6 +634,11 @@ async function fetchAllNames() {
     
     allUserNames = [...new Set(names)];
     allUserDirectory = directory;
+
+    try {
+        sessionStorage.setItem(cacheKey, JSON.stringify({ names: allUserNames, directory: allUserDirectory, photos: photosList }));
+        sessionStorage.setItem(cacheTimeKey, now.toString());
+    } catch (e) {}
 }
 
 document.addEventListener('input', (e) => {
@@ -1426,7 +1450,7 @@ function loadPosts() {
     if (!currentUser) return; 
     if (unsubscribePosts) unsubscribePosts();
 
-    const postsQuery = query(collection(db, "timeline_posts"), orderBy("timestamp", "desc"));
+    const postsQuery = query(collection(db, "timeline_posts"), orderBy("timestamp", "desc"), limit(40));
 
     unsubscribePosts = onSnapshot(postsQuery, (snapshot) => {
         allCachedPosts = [];
@@ -1699,10 +1723,15 @@ function renderSinglePostElement(post, feed, insertBeforeElement = null) {
 }
 
 function loadCommentsForPost(postId) {
+    if (activeCommentUnsubs.has(postId)) {
+        try { activeCommentUnsubs.get(postId)(); } catch (e) {}
+        activeCommentUnsubs.delete(postId);
+    }
+
     const commentsRef = collection(db, "timeline_comments");
     const q = query(commentsRef, where("postId", "==", postId));
 
-    onSnapshot(q, (snapshot) => {
+    const unsub = onSnapshot(q, (snapshot) => {
         const commentListEl = document.getElementById(`comments-list-${postId}`);
         const commentCountEl = document.getElementById(`comment-count-${postId}`);
         if (!commentListEl) return;
@@ -1770,6 +1799,7 @@ function loadCommentsForPost(postId) {
             `;
         });
     });
+    activeCommentUnsubs.set(postId, unsub);
 }
 
 window.toggleComments = function(postId) {

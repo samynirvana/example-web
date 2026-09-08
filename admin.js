@@ -20,6 +20,115 @@ let currentTeacherProfileData = null;
 let pendingTeacherPhotoFile = null;
 let teacherPhotoRemoved = false;
 
+// --- CENTRALIZED IN-MEMORY CACHE & REQUEST DEDUPLICATION (OPTIMIZED FIRESTORE READS) ---
+let cachedStudentsList = null;
+let studentsFetchPromise = null;
+async function getOrFetchStudents(force = false) {
+    const isForce = force === true;
+    if (!isForce && cachedStudentsList) return cachedStudentsList;
+    if (studentsFetchPromise) return studentsFetchPromise;
+    studentsFetchPromise = (async () => {
+        try {
+            const querySnapshot = await getDocs(collection(db, "students"));
+            const list = [];
+            querySnapshot.forEach(d => list.push({ id: d.id, ...d.data() }));
+            cachedStudentsList = list;
+            allStudentsData = list;
+            return list;
+        } finally {
+            studentsFetchPromise = null;
+        }
+    })();
+    return studentsFetchPromise;
+}
+
+let cachedQuizzesList = null;
+let quizzesFetchPromise = null;
+async function getOrFetchQuizzes(force = false) {
+    const isForce = force === true;
+    if (!isForce && cachedQuizzesList) return cachedQuizzesList;
+    if (quizzesFetchPromise) return quizzesFetchPromise;
+    quizzesFetchPromise = (async () => {
+        try {
+            const querySnapshot = await getDocs(collection(db, "quizzes"));
+            const list = [];
+            querySnapshot.forEach(d => list.push({ id: d.id, ...d.data() }));
+            cachedQuizzesList = list;
+            return list;
+        } finally {
+            quizzesFetchPromise = null;
+        }
+    })();
+    return quizzesFetchPromise;
+}
+
+let cachedSystemQuizzesList = null;
+let sysQuizzesFetchPromise = null;
+async function getOrFetchSystemQuizzes(force = false) {
+    const isForce = force === true;
+    if (!isForce && cachedSystemQuizzesList) return cachedSystemQuizzesList;
+    if (sysQuizzesFetchPromise) return sysQuizzesFetchPromise;
+    sysQuizzesFetchPromise = (async () => {
+        try {
+            const querySnapshot = await getDocs(collection(db, "system_quizzes"));
+            const list = [];
+            querySnapshot.forEach(d => list.push({ id: d.id, ...d.data() }));
+            cachedSystemQuizzesList = list;
+            return list;
+        } catch (e) {
+            return [];
+        } finally {
+            sysQuizzesFetchPromise = null;
+        }
+    })();
+    return sysQuizzesFetchPromise;
+}
+
+let cachedUsersList = null;
+let usersFetchPromise = null;
+async function getOrFetchUsers(force = false) {
+    const isForce = force === true;
+    if (!isForce && cachedUsersList) return cachedUsersList;
+    if (usersFetchPromise) return usersFetchPromise;
+    usersFetchPromise = (async () => {
+        try {
+            const querySnapshot = await getDocs(collection(db, "users"));
+            const list = [];
+            querySnapshot.forEach(d => list.push({ id: d.id, ...d.data() }));
+            cachedUsersList = list;
+            return list;
+        } finally {
+            usersFetchPromise = null;
+        }
+    })();
+    return usersFetchPromise;
+}
+
+let cachedRawScores = null;
+let cachedScoresUserRole = null;
+let cachedScoresTeacherSubj = null;
+let cachedPointsList = null;
+
+function invalidateStudentsCache() {
+    cachedStudentsList = null;
+}
+function invalidateQuizzesCache() {
+    cachedQuizzesList = null;
+    cachedSystemQuizzesList = null;
+}
+function invalidateUsersCache() {
+    cachedUsersList = null;
+}
+function invalidateScoresCache() {
+    cachedRawScores = null;
+}
+function invalidatePointsCache() {
+    cachedPointsList = null;
+}
+window.invalidateStudentsCache = invalidateStudentsCache;
+window.invalidateQuizzesCache = invalidateQuizzesCache;
+window.invalidateScoresCache = invalidateScoresCache;
+
 // --- DYNAMIC AUTH & PERMISSION LISTENER (FAST & PARALLEL) ---
 onAuthStateChanged(auth, async (user) => {
     const authCheckingScreen = document.getElementById('authCheckingScreen');
@@ -144,7 +253,7 @@ onAuthStateChanged(auth, async (user) => {
 
             window.loadAdminDriveSettings();
 
-            // 4. Build array of tasks to fetch concurrently in PARALLEL
+            // 4. Build array of tasks to fetch concurrently in PARALLEL (deduplicated through in-memory cache)
             const parallelTasks = [
                 loadNewsTable(),
                 loadAdminTable(),
@@ -152,7 +261,8 @@ onAuthStateChanged(auth, async (user) => {
                 loadStudentsDirectory(),
                 updateDashboardStats(),
                 loadQuizzesTable(),
-                syncScoresToExamScores(),
+                // Note: syncScoresToExamScores() removed from auto-startup to avoid thousands of redundant writes/reads.
+                // It remains available on-demand (e.g. window.syncScoresToExamScores or targeted quiz fallback).
                 initAttendanceTab()
             ];
 
@@ -1145,15 +1255,14 @@ async function registerStudent() {
 let allStudentsData = [];
 
 // 1. Function to fetch data and build the filter dropdown
-async function loadStudentsDirectory() {
+async function loadStudentsDirectory(forceRefresh = false) {
     try {
-        const querySnapshot = await getDocs(collection(db, "students"));
+        const studentDocs = await getOrFetchStudents(forceRefresh);
         allStudentsData = [];
         const classesSet = new Set(); // To collect unique class names automatically
 
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            allStudentsData.push({ id: doc.id, ...data });
+        studentDocs.forEach((data) => {
+            allStudentsData.push({ ...data });
 
             if (data.studentClass) {
                 classesSet.add(data.studentClass.trim());
@@ -1765,44 +1874,52 @@ async function deleteStudentScore(docId) {
     if (confirm("Permanently wipe this score entry from the ledger?")) {
         try {
             await deleteDoc(doc(db, "exam_scores", docId));
-            loadAdminTable();
+            invalidateScoresCache();
+            loadAdminTable(true);
         } catch (e) {
             alert("Transaction error: " + e.message);
         }
     }
 }
 
-// CORRECTED TABLE RENDERING METHOD WITH NO-SHIFT FAILSAFE CELL DESIGNATIONS
-async function loadAdminTable() {
+// CORRECTED TABLE RENDERING METHOD WITH NO-SHIFT FAILSAFE CELL DESIGNATIONS (CACHED FOR ZERO-READ FILTER/SORT)
+async function loadAdminTable(forceRefresh = false) {
     const user = auth.currentUser;
     if (!user) return;
 
     try {
-        let q = (userRole === "admin")
-            ? query(collection(db, "exam_scores"))
-            : query(collection(db, "exam_scores"), where("subject", "==", teacherSubject));
+        const roleChanged = cachedScoresUserRole !== userRole || cachedScoresTeacherSubj !== teacherSubject;
+        if (forceRefresh || !cachedRawScores || roleChanged) {
+            let q = (userRole === "admin")
+                ? query(collection(db, "exam_scores"))
+                : query(collection(db, "exam_scores"), where("subject", "==", teacherSubject));
 
-        const querySnapshot = await getDocs(q);
+            const querySnapshot = await getDocs(q);
+            cachedRawScores = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                cachedRawScores.push({
+                    docId: doc.id,
+                    exam: data.examName || 'N/A',
+                    sub: data.subject || 'N/A',
+                    sName: data.studentName || 'N/A',
+                    sClass: data.studentClass || data.Class || data.class || 'N/A',
+                    sCode: data.studentCode || (doc.id.length === 5 ? doc.id : 'N/A'),
+                    score: data.score !== undefined ? data.score : 0
+                });
+            });
+            cachedScoresUserRole = userRole;
+            cachedScoresTeacherSubj = teacherSubject;
+        }
+
         const tbody = document.querySelector("#adminTable tbody");
         if (!tbody) return;
 
-        let scoresList = [];
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            scoresList.push({
-                docId: doc.id,
-                exam: data.examName || 'N/A',
-                sub: data.subject || 'N/A',
-                sName: data.studentName || 'N/A',
-                sClass: data.studentClass || data.Class || data.class || 'N/A',
-                sCode: data.studentCode || (doc.id.length === 5 ? doc.id : 'N/A'),
-                score: data.score !== undefined ? data.score : 0
-            });
-        });
+        let scoresList = [...cachedRawScores];
         const filterDropdown = document.getElementById('filterScoreClass');
         if (filterDropdown) {
             const currentFilter = filterDropdown.value;
-            const uniqueClasses = [...new Set(scoresList.map(item => item.sClass))].filter(c => c !== 'N/A').sort();
+            const uniqueClasses = [...new Set(cachedRawScores.map(item => item.sClass))].filter(c => c !== 'N/A').sort();
 
             // Rebuild dropdown options dynamically
             filterDropdown.innerHTML = '<option value="all">All Classes</option>';
@@ -2079,35 +2196,38 @@ async function processStudentPoint(pointValue) {
     }
 }
 
-// Function to calculate and render the points ledger
-async function loadPointsTable() {
+// Function to calculate and render the points ledger (CACHED FOR ZERO-READ FILTER/SORT)
+async function loadPointsTable(forceRefresh = false) {
     const user = auth.currentUser;
     if (!user) return;
 
     try {
-        const studentsSnap = await getDocs(collection(db, "students"));
-        const studentsMap = {};
+        if (forceRefresh || !cachedPointsList) {
+            const studentDocs = await getOrFetchStudents();
+            const studentsMap = {};
 
-        studentsSnap.forEach(doc => {
-            const data = doc.data();
-            studentsMap[doc.id] = {
-                code: doc.id,
-                name: data.studentName || 'N/A',
-                sClass: data.studentClass || data.Class || data.class || 'N/A',
-                total: 0
-            };
-        });
+            studentDocs.forEach(data => {
+                studentsMap[data.id] = {
+                    code: data.id,
+                    name: data.studentName || 'N/A',
+                    sClass: data.studentClass || data.Class || data.class || 'N/A',
+                    total: 0
+                };
+            });
 
-        const pointsSnap = await getDocs(collection(db, "student_points"));
-        pointsSnap.forEach(doc => {
-            const data = doc.data();
-            const code = data.studentCode;
-            if (studentsMap[code]) {
-                studentsMap[code].total += (parseFloat(data.points) || 0);
-            }
-        });
+            const pointsSnap = await getDocs(collection(db, "student_points"));
+            pointsSnap.forEach(doc => {
+                const data = doc.data();
+                const code = data.studentCode;
+                if (studentsMap[code]) {
+                    studentsMap[code].total += (parseFloat(data.points) || 0);
+                }
+            });
 
-        let pointsList = Object.values(studentsMap);
+            cachedPointsList = Object.values(studentsMap);
+        }
+
+        let pointsList = [...cachedPointsList];
 
         // Apply Sorting
         const sortVal = document.getElementById('sortPoints')?.value || 'default';
@@ -2121,7 +2241,7 @@ async function loadPointsTable() {
         const filterDropdown = document.getElementById('filterPointsClass');
         if (filterDropdown) {
             const currentFilter = filterDropdown.value;
-            const uniqueClasses = [...new Set(pointsList.map(item => item.sClass))].filter(c => c !== 'N/A').sort();
+            const uniqueClasses = [...new Set(cachedPointsList.map(item => item.sClass))].filter(c => c !== 'N/A').sort();
 
             filterDropdown.innerHTML = '<option value="all">All Classes</option>';
             uniqueClasses.forEach(c => {
@@ -2212,7 +2332,8 @@ async function inlineAdjustPoint(studentCode, amount) {
         });
 
         // Refresh the table immediately to show the new total
-        loadPointsTable();
+        invalidatePointsCache();
+        loadPointsTable(true);
     } catch (e) {
         alert("Error adjusting points: " + e.message);
     }
@@ -2221,9 +2342,9 @@ async function inlineAdjustPoint(studentCode, amount) {
 // Bind new function to window
 window.inlineAdjustPoint = inlineAdjustPoint;
 
-// Bind event listeners for the new Class Dropdowns
-document.getElementById('filterScoreClass')?.addEventListener('change', loadAdminTable);
-document.getElementById('filterPointsClass')?.addEventListener('change', loadPointsTable);
+// Bind event listeners for the new Class Dropdowns (ZERO reads - filters locally from cache)
+document.getElementById('filterScoreClass')?.addEventListener('change', () => loadAdminTable(false));
+document.getElementById('filterPointsClass')?.addEventListener('change', () => loadPointsTable(false));
 
 // --- TAB & SUB-TAB NAVIGATION LOGIC ---
 window.switchDbView = function (viewName) {
@@ -2499,9 +2620,8 @@ async function populateNewsClassDropdown() {
 
     try {
         let classesSet = new Set();
-        const studentsSnap = await getDocs(collection(db, "students"));
-        studentsSnap.forEach(doc => {
-            const s = doc.data();
+        const studentDocs = await getOrFetchStudents();
+        studentDocs.forEach(s => {
             const cls = s.studentClass || s.class;
             if (cls) classesSet.add(cls.trim());
         });
@@ -3376,22 +3496,21 @@ async function toggleQuizStatus(id, currentStatus) {
 window.toggleQuizStatus = toggleQuizStatus;
 
 // --- LOAD QUIZZES TABLE (ACTIVE & PAST QUIZZES WITH DELETION) ---
-async function loadQuizzesTable() {
+async function loadQuizzesTable(forceRefresh = false) {
     const tbody = document.querySelector("#quizTable tbody");
     const pastTbody = document.querySelector("#pastQuizTable tbody");
     const pastBadge = document.getElementById("pastQuizBadgeCount");
     if (!tbody) return;
 
     try {
-        const snap = await getDocs(collection(db, "quizzes"));
+        const quizDocs = await getOrFetchQuizzes(forceRefresh);
         tbody.innerHTML = "";
 
         const quizzesList = [];
         const activeTitlesSet = new Set();
 
-        snap.forEach(docSnap => {
-            const data = docSnap.data();
-            quizzesList.push({ id: docSnap.id, ...data });
+        quizDocs.forEach(data => {
+            quizzesList.push({ ...data });
             if (data.title) {
                 activeTitlesSet.add(data.title.trim().toLowerCase());
             }
@@ -4888,25 +5007,25 @@ async function updateDashboardStats() {
     try {
         let studentsMap = {};
 
-        // 1. Students Count & Map
+        // 1. Students Count & Map (reusing shared cache)
         try {
-            const studentsSnap = await getDocs(collection(db, "students"));
+            const students = await getOrFetchStudents();
             const elTotalStudents = document.getElementById('stat-total-students');
-            if (elTotalStudents) elTotalStudents.innerText = studentsSnap.size;
+            if (elTotalStudents) elTotalStudents.innerText = students.length;
 
-            studentsSnap.forEach(doc => {
-                studentsMap[doc.id] = { name: doc.data().studentName || 'N/A', total: 0 };
+            students.forEach(s => {
+                studentsMap[s.id] = { name: s.studentName || 'N/A', total: 0 };
             });
         } catch (e) {
             console.warn("Could not load students for stats:", e);
         }
 
-        // 2. Teachers Count
+        // 2. Teachers Count (reusing shared cache)
         try {
             let teacherCount = 0;
-            const usersSnap = await getDocs(collection(db, "users"));
-            usersSnap.forEach(doc => {
-                const r = (doc.data().role || '').toLowerCase();
+            const users = await getOrFetchUsers();
+            users.forEach(doc => {
+                const r = (doc.role || '').toLowerCase();
                 if (r === 'teacher') teacherCount++;
             });
             const elTotalTeachers = document.getElementById('stat-total-teachers');
@@ -4968,15 +5087,15 @@ async function updateDashboardStats() {
             console.warn("Could not load news stats:", e);
         }
 
-        // 5. Total Quizzes Count (Digital + Offline)
+        // 5. Total Quizzes Count (Digital + Offline, reusing shared cache)
         try {
             let totalQuizCount = 0;
-            const quizSnap = await getDocs(collection(db, "quizzes"));
-            totalQuizCount += quizSnap.size;
+            const quizzes = await getOrFetchQuizzes();
+            totalQuizCount += quizzes.length;
 
             try {
-                const manualSnap = await getDocs(collection(db, "system_quizzes"));
-                totalQuizCount += manualSnap.size;
+                const manualQuizzes = await getOrFetchSystemQuizzes();
+                totalQuizCount += manualQuizzes.length;
             } catch (err) { }
 
             const elTotalQuizzes = document.getElementById('stat-total-quizzes');
@@ -7109,20 +7228,19 @@ window.toggleQuizStatus = toggleQuizStatus;
 
 // --- TEACHER MASTER DIRECTORY LOGIC ---
 
-async function loadTeachersDirectory() {
+async function loadTeachersDirectory(forceRefresh = false) {
     try {
-        const usersSnap = await getDocs(collection(db, "users"));
+        const usersList = await getOrFetchUsers(forceRefresh);
         const tbody = document.querySelector("#teachersDirectoryTable tbody");
         if (!tbody) return;
 
         tbody.innerHTML = "";
 
         let teacherCount = 0;
-        usersSnap.forEach((docSnap) => {
-            const data = docSnap.data();
+        usersList.forEach((data) => {
             if (data.role === 'teacher') {
                 teacherCount++;
-                const teacherId = docSnap.id;
+                const teacherId = data.id;
                 const teacherEmail = data.email || "N/A";
 
                 // Safe check: Only run .split() if data.email is defined
@@ -7244,7 +7362,7 @@ window.deleteTeacherAccount = async function (uid, teacherName) {
     }
 };
 
-// --- SAFE QUIZ FILTERING ---
+// --- SAFE QUIZ FILTERING (OPTIMIZED WITH ZERO-READ CACHE) ---
 async function filterDirectQuizzes() {
     const subjectSelect = document.getElementById('directSubjectSelect');
     const classSelect = document.getElementById('directClassSelect');
@@ -7262,11 +7380,10 @@ async function filterDirectQuizzes() {
     const seenTitles = new Set();
 
     try {
-        // 1. Digital Quizzes
+        // 1. Digital Quizzes (from cache)
         try {
-            const digitalSnap = await getDocs(collection(db, "quizzes"));
-            digitalSnap.forEach(docSnap => {
-                const data = docSnap.data();
+            const digitalDocs = await getOrFetchQuizzes();
+            digitalDocs.forEach(data => {
                 const title = (data.title || data.quizName || "").trim();
                 const qSubject = (data.subject || "").trim().toLowerCase();
                 const qClass = (data.targetClass || "").trim().toLowerCase();
@@ -7291,11 +7408,10 @@ async function filterDirectQuizzes() {
             console.warn("Could not read digital quizzes:", err.message);
         }
 
-        // 2. Offline & Classroom Quizzes from system_quizzes
+        // 2. Offline & Classroom Quizzes from system_quizzes (from cache)
         try {
-            const manualSnap = await getDocs(collection(db, "system_quizzes"));
-            manualSnap.forEach(docSnap => {
-                const data = docSnap.data();
+            const manualDocs = await getOrFetchSystemQuizzes();
+            manualDocs.forEach(data => {
                 const title = (data.name || "").trim();
                 const qSubject = (data.subject || "").trim().toLowerCase();
                 const qClass = (data.targetClass || "").trim().toLowerCase();
@@ -7321,20 +7437,18 @@ async function filterDirectQuizzes() {
             console.warn("Could not read offline/classroom quizzes:", err.message);
         }
 
-        // 3. Fallback: Synced exam_scores entries
+        // 3. Fallback: Already-cached ledger entries (0 Firestore reads)
         try {
-            const scoresSnap = await getDocs(collection(db, "exam_scores"));
-            scoresSnap.forEach(docSnap => {
-                const data = docSnap.data();
-                const title = (data.examName || data.quizName || "").trim();
-                const docSubj = (data.subject || "").trim().toLowerCase();
-                const docClass = (data.studentClass || "").trim().toLowerCase();
+            const fallbackScores = cachedRawScores || [];
+            fallbackScores.forEach(data => {
+                const title = (data.exam || "").trim();
+                const docSubj = (data.sub || "").trim().toLowerCase();
+                const docClass = (data.sClass || "").trim().toLowerCase();
 
                 if (title && (docSubj === selectedSubject || !selectedSubject) && (docClass === selectedClass || !selectedClass)) {
                     if (!seenTitles.has(title.toLowerCase())) {
                         seenTitles.add(title.toLowerCase());
-                        const tag = (data.source === "google_classroom" || data.gclassCourseWorkId) ? "Classroom" : "Offline";
-                        quizSelect.innerHTML += `<option value="${title}">${title} (${tag})</option>`;
+                        quizSelect.innerHTML += `<option value="${title}">${title} (Ledger)</option>`;
                     }
                 }
             });
@@ -7345,7 +7459,7 @@ async function filterDirectQuizzes() {
     }
 }
 
-// --- DYNAMIC QUIZ FILTERING FOR LEDGER ---
+// --- DYNAMIC QUIZ FILTERING FOR LEDGER (OPTIMIZED WITH ZERO-READ CACHE) ---
 async function filterLedgerQuizzes() {
     const subjectSelect = document.getElementById('ledgerSubjectSelect');
     const classSelect = document.getElementById('ledgerClassSelect');
@@ -7363,11 +7477,10 @@ async function filterLedgerQuizzes() {
     const seenTitles = new Set();
 
     try {
-        // 1. Digital Quizzes
+        // 1. Digital Quizzes (from cache)
         try {
-            const digitalSnap = await getDocs(collection(db, "quizzes"));
-            digitalSnap.forEach(docSnap => {
-                const data = docSnap.data();
+            const digitalDocs = await getOrFetchQuizzes();
+            digitalDocs.forEach(data => {
                 const title = (data.title || data.quizName || "").trim();
                 const qSubject = (data.subject || "").trim().toLowerCase();
                 const qClass = (data.targetClass || "").trim().toLowerCase();
@@ -7392,11 +7505,10 @@ async function filterLedgerQuizzes() {
             console.warn("Could not read digital quizzes:", err.message);
         }
 
-        // 2. Offline & Classroom Quizzes from system_quizzes
+        // 2. Offline & Classroom Quizzes from system_quizzes (from cache)
         try {
-            const manualSnap = await getDocs(collection(db, "system_quizzes"));
-            manualSnap.forEach(docSnap => {
-                const data = docSnap.data();
+            const manualDocs = await getOrFetchSystemQuizzes();
+            manualDocs.forEach(data => {
                 const title = (data.name || "").trim();
                 const qSubject = (data.subject || "").trim().toLowerCase();
                 const qClass = (data.targetClass || "").trim().toLowerCase();
@@ -7422,20 +7534,18 @@ async function filterLedgerQuizzes() {
             console.warn("Could not read offline/classroom quizzes:", err.message);
         }
 
-        // 3. Fallback: Synced exam_scores entries directly
+        // 3. Fallback: Already-cached ledger entries (0 Firestore reads)
         try {
-            const scoresSnap = await getDocs(collection(db, "exam_scores"));
-            scoresSnap.forEach(docSnap => {
-                const data = docSnap.data();
-                const title = (data.examName || data.quizName || "").trim();
-                const docSubj = (data.subject || "").trim().toLowerCase();
-                const docClass = (data.studentClass || "").trim().toLowerCase();
+            const fallbackScores = cachedRawScores || [];
+            fallbackScores.forEach(data => {
+                const title = (data.exam || "").trim();
+                const docSubj = (data.sub || "").trim().toLowerCase();
+                const docClass = (data.sClass || "").trim().toLowerCase();
 
                 if (title && (docSubj === selectedSubject || !selectedSubject) && (docClass === selectedClass || !selectedClass)) {
                     if (!seenTitles.has(title.toLowerCase())) {
                         seenTitles.add(title.toLowerCase());
-                        const tag = (data.source === "google_classroom" || data.gclassCourseWorkId) ? "Classroom" : "Offline";
-                        quizSelect.innerHTML += `<option value="${title}">${title} (${tag})</option>`;
+                        quizSelect.innerHTML += `<option value="${title}">${title} (Ledger)</option>`;
                     }
                 }
             });
@@ -7446,7 +7556,7 @@ async function filterLedgerQuizzes() {
     }
 }
 
-// --- DYNAMIC QUIZ FILTERING FOR BULK TEMPLATE ---
+// --- DYNAMIC QUIZ FILTERING FOR BULK TEMPLATE (OPTIMIZED WITH ZERO-READ CACHE) ---
 async function filterBulkQuizzes() {
     const subjectSelect = document.getElementById('bulkSubjectSelect');
     const classSelect = document.getElementById('bulkClassSelect');
@@ -7464,10 +7574,9 @@ async function filterBulkQuizzes() {
     const seenTitles = new Set();
 
     try {
-        // Fetch Digital Quizzes
-        const digitalSnap = await getDocs(collection(db, "quizzes"));
-        digitalSnap.forEach(docSnap => {
-            const data = docSnap.data();
+        // Fetch Digital Quizzes (from cache)
+        const digitalDocs = await getOrFetchQuizzes();
+        digitalDocs.forEach(data => {
             const title = (data.title || data.quizName || "").trim();
             const qSubject = (data.subject || "").trim().toLowerCase();
             const qClass = (data.targetClass || "").trim().toLowerCase();
@@ -7489,10 +7598,9 @@ async function filterBulkQuizzes() {
             }
         });
 
-        // Fetch Offline & Classroom Quizzes
-        const manualSnap = await getDocs(collection(db, "system_quizzes"));
-        manualSnap.forEach(docSnap => {
-            const data = docSnap.data();
+        // Fetch Offline & Classroom Quizzes (from cache)
+        const manualDocs = await getOrFetchSystemQuizzes();
+        manualDocs.forEach(data => {
             const title = (data.name || "").trim();
             const qSubject = (data.subject || "").trim().toLowerCase();
             const qClass = (data.targetClass || "").trim().toLowerCase();
@@ -7515,20 +7623,18 @@ async function filterBulkQuizzes() {
             }
         });
 
-        // Fallback: exam_scores
+        // Fallback: Already-cached ledger entries (0 Firestore reads)
         try {
-            const scoresSnap = await getDocs(collection(db, "exam_scores"));
-            scoresSnap.forEach(docSnap => {
-                const data = docSnap.data();
-                const title = (data.examName || data.quizName || "").trim();
-                const docSubj = (data.subject || "").trim().toLowerCase();
-                const docClass = (data.studentClass || "").trim().toLowerCase();
+            const fallbackScores = cachedRawScores || [];
+            fallbackScores.forEach(data => {
+                const title = (data.exam || "").trim();
+                const docSubj = (data.sub || "").trim().toLowerCase();
+                const docClass = (data.sClass || "").trim().toLowerCase();
 
                 if (title && (docSubj === selectedSubject || !selectedSubject) && (docClass === selectedClass || !selectedClass)) {
                     if (!seenTitles.has(title.toLowerCase())) {
                         seenTitles.add(title.toLowerCase());
-                        const tag = (data.source === "google_classroom" || data.gclassCourseWorkId) ? "Classroom" : "Offline";
-                        quizSelect.innerHTML += `<option value="${title}">${title} (${tag})</option>`;
+                        quizSelect.innerHTML += `<option value="${title}">${title} (Ledger)</option>`;
                     }
                 }
             });
@@ -7800,10 +7906,10 @@ window.exportChosenScoreToExcel = exportChosenScoreToExcel;
 // Bind the new function to the window so the HTML buttons can trigger it
 window.inlineAdjustPoint = inlineAdjustPoint;
 
-// Bind the new bulk upload buttons
-document.getElementById('sortStudents')?.addEventListener('change', loadStudentsDirectory);
-document.getElementById('sortScores')?.addEventListener('change', loadAdminTable);
-document.getElementById('sortPoints')?.addEventListener('change', loadPointsTable);
+// Bind sort listeners (ZERO Firestore reads - sorts locally in memory)
+document.getElementById('sortStudents')?.addEventListener('change', () => loadStudentsDirectory(false));
+document.getElementById('sortScores')?.addEventListener('change', () => loadAdminTable(false));
+document.getElementById('sortPoints')?.addEventListener('change', () => loadPointsTable(false));
 window.editTeacherSubjectSpecialty = editTeacherSubjectSpecialty;
 window.editTeacherProfile = editTeacherProfile;
 window.deleteNewsUpdate = deleteNewsUpdate;
