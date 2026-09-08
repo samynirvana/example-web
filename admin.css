@@ -651,57 +651,84 @@ body.dark-theme .toggle-mode-btn.active {
 .db-pagination-buttons {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
+    margin-top: 14px;
 }
 
 .db-page-btn {
-    background: var(--card-bg, #ffffff);
-    border: 1px solid var(--border-color, #e2e8f0);
-    color: var(--text-dark, #2b3674);
-    min-width: 32px;
-    height: 32px;
-    padding: 0 10px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--text-dark, #2b3674) !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    padding: 0 8px !important;
+    border-radius: 6px !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: background 0.15s ease, color 0.15s ease !important;
+    transform: none !important;
+    outline: none !important;
 }
 
 .db-page-btn:hover:not(:disabled) {
-    background: #f1f5f9;
-    border-color: var(--primary-blue, #1e5eff);
-    color: var(--primary-blue, #1e5eff);
+    background: #f1f5f9 !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--primary-blue, #1e5eff) !important;
+    transform: none !important;
 }
 
 .db-page-btn.active {
-    background: var(--primary-blue, #1e5eff);
-    border-color: var(--primary-blue, #1e5eff);
-    color: #ffffff;
+    background: var(--primary-blue, #1e5eff) !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    transform: none !important;
 }
 
 .db-page-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
+    opacity: 0.35 !important;
+    cursor: not-allowed !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--text-gray, #94a3b8) !important;
+    transform: none !important;
 }
 
 body.dark-theme .db-page-btn {
-    background: #1b254b;
-    border-color: #2b3674;
-    color: #f4f7fe;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #a0aec0 !important;
 }
 
 body.dark-theme .db-page-btn:hover:not(:disabled) {
-    background: #24305e;
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #60a5fa !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 body.dark-theme .db-page-btn.active {
-    background: var(--primary-blue, #1e5eff);
-    border-color: var(--primary-blue, #1e5eff);
-    color: #ffffff;
+    background: var(--primary-blue, #1e5eff) !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+}
+
+body.dark-theme .db-page-btn:disabled {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #64748b !important;
 }
 
 .user-profile-bottom {
@@ -3730,9 +3757,9 @@ body.dark-theme .multi-select-option-row:hover {
 /* ======================================================
    ROUNDED PILL BUTTON STYLING SYSTEM (LIGHT & DARK THEME)
    ====================================================== */
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn),
-.btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle),
-.action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle),
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn),
+.btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle):not(.db-page-btn),
+.action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle):not(.db-page-btn),
 .add-btn,
 .save-btn,
 .delete-btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle),
@@ -3753,9 +3780,9 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     transition: all 0.2s ease !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):hover,
-.btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle):hover,
-.action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle):hover,
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn):hover,
+.btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle):not(.db-page-btn):hover,
+.action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle):not(.db-page-btn):hover,
 .add-btn:hover,
 .save-btn:hover,
 .delete-btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle):hover,
@@ -3766,16 +3793,16 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-zoom-btn):not(.fmt-btn):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):active,
+button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-zoom-btn):not(.fmt-btn):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn):active,
 .btn:not(.dropdown-item):not(.kebab-item):active {
     transform: translateY(0) !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 /* Dark Theme Overrides for Admin Buttons */
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn),
-body.dark-theme .btn:not(.dropdown-item):not(.kebab-item),
-body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn),
+body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn),
+body.dark-theme .btn:not(.dropdown-item):not(.kebab-item):not(.db-page-btn),
+body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.db-page-btn),
 body.dark-theme .add-btn,
 body.dark-theme .save-btn,
 body.dark-theme .delete-btn:not(.dropdown-item):not(.kebab-item),
@@ -3786,9 +3813,9 @@ body.dark-theme .modal-btn {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):hover,
-body.dark-theme .btn:not(.dropdown-item):not(.kebab-item):hover,
-body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):hover,
+body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn):hover,
+body.dark-theme .btn:not(.dropdown-item):not(.kebab-item):not(.db-page-btn):hover,
+body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.db-page-btn):hover,
 body.dark-theme .add-btn:hover,
 body.dark-theme .save-btn:hover,
 body.dark-theme .delete-btn:not(.dropdown-item):not(.kebab-item):hover,
@@ -4851,13 +4878,23 @@ body.dark-mode #attendanceTable td:last-child {
 /* ======================================================
    ATTENDANCE & QUIZ SEARCH BAR ICON & PADDING FIX
    ====================================================== */
+.att-search-box {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
 .att-search-box input,
 #attSearchInput,
 #quizStudentSearchInput {
-    padding-left: 38px !important;
+    padding-left: 36px !important;
     padding-right: 14px !important;
     height: 38px !important;
     font-size: 13.5px !important;
+    border-radius: 9px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    line-height: normal !important;
 }
 
 .att-search-box svg {
@@ -4865,6 +4902,10 @@ body.dark-mode #attendanceTable td:last-child {
     left: 12px !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
+    width: 15px !important;
+    height: 15px !important;
+    color: var(--text-gray, #94a3b8) !important;
+    pointer-events: none !important;
     z-index: 2 !important;
 }
 
@@ -5559,10 +5600,11 @@ body.dark-theme .teacher-modal-card .password-section-card {
 .att-action-dropdown-item {
     display: flex !important;
     align-items: center;
-    gap: 10px;
+    justify-content: flex-start !important;
+    gap: 8px;
     width: 100% !important;
     height: auto !important;
-    padding: 9px 12px !important;
+    padding: 8px 12px !important;
     margin: 0 !important;
     background: transparent !important;
     border: none !important;
@@ -5570,7 +5612,7 @@ body.dark-theme .teacher-modal-card .password-section-card {
     font-size: 13px !important;
     font-weight: 600 !important;
     cursor: pointer;
-    text-align: left;
+    text-align: left !important;
     color: var(--text-dark, #1e293b) !important;
     box-shadow: none !important;
     transition: background 0.15s ease, color 0.15s ease;
@@ -5716,7 +5758,7 @@ body.dark-theme .teacher-modal-card .password-section-card {
     border-radius: 10px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
     padding: 5px;
-    min-width: 145px;
+    min-width: 115px;
     z-index: 999;
     display: flex;
     flex-direction: column;
@@ -5732,10 +5774,10 @@ body.dark-theme .teacher-modal-card .password-section-card {
 .att-row-item {
     display: flex !important;
     align-items: center;
-    gap: 9px;
+    justify-content: flex-start !important;
     width: 100% !important;
     height: auto !important;
-    padding: 7px 10px !important;
+    padding: 8px 12px !important;
     margin: 0 !important;
     background: transparent !important;
     border: none !important;
@@ -5744,18 +5786,18 @@ body.dark-theme .teacher-modal-card .password-section-card {
     font-weight: 600 !important;
     color: var(--text-dark, #1e293b) !important;
     cursor: pointer;
-    text-align: left;
+    text-align: left !important;
     box-shadow: none !important;
     transition: background 0.12s ease, color 0.12s ease, transform 0.12s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
 .att-row-item:hover {
     background: #f1f5f9 !important;
-    transform: translateX(3px) !important;
+    transform: translateX(2px) !important;
 }
 
 .att-row-item:active {
-    transform: scale(0.97) !important;
+    transform: scale(0.98) !important;
 }
 
 .att-row-item.opt-present:hover {
@@ -6790,6 +6832,200 @@ body.dark-mode .reminder-deploy-dropdown-divider {
 
 #btnBulkDeleteReminders.hidden {
     display: none !important;
+}
+
+/* ======================================================
+   ATTENDANCE DATA ANALYSIS DASHBOARD STYLING
+   ====================================================== */
+.att-analytics-box {
+    background: var(--card-bg, #ffffff);
+    border: 1.5px solid var(--border-color, #e2e8f0);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+}
+
+.att-analytics-filters {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+}
+
+.att-analytics-filters select {
+    height: 32px !important;
+    padding: 0 10px !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    border: 1px solid var(--border-color, #cbd5e1) !important;
+    background: var(--card-bg, #ffffff) !important;
+    color: var(--text-dark, #0f172a) !important;
+    box-shadow: none !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    display: inline-block !important;
+}
+
+.att-analytics-filters select:focus {
+    border-color: var(--primary-blue, #1e5eff) !important;
+    outline: none !important;
+}
+
+body.dark-theme .att-analytics-filters select,
+body.dark-mode .att-analytics-filters select {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+/* Pagination button styles */
+.att-page-num-btn {
+    width: 30px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    border: none !important;
+    background: transparent !important;
+    color: var(--text-gray, #64748b) !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    transition: background 0.15s ease, color 0.15s ease !important;
+}
+
+.att-page-num-btn:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: var(--text-dark, #0f172a) !important;
+}
+
+.att-page-num-btn.active {
+    background: var(--primary-blue, #1e5eff) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+body.dark-theme .att-page-num-btn,
+body.dark-mode .att-page-num-btn {
+    color: #94a3b8 !important;
+    background: transparent !important;
+}
+body.dark-theme .att-page-num-btn:hover,
+body.dark-mode .att-page-num-btn:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+body.dark-theme .att-page-num-btn.active,
+body.dark-mode .att-page-num-btn.active {
+    background: var(--primary-blue, #1e5eff) !important;
+    color: #ffffff !important;
+}
+
+.att-analytics-kpi-card {
+    background: #f8fafc;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.att-analytics-kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.att-analytics-kpi-card .kpi-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--text-gray, #64748b);
+    margin-bottom: 4px;
+}
+
+.att-analytics-kpi-card .kpi-value {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 4px;
+}
+
+.att-analytics-kpi-card .kpi-subtext {
+    font-size: 11.5px;
+    color: var(--text-gray, #94a3b8);
+}
+
+.att-chart-container-card {
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.att-risk-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.att-risk-badge.risk-high {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.att-risk-badge.risk-medium {
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.att-risk-badge.risk-low {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.att-progress-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.att-progress-bar-track {
+    flex: 1;
+    height: 7px;
+    border-radius: 4px;
+    background: #e2e8f0;
+    overflow: hidden;
+}
+
+.att-progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+@media (max-width: 900px) {
+    .att-analytics-dual-grid {
+        grid-template-columns: 1fr !important;
+    }
 }
 
 

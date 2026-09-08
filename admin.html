@@ -1623,50 +1623,120 @@
                                 <div
                                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
                                     <h3 style="margin: 0;">Register student</h3>
-                                    <div class="register-mode-toggle">
-                                        <button type="button" class="toggle-mode-btn active" id="btnModeSingle"
-                                            onclick="setStudentRegMode('single')">Single Student</button>
-                                        <button type="button" class="toggle-mode-btn" id="btnModeBulk"
-                                            onclick="setStudentRegMode('bulk')">Multiple Students</button>
-                                        <button type="button" class="toggle-mode-btn" id="btnModePhotos"
-                                            onclick="setStudentRegMode('photos')">Students Photo</button>
+                                    <div class="score-mode-dropdown-wrap"
+                                        style="position: relative; display: inline-block;">
+                                        <button type="button" id="studentRegModeDropdownTrigger" class="score-mode-btn"
+                                            onclick="toggleStudentRegModeDropdown(event)" aria-haspopup="true"
+                                            aria-expanded="false" title="Choose student registration mode">
+                                            <span id="studentRegModeActiveIcon"
+                                                style="display: inline-flex; align-items: center; color: var(--primary-blue, #1e5eff);">
+                                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2.2">
+                                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                    <circle cx="12" cy="7" r="4"></circle>
+                                                </svg>
+                                            </span>
+                                            <span id="studentRegModeActiveLabel" style="font-weight: 700;">Single Student</span>
+                                            <svg class="score-mode-chevron" width="13" height="13" viewBox="0 0 24 24"
+                                                fill="none" stroke="currentColor" stroke-width="2.4"
+                                                style="margin-left: 2px;">
+                                                <polyline points="6 9 12 15 18 9"></polyline>
+                                            </svg>
+                                        </button>
+                                        <div id="studentRegModeDropdownMenu" class="score-mode-menu hidden">
+                                            <button type="button" class="score-mode-option active" id="btnModeSingle"
+                                                onclick="setStudentRegMode('single')">
+                                                <span class="score-mode-opt-icon score-mode-icon-single">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2.2">
+                                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="12" cy="7" r="4"></circle>
+                                                    </svg>
+                                                </span>
+                                                <span class="score-mode-opt-text">Single Student</span>
+                                                <svg class="score-mode-check" width="14" height="14" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2.5">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                            </button>
+                                            <button type="button" class="score-mode-option" id="btnModeBulk"
+                                                onclick="setStudentRegMode('bulk')">
+                                                <span class="score-mode-opt-icon score-mode-icon-bulk">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2.2">
+                                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="9" cy="7" r="4"></circle>
+                                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                    </svg>
+                                                </span>
+                                                <span class="score-mode-opt-text">Multiple Students</span>
+                                                <svg class="score-mode-check" width="14" height="14" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2.5">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                            </button>
+                                            <button type="button" class="score-mode-option" id="btnModePhotos"
+                                                onclick="setStudentRegMode('photos')">
+                                                <span class="score-mode-opt-icon score-mode-icon-gclass">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2.2">
+                                                        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                                    </svg>
+                                                </span>
+                                                <span class="score-mode-opt-text">Students Photo</span>
+                                                <svg class="score-mode-check" width="14" height="14" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2.5">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Single Student Mode -->
                                 <div id="studentRegSingleForm">
-                                    <div
-                                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px;">
-                                        <div>
-                                            <label
-                                                style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block;">Full
+                                    <div class="single-student-centered-container"
+                                        style="max-width: 580px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 15px;">
+                                        <div class="form-group" style="margin: 0; width: 100%;">
+                                            <label for="newStudentName"
+                                                style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Full
                                                 Student Name</label>
-                                            <input type="text" id="newStudentName" placeholder="Full Student Name">
+                                            <input type="text" id="newStudentName" placeholder="Full Student Name"
+                                                style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                         </div>
-                                        <div>
-                                            <label
-                                                style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block;">Class
+                                        <div class="form-group" style="margin: 0; width: 100%;">
+                                            <label for="newStudentClass"
+                                                style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Class
                                                 Room</label>
                                             <input type="text" id="newStudentClass"
-                                                placeholder="Class Room (e.g., Grade 7A)">
+                                                placeholder="Class Room (e.g., Grade 7A)"
+                                                style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                         </div>
-                                        <div>
-                                            <label
-                                                style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block;">Date
+                                        <div class="form-group" style="margin: 0; width: 100%;">
+                                            <label for="newStudentBirthDate"
+                                                style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Date
                                                 of Birth</label>
-                                            <input type="date" id="newStudentBirthDate">
+                                            <input type="date" id="newStudentBirthDate"
+                                                style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                         </div>
-                                        <div>
-                                            <label
-                                                style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block;">Google
+                                        <div class="form-group" style="margin: 0; width: 100%;">
+                                            <label for="newStudentEmail"
+                                                style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Google
                                                 Classroom / Student Email</label>
                                             <input type="email" id="newStudentEmail"
-                                                placeholder="student@school.sch.id or Gmail">
+                                                placeholder="student@school.sch.id or Gmail"
+                                                style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
+                                        </div>
+                                        <div
+                                            style="display: flex; justify-content: center; align-items: center; margin-top: 5px; width: 100%;">
+                                            <button id="registerStudentBtn"
+                                                style="background: var(--primary-blue); height: 44px; padding: 0 28px; border-radius: 10px; font-size: 14px; font-weight: 700; color: #fff; border: none; cursor: pointer;">Generate
+                                                Student Code</button>
                                         </div>
                                     </div>
-                                    <button id="registerStudentBtn"
-                                        style="background: var(--primary-blue); width: auto; padding: 10px 24px;">Generate
-                                        Student Code</button>
                                 </div>
                                 <!-- Bulk Register & Update Mode -->
                                 <div id="studentRegBulkForm" class="hidden">
@@ -1806,14 +1876,9 @@
                                     </table>
                                 </div>
 
-                                <!-- Pagination Controls -->
-                                <div class="db-pagination-container" id="dbStudentsPagination">
-                                    <div class="db-pagination-info" id="dbStudentsPageInfo">
-                                        Showing 0 to 0 of 0 students
-                                    </div>
-                                    <div class="db-pagination-buttons" id="dbStudentsPageButtons">
-                                        <!-- Page buttons injected via JS -->
-                                    </div>
+                                <!-- Page Number Buttons -->
+                                <div id="dbStudentsPageButtons" class="db-pagination-buttons">
+                                    <!-- Page buttons injected via JS -->
                                 </div>
                             </div>
 
@@ -1850,41 +1915,44 @@
                             style="grid-column: 1 / -1; display: contents;">
                             <!-- 2. Register Teacher -->
                             <div class="box" style="grid-column: 1 / -1;">
-                                <h3 style="margin-top: 0; margin-bottom: 16px;">Register Teacher</h3>
-                                <div
-                                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-                                    <div>
-                                        <label
-                                            style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block;">Teacher
+                                <h3 style="margin-top: 0; margin-bottom: 18px;">Register Teacher</h3>
+                                <div class="single-teacher-centered-container"
+                                    style="max-width: 580px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 15px;">
+                                    <div class="form-group" style="margin: 0; width: 100%;">
+                                        <label for="newTeacherName"
+                                            style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Teacher
                                             Full Name</label>
                                         <input type="text" id="newTeacherName" placeholder="Teacher Full Name"
-                                            style="margin: 0 !important;">
+                                            style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                     </div>
-                                    <div>
-                                        <label
-                                            style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block;">Teacher
+                                    <div class="form-group" style="margin: 0; width: 100%;">
+                                        <label for="newTeacherEmail"
+                                            style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Teacher
                                             Email Address</label>
                                         <input type="email" id="newTeacherEmail" placeholder="Teacher Email Address"
-                                            style="margin: 0 !important;">
+                                            style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                     </div>
-                                    <div>
-                                        <label
-                                            style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block;">Login
+                                    <div class="form-group" style="margin: 0; width: 100%;">
+                                        <label for="newTeacherPassword"
+                                            style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Login
                                             Password</label>
                                         <input type="password" id="newTeacherPassword" placeholder="Login Password"
-                                            style="margin: 0 !important;">
+                                            style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                     </div>
-                                    <div>
-                                        <label
-                                            style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block;">Subject
+                                    <div class="form-group" style="margin: 0; width: 100%;">
+                                        <label for="newTeacherSubject"
+                                            style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Subject
                                             Specialty</label>
                                         <input type="text" id="newTeacherSubject" placeholder="Subject Specialty"
-                                            style="margin: 0 !important;">
+                                            style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
+                                    </div>
+                                    <div
+                                        style="display: flex; justify-content: center; align-items: center; margin-top: 5px; width: 100%;">
+                                        <button id="createTeacherBtn"
+                                            style="background: #f59e0b; height: 44px; padding: 0 28px; border-radius: 10px; font-size: 14px; font-weight: 700; color: #fff; border: none; cursor: pointer;">Register
+                                            Teacher</button>
                                     </div>
                                 </div>
-                                <button id="createTeacherBtn"
-                                    style="background: #f59e0b; margin-top: 18px; width: auto; padding: 10px 24px;">Register
-                                    Teacher</button>
                             </div>
 
                             <!-- TEACHERS MASTER DIRECTORY -->
@@ -1940,17 +2008,24 @@
                             style="grid-column: 1 / -1; display: contents;">
                             <!-- Manual Offline Quizzes / Exams -->
                             <div class="box" style="grid-column: 1 / -1;">
-                                <h3>Create new Assignment</h3>
+                                <h3 style="margin-top: 0; margin-bottom: 18px;">Create new Assignment</h3>
 
-                                <input type="text" id="newManualQuiz"
-                                    placeholder="Enter Offline Exam Name (e.g., Midterm Paper)">
+                                <div class="single-assignment-centered-container"
+                                    style="max-width: 580px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 15px;">
+                                    <div class="form-group" style="margin: 0; width: 100%;">
+                                        <label for="newManualQuiz"
+                                            style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Assignment
+                                            / Offline Exam Name</label>
+                                        <input type="text" id="newManualQuiz"
+                                            placeholder="Enter Offline Exam Name (e.g., Midterm Paper)"
+                                            style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
+                                    </div>
 
-                                <div class="form-row"
-                                    style="margin-top: 8px; margin-bottom: 12px; display: flex; gap: 16px; flex-wrap: wrap;">
-                                    <div class="form-group" style="flex: 1; min-width: 180px;">
+                                    <div class="form-group" style="margin: 0; width: 100%;">
                                         <label for="newManualQuizType"
-                                            style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block;">Type:</label>
-                                        <select id="newManualQuizType" style="margin: 0 !important;">
+                                            style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Type:</label>
+                                        <select id="newManualQuizType"
+                                            style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                             <option value="Exercise" selected>Exercise (7.5%)</option>
                                             <option value="Homework">Homework (7.5%)</option>
                                             <option value="Quiz">Quiz (15%)</option>
@@ -1959,23 +2034,27 @@
                                             <option value="Final Exam">Final Exam (25%)</option>
                                         </select>
                                     </div>
-                                    <div class="form-group" style="flex: 1.2; min-width: 200px;">
+
+                                    <div class="form-group" style="margin: 0; width: 100%;">
                                         <label for="newManualQuizSubject"
-                                            style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block;">Subject:</label>
-                                        <select id="newManualQuizSubject" style="margin: 0 !important;">
+                                            style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Subject:</label>
+                                        <select id="newManualQuizSubject"
+                                            style="width: 100%; height: 44px; font-size: 13.5px; border-radius: 10px; margin: 0; padding: 0 14px; box-sizing: border-box;">
                                             <option value="">-- Select Subject --</option>
                                         </select>
                                     </div>
-                                    <div class="form-group" style="flex: 1.2; min-width: 200px;">
+
+                                    <div class="form-group" style="margin: 0; width: 100%;">
                                         <label
-                                            style="font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block;">Target
+                                            style="display: block; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Target
                                             Class:</label>
-                                        <div class="multi-select-dropdown" id="manualQuizClassDropdown">
+                                        <div class="multi-select-dropdown" id="manualQuizClassDropdown"
+                                            style="width: 100%;">
                                             <div class="multi-select-trigger"
-                                                onclick="toggleMultiSelectDropdown('manualQuizClassDropdown')">
+                                                onclick="toggleMultiSelectDropdown('manualQuizClassDropdown')"
+                                                style="height: 44px; font-size: 13.5px; border-radius: 10px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 14px;">
                                                 <span class="multi-select-label" id="manualQuizClassLabel">-- Select
-                                                    Target
-                                                    Class --</span>
+                                                    Target Class --</span>
                                                 <svg class="dropdown-arrow-icon" viewBox="0 0 24 24" width="16"
                                                     height="16" fill="none" stroke="currentColor" stroke-width="2">
                                                     <polyline points="6 9 12 15 18 9"></polyline>
@@ -1986,19 +2065,66 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div
+                                        style="display: flex; justify-content: center; align-items: center; margin-top: 5px; width: 100%;">
+                                        <button onclick="addManualQuiz()"
+                                            style="background: var(--primary-blue); height: 44px; padding: 0 28px; border-radius: 10px; font-size: 14px; font-weight: 700; color: #fff; border: none; cursor: pointer;">Add
+                                            Assignment</button>
+                                    </div>
                                 </div>
 
-                                <button onclick="addManualQuiz()" style="background: var(--primary-blue);">Add
-                                    Assignment</button>
+                                <!-- Quizzes Database Toolbar (Search & Sort) -->
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-top: 28px; margin-bottom: 12px; gap: 12px; flex-wrap: wrap;">
+                                    <h4 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-dark);">
+                                        Quizzes & Exams Database</h4>
+                                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                        <input type="text" id="searchQuizzesDb" placeholder="Search quiz, class, subject..."
+                                            oninput="onSearchQuizzesDbChange()"
+                                            style="min-width: 200px; height: 36px; font-size: 13px; margin: 0; padding: 0 12px; border-radius: 8px;">
+                                        <select id="sortQuizzesDbSelect" onchange="onSortQuizzesDbSelectChange(this.value)"
+                                            style="height: 36px; font-size: 13px; margin: 0; padding: 0 10px; border-radius: 8px; width: auto;">
+                                            <option value="class-asc" selected>Sort by: Class (Grade 7 - 12)</option>
+                                            <option value="class-desc">Sort by: Class (Grade 12 - 7)</option>
+                                            <option value="type-asc">Sort by: Type of Exam (A - Z)</option>
+                                            <option value="type-desc">Sort by: Type of Exam (Z - A)</option>
+                                            <option value="subject-asc">Sort by: Subject (A - Z)</option>
+                                            <option value="subject-desc">Sort by: Subject (Z - A)</option>
+                                            <option value="title-asc">Sort by: Quiz Name (A - Z)</option>
+                                            <option value="title-desc">Sort by: Quiz Name (Z - A)</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-                                <div class="table-responsive" style="margin-top: 15px; max-height: 350px;">
+                                <div class="table-responsive" style="max-height: 350px;">
                                     <table id="quizzesDatabaseTable">
                                         <thead>
                                             <tr>
-                                                <th>Quiz / Exam Name</th>
-                                                <th>Type</th>
-                                                <th>Subject</th>
-                                                <th>Class</th>
+                                                <th onclick="sortQuizzesDatabaseTable('title')"
+                                                    style="cursor: pointer; user-select: none;"
+                                                    title="Sort by Quiz / Exam Name">
+                                                    Quiz / Exam Name <span id="sortIconQuiz_title"
+                                                        style="font-size: 11px; opacity: 0.5;">↕</span>
+                                                </th>
+                                                <th onclick="sortQuizzesDatabaseTable('type')"
+                                                    style="cursor: pointer; user-select: none;"
+                                                    title="Sort by Type">
+                                                    Type <span id="sortIconQuiz_type"
+                                                        style="font-size: 11px; opacity: 0.5;">↕</span>
+                                                </th>
+                                                <th onclick="sortQuizzesDatabaseTable('subject')"
+                                                    style="cursor: pointer; user-select: none;"
+                                                    title="Sort by Subject">
+                                                    Subject <span id="sortIconQuiz_subject"
+                                                        style="font-size: 11px; opacity: 0.5;">↕</span>
+                                                </th>
+                                                <th onclick="sortQuizzesDatabaseTable('class')"
+                                                    style="cursor: pointer; user-select: none;"
+                                                    title="Sort by Class">
+                                                    Class <span id="sortIconQuiz_class"
+                                                        style="font-size: 11px; opacity: 0.9; color: var(--primary-blue);">▲</span>
+                                                </th>
                                                 <th style="width: 80px; text-align: center;">Action</th>
                                             </tr>
                                         </thead>
@@ -2545,44 +2671,14 @@
 
                 <!-- TAB 7: STUDENTS ATTENDANCE & PRESENT LIST -->
                 <div id="tab-manage-attendance" class="tab-content">
-                    <!-- Top Header -->
-                    <div class="attendance-header-wrapper" style="margin-bottom: 20px;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <div
-                                style="width: 34px; height: 34px; border-radius: 9px; background: rgba(30,94,255,0.12); color: var(--primary-blue, #1e5eff); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2.2">
-                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2">
-                                    </path>
-                                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                                    <path d="m9 14 2 2 4-4"></path>
-                                </svg>
-                            </div>
-                            <h2 style="margin: 0; font-size: 21px; font-weight: 800; color: var(--text-dark);">Present
-                                List</h2>
-                        </div>
-                    </div>
-
                     <!-- 1. Deployment & Session Control Card -->
                     <div class="box attendance-session-card"
                         style="padding: 22px; margin-bottom: 22px; border-radius: 16px; border: 1.5px solid var(--border-color, #e2e8f0);">
                         <div
                             style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; border-bottom: 1px solid var(--border-color, #e2e8f0); padding-bottom: 14px;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div
-                                    style="width: 36px; height: 36px; border-radius: 10px; background: rgba(30,94,255,0.12); color: #1e5eff; display: flex; align-items: center; justify-content: center;">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2.2">
-                                        <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
-                                        <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
-                                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
-                                        <circle cx="12" cy="20" r="1"></circle>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--text-dark);">
-                                        Daily Present List</h3>
-                                </div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 17px; font-weight: 800; color: var(--text-dark);">
+                                    Present List</h3>
                             </div>
                             <div id="attSessionStatusBadge" class="att-status-pill pill-inactive"
                                 style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700; background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1;">
@@ -2665,12 +2761,8 @@
                                     style="position: relative; display: inline-flex; align-items: center;">
                                     <div class="att-split-pill">
                                         <button type="button" id="btnDeployAttendanceSession" class="att-split-main-btn"
-                                            title="Deploy Attendance Call">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2.4">
-                                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                                            </svg>
-                                            <span>Deploy Attendance Call</span>
+                                            title="Deploy">
+                                            <span>Deploy</span>
                                         </button>
                                         <div class="att-split-divider"></div>
                                         <button type="button" id="btnAttendanceMenuToggle" class="att-split-arrow-btn"
@@ -2684,46 +2776,20 @@
                                     </div>
 
                                     <!-- Floating Dropdown Menu for Remaining Actions -->
-                                    <div id="attActionDropdownMenu" class="att-actions-dropdown hidden">
-                                        <button type="button" id="btnRefreshAttendance" class="att-action-dropdown-item">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2.2">
-                                                <path
-                                                    d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
-                                            </svg>
-                                            <span>Refresh Attendance</span>
-                                        </button>
+                                    <div id="attActionDropdownMenu" class="att-actions-dropdown hidden" style="min-width: 150px; padding: 6px;">
                                         <button type="button" id="btnExportAttendanceExcel"
-                                            class="att-action-dropdown-item">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#107c41"
-                                                stroke-width="2.2">
-                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                                <polyline points="14 2 14 8 20 8"></polyline>
-                                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                                                <polyline points="10 9 9 9 8 9"></polyline>
-                                            </svg>
+                                            class="att-action-dropdown-item" style="justify-content: flex-start; text-align: left; padding: 9px 12px;">
                                             <span>Export Excel</span>
                                         </button>
-                                        <button type="button" id="btnPrintAttendance" class="att-action-dropdown-item">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569"
-                                                stroke-width="2.2">
-                                                <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                                                <path
-                                                    d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
-                                                </path>
-                                                <rect x="6" y="14" width="12" height="8"></rect>
-                                            </svg>
+                                        <button type="button" id="btnPrintAttendance" class="att-action-dropdown-item"
+                                            style="justify-content: flex-start; text-align: left; padding: 9px 12px;">
                                             <span>Print Sheet</span>
                                         </button>
                                         <div id="attCloseSessionDivider" class="att-dropdown-divider hidden"></div>
                                         <button type="button" id="btnCloseAttendanceSession"
-                                            class="att-action-dropdown-item att-danger-item hidden">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ef4444"
-                                                stroke-width="2.2">
-                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                            </svg>
-                                            <span>Close / End Session</span>
+                                            class="att-action-dropdown-item att-danger-item hidden"
+                                            style="justify-content: flex-start; text-align: left; padding: 9px 12px;">
+                                            <span>End Class</span>
                                         </button>
                                     </div>
                                 </div>
@@ -2799,7 +2865,7 @@
 
                             <div class="att-stat-divider"></div>
 
-                            <!-- Others (Reason) -->
+                            <!-- Other -->
                             <div class="att-stat-cell">
                                 <div class="att-stat-icon-wrapper"
                                     style="background: rgba(245,158,11,0.12); color: #f59e0b;">
@@ -2812,7 +2878,7 @@
                                 </div>
                                 <div class="att-stat-content">
                                     <div style="display: flex; align-items: center; gap: 6px;">
-                                        <p class="att-stat-label" style="color: #f59e0b;">Others (Reason)</p>
+                                        <p class="att-stat-label" style="color: #f59e0b;">Other</p>
                                         <span id="attPctOthers" class="att-stat-pct"
                                             style="color: #f59e0b; background: rgba(245,158,11,0.12);">0%</span>
                                     </div>
@@ -2852,8 +2918,8 @@
                             <!-- Status Filter Dropdown -->
                             <div class="att-filter-dropdown-wrap" style="display: flex; align-items: center; gap: 8px;">
                                 <label for="attStatusFilterSelect"
-                                    style="font-size: 13px; font-weight: 700; color: var(--text-gray); margin: 0; white-space: nowrap; display: flex; align-items: center; gap: 5px;">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    style="font-size: 13.5px; font-weight: 700; color: var(--text-gray); margin: 0; white-space: nowrap; display: flex; align-items: center; gap: 6px;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.2">
                                         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                                     </svg>
@@ -2861,7 +2927,7 @@
                                 </label>
                                 <select id="attStatusFilterSelect" class="att-status-select"
                                     onchange="filterAttendanceStatus(this.value)"
-                                    style="min-width: 170px; height: 36px; margin: 0; padding: 0 12px; border-radius: 9px; border: 1px solid var(--border-color, #cbd5e1); background: var(--card-bg, #ffffff); color: var(--text-dark, #1e293b); font-size: 13px; font-weight: 600; cursor: pointer;">
+                                    style="min-width: 140px; height: 38px; margin: 0; padding: 0 12px; border-radius: 9px; border: 1px solid var(--border-color, #cbd5e1); background: var(--card-bg, #ffffff); color: var(--text-dark, #1e293b); font-size: 13px; font-weight: 600; cursor: pointer; box-sizing: border-box;">
                                     <option value="all">All</option>
                                     <option value="present">Present</option>
                                     <option value="absent">Absent</option>
@@ -2872,15 +2938,15 @@
 
                             <!-- Search Student -->
                             <div class="att-search-box"
-                                style="position: relative; min-width: 260px; max-width: 320px; flex: 1;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                style="position: relative; min-width: 240px; max-width: 320px; flex: 1; display: flex; align-items: center;">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2.2"
-                                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-gray); pointer-events: none;">
+                                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-gray, #94a3b8); pointer-events: none; z-index: 2;">
                                     <circle cx="11" cy="11" r="8"></circle>
                                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                 </svg>
                                 <input type="text" id="attSearchInput" placeholder="Search student name or code..."
-                                    style="width: 100%; height: 36px; padding-left: 34px; padding-right: 12px; margin: 0; font-size: 13px; border-radius: 9px; border: 1px solid var(--border-color, #cbd5e1);">
+                                    style="width: 100%; height: 38px; padding-left: 36px; padding-right: 12px; margin: 0; font-size: 13px; border-radius: 9px; border: 1px solid var(--border-color, #cbd5e1); background: var(--card-bg, #ffffff); color: var(--text-dark, #1e293b); box-sizing: border-box;">
                             </div>
                         </div>
 
@@ -2907,6 +2973,193 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <!-- 4. Attendance Data Analysis Dashboard -->
+                    <div class="box att-analytics-box" id="attendanceAnalyticsSection" style="margin-top: 24px; padding: 24px; border-radius: 16px;">
+                        <div class="att-analytics-header-wrap" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color, #e2e8f0); padding-bottom: 16px;">
+                            <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: var(--text-dark, #0f172a); text-align: center;">Attendance Data Analysis</h3>
+                            
+                            <!-- Filter Controls & View Selector -->
+                            <div class="att-analytics-filters" style="display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                                <!-- View Switcher Dropdown -->
+                                <select id="attAnalyticsViewSelect" onchange="switchAttAnalyticsView(this.value)" style="height: 32px; font-size: 12.5px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--border-color, #cbd5e1); background: var(--card-bg, #ffffff); font-weight: 600; width: auto; margin: 0; box-shadow: none;">
+                                    <option value="classes" selected>Class Overview</option>
+                                    <option value="subjects">Subject Breakdown</option>
+                                    <option value="students">Student Watchlist</option>
+                                    <option value="trends">Attendance Trends</option>
+                                </select>
+
+                                <!-- Timeframe Preset -->
+                                <select id="attAnalyticsTimeRange" onchange="onAttAnalyticsFilterChange()" style="height: 32px; font-size: 12.5px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--border-color, #cbd5e1); background: var(--card-bg, #ffffff); font-weight: 600; width: auto; margin: 0; box-shadow: none;">
+                                    <option value="all" selected>All Time / Semester</option>
+                                    <option value="30">Last 30 Days</option>
+                                    <option value="7">Last 7 Days</option>
+                                </select>
+
+                                <!-- Class Filter -->
+                                <select id="attAnalyticsClassFilter" onchange="onAttAnalyticsFilterChange()" style="height: 32px; font-size: 12.5px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--border-color, #cbd5e1); background: var(--card-bg, #ffffff); font-weight: 600; width: auto; margin: 0; box-shadow: none;">
+                                    <option value="all">All Classes</option>
+                                </select>
+
+                                <!-- Subject Filter -->
+                                <select id="attAnalyticsSubjectFilter" onchange="onAttAnalyticsFilterChange()" style="height: 32px; font-size: 12.5px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--border-color, #cbd5e1); background: var(--card-bg, #ffffff); font-weight: 600; width: auto; margin: 0; box-shadow: none;">
+                                    <option value="all">All Subjects</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Top KPI Cards Grid -->
+                        <div class="att-analytics-kpi-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px;">
+                            <div class="att-analytics-kpi-card">
+                                <div class="kpi-label">Average Attendance</div>
+                                <div class="kpi-value" id="attKpiRate" style="color: #10b981;">--%</div>
+                                <div class="kpi-subtext" id="attKpiRateSub">Across all logged sessions</div>
+                            </div>
+                            <div class="att-analytics-kpi-card">
+                                <div class="kpi-label">Top Performing Class</div>
+                                <div class="kpi-value" id="attKpiTopClass" style="color: #1e5eff;">--</div>
+                                <div class="kpi-subtext" id="attKpiTopClassSub">Highest attendance rate</div>
+                            </div>
+                            <div class="att-analytics-kpi-card">
+                                <div class="kpi-label">Frequent Absence Reason</div>
+                                <div class="kpi-value" id="attKpiTopReason" style="color: #f59e0b;">--</div>
+                                <div class="kpi-subtext" id="attKpiTopReasonSub">Most cited excuse/reason</div>
+                            </div>
+                            <div class="att-analytics-kpi-card">
+                                <div class="kpi-label">Students Needing Attention</div>
+                                <div class="kpi-value" id="attKpiAtRiskCount" style="color: #ef4444;">0</div>
+                                <div class="kpi-subtext">Attendance rate &lt; 80%</div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Views -->
+                        <!-- VIEW 1: Class Overview -->
+                        <div id="attView_classes" class="att-analytics-view-panel">
+                            <div class="att-analytics-dual-grid" style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; align-items: start;">
+                                <div class="att-chart-container-card" style="padding: 18px; border-radius: 12px; background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                        <h4 style="margin: 0; font-size: 14.5px; font-weight: 700; color: var(--text-dark, #0f172a);">Class Attendance Rate (%)</h4>
+                                        <span style="font-size: 11.5px; color: var(--text-gray, #64748b); font-weight: 600;">Higher is better</span>
+                                    </div>
+                                    <div style="position: relative; height: 260px; width: 100%;">
+                                        <canvas id="attClassCompChart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="att-chart-container-card" style="padding: 18px; border-radius: 12px; background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0);">
+                                    <h4 style="margin: 0 0 12px 0; font-size: 14.5px; font-weight: 700; color: var(--text-dark, #0f172a);">Class Breakdown Summary</h4>
+                                    <div class="table-responsive" style="max-height: 260px;">
+                                        <table style="width: 100%; font-size: 12.5px;" id="attClassSummaryTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Class</th>
+                                                    <th style="text-align: right;">Rate</th>
+                                                    <th style="text-align: right;">Present</th>
+                                                    <th style="text-align: right;">Absent</th>
+                                                    <th style="text-align: right;">Other</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW 2: Subject Breakdown -->
+                        <div id="attView_subjects" class="att-analytics-view-panel hidden">
+                            <div class="att-analytics-dual-grid" style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; align-items: start;">
+                                <div class="att-chart-container-card" style="padding: 18px; border-radius: 12px; background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                        <h4 style="margin: 0; font-size: 14.5px; font-weight: 700; color: var(--text-dark, #0f172a);">Subject Attendance Compliance (%)</h4>
+                                        <span style="font-size: 11.5px; color: var(--text-gray, #64748b); font-weight: 600;">By Subject</span>
+                                    </div>
+                                    <div style="position: relative; height: 260px; width: 100%;">
+                                        <canvas id="attSubjectCompChart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="att-chart-container-card" style="padding: 18px; border-radius: 12px; background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0);">
+                                    <h4 style="margin: 0 0 12px 0; font-size: 14.5px; font-weight: 700; color: var(--text-dark, #0f172a);">Subject Metrics</h4>
+                                    <div class="table-responsive" style="max-height: 260px;">
+                                        <table style="width: 100%; font-size: 12.5px;" id="attSubjectSummaryTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Subject</th>
+                                                    <th style="text-align: right;">Rate</th>
+                                                    <th style="text-align: right;">Sessions</th>
+                                                    <th style="text-align: right;">Absences</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW 3: Student Watchlist -->
+                        <div id="attView_students" class="att-analytics-view-panel hidden">
+                            <div style="background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0); border-radius: 12px; padding: 18px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-dark, #0f172a);">Attendance Trend</h4>
+                                    </div>
+                                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                        <input type="text" id="attWatchlistSearch" placeholder="Search student name..." oninput="onAttWatchlistSearchChange()" style="height: 36px; font-size: 13px; padding: 0 12px; border-radius: 8px; min-width: 220px; border: 1px solid var(--border-color, #cbd5e1); margin: 0;">
+                                        <select id="attWatchlistSort" onchange="onAttWatchlistSortChange(this.value)" style="height: 36px; font-size: 13px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--border-color, #cbd5e1); width: auto; margin: 0;">
+                                            <option value="rate-asc">Sort: Lowest Attendance %</option>
+                                            <option value="rate-desc">Sort: Highest Attendance %</option>
+                                            <option value="absent-desc">Sort: Most Absences</option>
+                                            <option value="name-asc">Sort: Student Name (A-Z)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table id="attStudentWatchlistTable">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 45px; text-align: center;">#</th>
+                                                <th>Student Name</th>
+                                                <th>Class</th>
+                                                <th style="text-align: center;">Total Logged</th>
+                                                <th style="text-align: center;">Present</th>
+                                                <th style="text-align: center;">Absent</th>
+                                                <th style="text-align: center;">Other</th>
+                                                <th style="min-width: 140px;">Attendance Rate</th>
+                                                <th style="text-align: center; width: 120px;">Risk Level</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Pagination for Student Watchlist Table (15 per page) -->
+                                <div id="attWatchlistPagination" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-color, #e2e8f0);">
+                                    <div id="attWatchlistPageInfo" style="font-size: 12.5px; color: var(--text-gray, #64748b); font-weight: 600;">Showing 0-0 of 0 students</div>
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <button type="button" id="attWatchlistPrevBtn" onclick="changeAttWatchlistPage(-1)" style="height: 32px; padding: 0 12px; font-size: 12px; font-weight: 600; border-radius: 6px; border: 1px solid var(--border-color, #cbd5e1); background: var(--card-bg, #ffffff); color: var(--text-dark, #1e293b); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; margin: 0; box-shadow: none;">Previous</button>
+                                        <div id="attWatchlistPageNumbers" style="display: flex; gap: 4px; align-items: center;"></div>
+                                        <button type="button" id="attWatchlistNextBtn" onclick="changeAttWatchlistPage(1)" style="height: 32px; padding: 0 12px; font-size: 12px; font-weight: 600; border-radius: 6px; border: 1px solid var(--border-color, #cbd5e1); background: var(--card-bg, #ffffff); color: var(--text-dark, #1e293b); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; margin: 0; box-shadow: none;">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW 4: Attendance Trends -->
+                        <div id="attView_trends" class="att-analytics-view-panel hidden">
+                            <div class="att-chart-container-card" style="padding: 18px; border-radius: 12px; background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-dark, #0f172a);">Trajectory</h4>
+                                    </div>
+                                    <span id="attTrendSummaryBadge" style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 12px; background: rgba(30,94,255,0.1); color: #1e5eff;">Overall Timeline</span>
+                                </div>
+                                <div style="position: relative; height: 300px; width: 100%;">
+                                    <canvas id="attTrendChart"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

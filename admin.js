@@ -211,7 +211,7 @@ onAuthStateChanged(auth, async (user) => {
             const firstName = displayName ? displayName.split(' ')[0] : (formattedName ? formattedName.split(' ')[0] : (userRole === "admin" ? "Admin" : "Teacher"));
 
             if (welcomeTitleEl) {
-                welcomeTitleEl.innerText = `${getGreetingPrefix()}, ${firstName} 👋`;
+                welcomeTitleEl.innerText = `${getGreetingPrefix()}, ${firstName}`;
             }
 
             if (welcomeSubEl) {
@@ -363,7 +363,26 @@ window.generateNewUniqueCode = async function (oldCode) {
     }
 };
 
-// --- STUDENT REGISTRATION MODE SWITCHER ---
+// --- STUDENT REGISTRATION MODE SWITCHER & DROPDOWN ---
+window.toggleStudentRegModeDropdown = function (e) {
+    if (e) e.stopPropagation();
+    const menu = document.getElementById('studentRegModeDropdownMenu');
+    if (!menu) return;
+    const isHidden = menu.classList.contains('hidden');
+    document.querySelectorAll('.score-mode-menu, .score-ledger-dropdown').forEach(d => d.classList.add('hidden'));
+    document.querySelectorAll('.score-mode-btn, .score-ledger-split-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    if (isHidden) {
+        menu.classList.remove('hidden');
+        document.getElementById('studentRegModeDropdownTrigger')?.setAttribute('aria-expanded', 'true');
+    }
+};
+
+window.closeStudentRegModeDropdown = function () {
+    const menu = document.getElementById('studentRegModeDropdownMenu');
+    if (menu) menu.classList.add('hidden');
+    document.getElementById('studentRegModeDropdownTrigger')?.setAttribute('aria-expanded', 'false');
+};
+
 window.setStudentRegMode = function (mode) {
     const singleForm = document.getElementById('studentRegSingleForm');
     const bulkForm = document.getElementById('studentRegBulkForm');
@@ -371,6 +390,8 @@ window.setStudentRegMode = function (mode) {
     const btnSingle = document.getElementById('btnModeSingle');
     const btnBulk = document.getElementById('btnModeBulk');
     const btnPhotos = document.getElementById('btnModePhotos');
+    const labelEl = document.getElementById('studentRegModeActiveLabel');
+    const iconEl = document.getElementById('studentRegModeActiveIcon');
 
     if (singleForm) singleForm.classList.toggle('hidden', mode !== 'single');
     if (bulkForm) bulkForm.classList.toggle('hidden', mode !== 'bulk');
@@ -379,6 +400,19 @@ window.setStudentRegMode = function (mode) {
     if (btnSingle) btnSingle.classList.toggle('active', mode === 'single');
     if (btnBulk) btnBulk.classList.toggle('active', mode === 'bulk');
     if (btnPhotos) btnPhotos.classList.toggle('active', mode === 'photos');
+
+    if (mode === 'bulk') {
+        if (labelEl) labelEl.innerText = 'Multiple Students';
+        if (iconEl) iconEl.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`;
+    } else if (mode === 'photos') {
+        if (labelEl) labelEl.innerText = 'Students Photo';
+        if (iconEl) iconEl.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>`;
+    } else {
+        if (labelEl) labelEl.innerText = 'Single Student';
+        if (iconEl) iconEl.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
+    }
+
+    closeStudentRegModeDropdown();
 };
 
 // --- SCORE INPUT MODE SWITCHER & DROPDOWN ---
@@ -2444,6 +2478,9 @@ document.querySelectorAll('.menu-btn').forEach(button => {
             await populateAttendanceSubjects();
             await populateAttendanceClasses();
             checkAndLoadAttendance();
+            if (typeof window.loadAttendanceAnalyticsData === 'function') {
+                window.loadAttendanceAnalyticsData();
+            }
         } else if (tabId === 'tab-manage-scores') {
             if (typeof populateAssignmentReminderDropdowns === 'function') {
                 populateAssignmentReminderDropdowns();
@@ -5670,56 +5707,12 @@ window.loadSystemDatabases = async function () {
             console.warn("Students collection read restricted:", err.message);
         }
 
-        // 5. Populate Quizzes Table (Digital + Offline)
         // 5. Populate Quizzes Table (Digital + Offline + Classroom)
         const quizTbody = document.querySelector("#quizzesDatabaseTable tbody");
         if (quizTbody) {
             try {
                 // Fetch offline/classroom quizzes (system_quizzes)
                 const manualSnap = await getDocs(collection(db, "system_quizzes"));
-
-                // Helper for Quiz Type Badges
-                const getQuizTypeBadge = (type) => {
-                    const rawT = type || 'Quiz';
-                    let t = rawT;
-                    if (rawT === 'Skill' || rawT === 'Project') t = 'Practical Test';
-                    if (rawT === 'Final Test') t = 'Final Exam';
-
-                    let bg = 'rgba(37, 99, 235, 0.1)';
-                    let color = '#2563eb';
-                    let border = 'rgba(37, 99, 235, 0.25)';
-
-                    if (t === 'Final Exam') {
-                        bg = 'rgba(220, 38, 38, 0.1)';
-                        color = '#dc2626';
-                        border = 'rgba(220, 38, 38, 0.25)';
-                    } else if (t === 'Review') {
-                        bg = 'rgba(147, 51, 234, 0.1)';
-                        color = '#9333ea';
-                        border = 'rgba(147, 51, 234, 0.25)';
-                    } else if (t === 'Homework') {
-                        bg = 'rgba(234, 88, 12, 0.1)';
-                        color = '#ea580c';
-                        border = 'rgba(234, 88, 12, 0.25)';
-                    } else if (t === 'Exercise') {
-                        bg = 'rgba(22, 163, 74, 0.1)';
-                        color = '#16a34a';
-                        border = 'rgba(22, 163, 74, 0.25)';
-                    } else if (t === 'Practical Test') {
-                        bg = 'rgba(13, 148, 136, 0.1)';
-                        color = '#0d9488';
-                        border = 'rgba(13, 148, 136, 0.25)';
-                    }
-
-                    return `<span style="background: ${bg}; color: ${color}; border: 1px solid ${border}; padding: 3px 10px; border-radius: 12px; font-size: 11.5px; font-weight: 700;">${t}</span>`;
-                };
-
-                const getSourceBadge = (source) => {
-                    if (source === 'google_classroom') {
-                        return `<span style="background: rgba(59, 130, 246, 0.1); color: #2563eb; border: 1px solid rgba(59, 130, 246, 0.25); padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; margin-left: 6px;">Classroom</span>`;
-                    }
-                    return '';
-                };
 
                 // Map to group unique assignments by (title + subject)
                 const assignmentMap = new Map();
@@ -5773,44 +5766,10 @@ window.loadSystemDatabases = async function () {
                     });
                 }
 
-                // 2. Render Deduplicated Table Rows
-                const quizRows = [];
-                assignmentMap.forEach((item) => {
-                    const classList = Array.from(item.classesSet).sort();
-                    const classDisplay = classList.length > 0 ? classList.join(', ') : 'All Classes';
-
-                    quizRows.push(`
-                        <tr>
-                            <td><strong>${item.title}</strong></td>
-                            <td>${getQuizTypeBadge(item.type)}${getSourceBadge(item.source)}</td>
-                            <td>${item.subject}</td>
-                            <td>${classDisplay}</td>
-                            <td style="text-align: center; position: relative;">
-                                <div class="db-action-kebab" style="position: relative; display: inline-block;">
-                                    <button type="button" class="card-kebab-btn" onclick="toggleOfflineQuizKebab(event, '${item.docId}')" title="Actions">
-                                        ⋮
-                                    </button>
-                                    <div id="offlineQuizKebab_${item.docId}" class="profile-card-dropdown hidden" style="top: 36px; right: 0; min-width: 120px; z-index: 100;">
-                                        <button type="button" class="profile-dropdown-item" onclick="openEditOfflineQuizModal('${item.docId}')">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-                                            <span>Edit</span>
-                                        </button>
-                                        <button type="button" class="profile-dropdown-item" style="color: #ef4444 !important;" onclick="deleteSystemRecord('system_quizzes', '${item.docId}')">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                                            <span>Delete</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    `);
-                });
-
-                // Inject into DOM in a single batch operation
-                if (quizRows.length > 0) {
-                    quizTbody.innerHTML = quizRows.join('');
-                } else {
-                    quizTbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-gray);">No offline exams found in database.</td></tr>`;
+                // Store in global array and render sorted table
+                window.allQuizzesDatabaseData = Array.from(assignmentMap.values());
+                if (typeof window.renderQuizzesDatabaseTable === "function") {
+                    window.renderQuizzesDatabaseTable();
                 }
 
             } catch (err) {
@@ -5827,6 +5786,193 @@ window.loadSystemDatabases = async function () {
     } catch (e) {
         console.error("Error loading linked databases:", e.message);
     }
+};
+
+// --- QUIZZES & EXAMS DATABASE SORTING, FILTERING & RENDERING ---
+window.allQuizzesDatabaseData = [];
+window.quizzesDbSortState = { field: 'class', dir: 'asc' };
+
+window.getQuizTypeBadge = function (type) {
+    const rawT = type || 'Quiz';
+    let t = rawT;
+    if (rawT === 'Skill' || rawT === 'Project') t = 'Practical Test';
+    if (rawT === 'Final Test') t = 'Final Exam';
+
+    let bg = 'rgba(37, 99, 235, 0.1)';
+    let color = '#2563eb';
+    let border = 'rgba(37, 99, 235, 0.25)';
+
+    if (t === 'Final Exam') {
+        bg = 'rgba(220, 38, 38, 0.1)';
+        color = '#dc2626';
+        border = 'rgba(220, 38, 38, 0.25)';
+    } else if (t === 'Review') {
+        bg = 'rgba(147, 51, 234, 0.1)';
+        color = '#9333ea';
+        border = 'rgba(147, 51, 234, 0.25)';
+    } else if (t === 'Homework') {
+        bg = 'rgba(234, 88, 12, 0.1)';
+        color = '#ea580c';
+        border = 'rgba(234, 88, 12, 0.25)';
+    } else if (t === 'Exercise') {
+        bg = 'rgba(22, 163, 74, 0.1)';
+        color = '#16a34a';
+        border = 'rgba(22, 163, 74, 0.25)';
+    } else if (t === 'Practical Test') {
+        bg = 'rgba(13, 148, 136, 0.1)';
+        color = '#0d9488';
+        border = 'rgba(13, 148, 136, 0.25)';
+    }
+
+    return `<span style="background: ${bg}; color: ${color}; border: 1px solid ${border}; padding: 3px 10px; border-radius: 12px; font-size: 11.5px; font-weight: 700;">${t}</span>`;
+};
+
+window.getSourceBadge = function (source) {
+    if (source === 'google_classroom') {
+        return `<span style="background: rgba(59, 130, 246, 0.1); color: #2563eb; border: 1px solid rgba(59, 130, 246, 0.25); padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; margin-left: 6px;">Classroom</span>`;
+    }
+    return '';
+};
+
+function compareItemClasses(itemA, itemB) {
+    const listA = Array.from(itemA.classesSet || []).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+    const listB = Array.from(itemB.classesSet || []).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+    const strA = listA.length > 0 ? listA.join(', ') : 'All Classes';
+    const strB = listB.length > 0 ? listB.join(', ') : 'All Classes';
+    return strA.localeCompare(strB, undefined, { numeric: true, sensitivity: 'base' });
+}
+
+window.renderQuizzesDatabaseTable = function () {
+    const quizTbody = document.querySelector("#quizzesDatabaseTable tbody");
+    if (!quizTbody) return;
+
+    const searchTerm = (document.getElementById('searchQuizzesDb')?.value || '').trim().toLowerCase();
+    let items = Array.from(window.allQuizzesDatabaseData || []);
+
+    if (searchTerm) {
+        items = items.filter(item => {
+            const classStr = Array.from(item.classesSet || []).join(', ').toLowerCase();
+            return (item.title || '').toLowerCase().includes(searchTerm) ||
+                   (item.subject || '').toLowerCase().includes(searchTerm) ||
+                   (item.type || '').toLowerCase().includes(searchTerm) ||
+                   classStr.includes(searchTerm);
+        });
+    }
+
+    const { field, dir } = window.quizzesDbSortState || { field: 'class', dir: 'asc' };
+    const factor = dir === 'desc' ? -1 : 1;
+
+    items.sort((a, b) => {
+        let diff = 0;
+        if (field === 'class') {
+            diff = compareItemClasses(a, b);
+            if (diff === 0) diff = (a.subject || '').localeCompare(b.subject || '');
+            if (diff === 0) diff = (a.type || '').localeCompare(b.type || '');
+            if (diff === 0) diff = (a.title || '').localeCompare(b.title || '');
+        } else if (field === 'type') {
+            diff = (a.type || '').localeCompare(b.type || '');
+            if (diff === 0) diff = compareItemClasses(a, b);
+            if (diff === 0) diff = (a.subject || '').localeCompare(b.subject || '');
+            if (diff === 0) diff = (a.title || '').localeCompare(b.title || '');
+        } else if (field === 'subject') {
+            diff = (a.subject || '').localeCompare(b.subject || '');
+            if (diff === 0) diff = compareItemClasses(a, b);
+            if (diff === 0) diff = (a.type || '').localeCompare(b.type || '');
+            if (diff === 0) diff = (a.title || '').localeCompare(b.title || '');
+        } else if (field === 'title') {
+            diff = (a.title || '').localeCompare(b.title || '');
+            if (diff === 0) diff = compareItemClasses(a, b);
+            if (diff === 0) diff = (a.subject || '').localeCompare(b.subject || '');
+        }
+        return diff * factor;
+    });
+
+    // Update table header icons
+    ['title', 'type', 'subject', 'class'].forEach(col => {
+        const iconEl = document.getElementById(`sortIconQuiz_${col}`);
+        if (iconEl) {
+            if (col === field) {
+                iconEl.innerText = dir === 'asc' ? '▲' : '▼';
+                iconEl.style.opacity = '1';
+                iconEl.style.color = 'var(--primary-blue)';
+            } else {
+                iconEl.innerText = '↕';
+                iconEl.style.opacity = '0.5';
+                iconEl.style.color = 'inherit';
+            }
+        }
+    });
+
+    // Sync Sort Select dropdown value
+    const sortSelect = document.getElementById('sortQuizzesDbSelect');
+    if (sortSelect) {
+        const expectedVal = `${field}-${dir}`;
+        if (sortSelect.value !== expectedVal) {
+            sortSelect.value = expectedVal;
+        }
+    }
+
+    if (items.length === 0) {
+        quizTbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-gray); padding: 24px;">No quizzes or exams found.</td></tr>`;
+        return;
+    }
+
+    const rowsHtml = items.map(item => {
+        const classList = Array.from(item.classesSet || []).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+        const classDisplay = classList.length > 0 ? classList.join(', ') : 'All Classes';
+
+        return `
+            <tr>
+                <td><strong>${item.title}</strong></td>
+                <td>${window.getQuizTypeBadge(item.type)}${window.getSourceBadge(item.source)}</td>
+                <td>${item.subject}</td>
+                <td>${classDisplay}</td>
+                <td style="text-align: center; position: relative;">
+                    <div class="db-action-kebab" style="position: relative; display: inline-block;">
+                        <button type="button" class="card-kebab-btn" onclick="toggleOfflineQuizKebab(event, '${item.docId}')" title="Actions">
+                            ⋮
+                        </button>
+                        <div id="offlineQuizKebab_${item.docId}" class="profile-card-dropdown hidden" style="top: 36px; right: 0; min-width: 120px; z-index: 100;">
+                            <button type="button" class="profile-dropdown-item" onclick="openEditOfflineQuizModal('${item.docId}')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                <span>Edit</span>
+                            </button>
+                            <button type="button" class="profile-dropdown-item" style="color: #ef4444 !important;" onclick="deleteSystemRecord('system_quizzes', '${item.docId}')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                <span>Delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+
+    quizTbody.innerHTML = rowsHtml.join('');
+};
+
+window.sortQuizzesDatabaseTable = function (field) {
+    if (!window.quizzesDbSortState) window.quizzesDbSortState = { field: 'class', dir: 'asc' };
+    if (window.quizzesDbSortState.field === field) {
+        window.quizzesDbSortState.dir = window.quizzesDbSortState.dir === 'asc' ? 'desc' : 'asc';
+    } else {
+        window.quizzesDbSortState.field = field;
+        window.quizzesDbSortState.dir = 'asc';
+    }
+    window.renderQuizzesDatabaseTable();
+};
+
+window.onSortQuizzesDbSelectChange = function (val) {
+    if (!val) return;
+    const parts = val.split('-');
+    if (parts.length === 2) {
+        window.quizzesDbSortState = { field: parts[0], dir: parts[1] };
+        window.renderQuizzesDatabaseTable();
+    }
+};
+
+window.onSearchQuizzesDbChange = function () {
+    window.renderQuizzesDatabaseTable();
 };
 
 // --- MULTI-SELECT CHECKBOX DROPDOWN LOGIC ---
@@ -8214,6 +8360,11 @@ async function initAttendanceTab() {
         if (subjectSelect?.value && classSelect?.value) {
             await checkAndLoadAttendance();
         }
+
+        // Load Attendance Analytics Dashboard Data
+        if (typeof window.loadAttendanceAnalyticsData === 'function') {
+            window.loadAttendanceAnalyticsData();
+        }
     } catch (err) {
         console.error("Error initializing attendance tab:", err);
     }
@@ -8353,7 +8504,7 @@ async function checkAndLoadAttendance() {
             if (activeInfo) activeInfo.innerText = `Live session deployed on ${foundSession.date} for ${foundSession.subject} - Class ${foundSession.targetClass}. Real-time student responses streaming below.`;
             if (closeBtn) closeBtn.classList.remove('hidden');
             document.getElementById('attCloseSessionDivider')?.classList.remove('hidden');
-            if (deployBtn) deployBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> <span>Update Session Title</span>`;
+            if (deployBtn) deployBtn.innerHTML = `<span>Update Session Title</span>`;
             if (titleInput && foundSession.sessionTitle) titleInput.value = foundSession.sessionTitle;
         } else if (foundSession && foundSession.status === 'closed') {
             if (statusBadge) {
@@ -8363,7 +8514,7 @@ async function checkAndLoadAttendance() {
             if (activeInfo) activeInfo.innerText = `This attendance session was closed on ${foundSession.date}. You can re-open/deploy it anytime.`;
             if (closeBtn) closeBtn.classList.add('hidden');
             document.getElementById('attCloseSessionDivider')?.classList.add('hidden');
-            if (deployBtn) deployBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> <span>Re-Open Attendance Call</span>`;
+            if (deployBtn) deployBtn.innerHTML = `<span>Re-Open</span>`;
             if (titleInput && foundSession.sessionTitle) titleInput.value = foundSession.sessionTitle;
         } else {
             if (statusBadge) {
@@ -8373,7 +8524,7 @@ async function checkAndLoadAttendance() {
             if (activeInfo) activeInfo.innerText = '';
             if (closeBtn) closeBtn.classList.add('hidden');
             document.getElementById('attCloseSessionDivider')?.classList.add('hidden');
-            if (deployBtn) deployBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> <span>Deploy Attendance Call</span>`;
+            if (deployBtn) deployBtn.innerHTML = `<span>Deploy</span>`;
         }
 
         // 2. Fetch Enrolled Students for this Class
@@ -8562,21 +8713,12 @@ function renderAttendanceTable() {
                     <button type="button" class="att-kebab-trigger" title="Actions" aria-label="Actions" onclick="toggleAttendanceRowMenu(event, '${escapeHtml(s.code)}')">⋮</button>
                     <div id="att-menu-${escapeHtml(s.code)}" class="att-row-dropdown hidden">
                         <button type="button" class="att-row-item opt-present" onclick="quickMarkAttendance('${escapeHtml(s.code)}', '${escapeHtml(s.studentName || '')}', '${escapeHtml(s.studentClass || '')}', 'present'); closeAllAttDropdowns();">
-                            <span class="att-item-icon-wrap" style="color: #10b981; background: rgba(16,185,129,0.12);">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                            </span>
                             <span>Present</span>
                         </button>
                         <button type="button" class="att-row-item opt-absent" onclick="quickMarkAttendance('${escapeHtml(s.code)}', '${escapeHtml(s.studentName || '')}', '${escapeHtml(s.studentClass || '')}', 'absent'); closeAllAttDropdowns();">
-                            <span class="att-item-icon-wrap" style="color: #ef4444; background: rgba(239,68,68,0.12);">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                            </span>
                             <span>Absent</span>
                         </button>
                         <button type="button" class="att-row-item opt-note" onclick="openAttManualModal('${escapeHtml(s.code)}', '${escapeHtml(s.studentName || '')}', '${escapeHtml(s.studentClass || '')}', '${status}', '${escapeHtml(reason)}'); closeAllAttDropdowns();">
-                            <span class="att-item-icon-wrap" style="color: #6366f1; background: rgba(99,102,241,0.12);">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                            </span>
                             <span>Note</span>
                         </button>
                     </div>
@@ -8647,7 +8789,7 @@ async function deployAttendanceSession() {
     } finally {
         if (deployBtn) {
             deployBtn.disabled = false;
-            deployBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> <span>Deploy Attendance Call</span>`;
+            deployBtn.innerHTML = `<span>Deploy</span>`;
         }
     }
 }
@@ -8780,6 +8922,7 @@ window.addEventListener('click', (e) => {
     }
     if (!e.target.closest('.score-mode-dropdown-wrap')) {
         closeScoreModeDropdown();
+        closeStudentRegModeDropdown();
     }
     if (!e.target.closest('.score-ledger-split-wrap') && !e.target.closest('.score-ledger-split-btn-wrap')) {
         closeScoreLedgerDropdown();
@@ -8894,6 +9037,683 @@ function exportAttendanceToExcel() {
 
     const fileName = `Attendance_${subject}_${selectedClass}_${date}.xlsx`;
     XLSX.writeFile(wb, fileName);
+}
+
+// ==========================================================================
+// ATTENDANCE DATA ANALYSIS & REPORTING ENGINE
+// ==========================================================================
+
+let attAnalyticsAllRecords = [];
+let attAnalyticsAllSessions = [];
+let attAnalyticsIsLoading = false;
+let attAnalyticsLastLoadedTime = 0;
+
+let attClassChartInstance = null;
+let attSubjectChartInstance = null;
+let attTrendChartInstance = null;
+
+let currentAttAnalyticsView = 'classes';
+let currentAttWatchlistSort = 'rate-asc';
+let currentAttWatchlistSearch = '';
+let cachedWatchlistData = [];
+let currentAttWatchlistPage = 1;
+const attWatchlistPerPage = 15;
+
+window.switchAttAnalyticsView = function (viewName) {
+    currentAttAnalyticsView = viewName;
+
+    // Sync View Dropdown Select
+    const viewSelect = document.getElementById('attAnalyticsViewSelect');
+    if (viewSelect && viewSelect.value !== viewName) {
+        viewSelect.value = viewName;
+    }
+
+    // Update Panels
+    const panels = ['classes', 'subjects', 'students', 'trends'];
+    panels.forEach(p => {
+        const el = document.getElementById(`attView_${p}`);
+        if (el) {
+            if (p === viewName) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+    });
+
+    // Re-render specific chart / view
+    if (typeof window.renderAttendanceAnalytics === 'function') {
+        window.renderAttendanceAnalytics();
+    }
+};
+
+window.onAttAnalyticsFilterChange = function () {
+    currentAttWatchlistPage = 1;
+    if (typeof window.renderAttendanceAnalytics === 'function') {
+        window.renderAttendanceAnalytics();
+    }
+};
+
+window.onAttWatchlistSearchChange = function () {
+    const input = document.getElementById('attWatchlistSearch');
+    currentAttWatchlistSearch = (input ? input.value : '').trim().toLowerCase();
+    currentAttWatchlistPage = 1;
+    renderAttWatchlistTableOnly();
+};
+
+window.onAttWatchlistSortChange = function (val) {
+    currentAttWatchlistSort = val || 'rate-asc';
+    currentAttWatchlistPage = 1;
+    renderAttWatchlistTableOnly();
+};
+
+window.changeAttWatchlistPage = function (delta) {
+    currentAttWatchlistPage += delta;
+    renderAttWatchlistTableOnly();
+};
+
+window.goToAttWatchlistPage = function (pageNum) {
+    currentAttWatchlistPage = pageNum;
+    renderAttWatchlistTableOnly();
+};
+
+function renderAttWatchlistTableOnly() {
+    const tbody = document.querySelector('#attStudentWatchlistTable tbody');
+    const pageInfoEl = document.getElementById('attWatchlistPageInfo');
+    const prevBtn = document.getElementById('attWatchlistPrevBtn');
+    const nextBtn = document.getElementById('attWatchlistNextBtn');
+    const pageNumbersEl = document.getElementById('attWatchlistPageNumbers');
+    if (!tbody) return;
+
+    let items = Array.from(cachedWatchlistData || []);
+
+    if (currentAttWatchlistSearch) {
+        items = items.filter(s => {
+            return (s.studentName || '').toLowerCase().includes(currentAttWatchlistSearch) ||
+                   (s.studentCode || '').toLowerCase().includes(currentAttWatchlistSearch) ||
+                   (s.studentClass || '').toLowerCase().includes(currentAttWatchlistSearch);
+        });
+    }
+
+    if (currentAttWatchlistSort === 'rate-asc') {
+        items.sort((a, b) => a.rate - b.rate || b.absent - a.absent);
+    } else if (currentAttWatchlistSort === 'rate-desc') {
+        items.sort((a, b) => b.rate - a.rate || a.absent - b.absent);
+    } else if (currentAttWatchlistSort === 'absent-desc') {
+        items.sort((a, b) => b.absent - a.absent || a.rate - b.rate);
+    } else if (currentAttWatchlistSort === 'name-asc') {
+        items.sort((a, b) => (a.studentName || '').localeCompare(b.studentName || ''));
+    }
+
+    const totalCount = items.length;
+    const totalPages = Math.max(1, Math.ceil(totalCount / attWatchlistPerPage));
+
+    if (currentAttWatchlistPage > totalPages) {
+        currentAttWatchlistPage = totalPages;
+    }
+    if (currentAttWatchlistPage < 1) {
+        currentAttWatchlistPage = 1;
+    }
+
+    if (totalCount === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color: var(--text-gray, #64748b); padding: 28px 16px;">No student records found matching the criteria.</td></tr>`;
+        if (pageInfoEl) pageInfoEl.innerText = 'Showing 0 of 0 students';
+        if (prevBtn) {
+            prevBtn.disabled = true;
+            prevBtn.style.opacity = '0.5';
+            prevBtn.style.cursor = 'not-allowed';
+        }
+        if (nextBtn) {
+            nextBtn.disabled = true;
+            nextBtn.style.opacity = '0.5';
+            nextBtn.style.cursor = 'not-allowed';
+        }
+        if (pageNumbersEl) pageNumbersEl.innerHTML = '';
+        return;
+    }
+
+    const startIndex = (currentAttWatchlistPage - 1) * attWatchlistPerPage;
+    const endIndex = Math.min(startIndex + attWatchlistPerPage, totalCount);
+    const pageItems = items.slice(startIndex, endIndex);
+
+    const rows = pageItems.map((st, idx) => {
+        let riskClass = 'risk-low';
+        let riskLabel = 'Good (>85%)';
+        let barColor = '#10b981';
+
+        if (st.rate < 75) {
+            riskClass = 'risk-high';
+            riskLabel = 'At Risk (<75%)';
+            barColor = '#ef4444';
+        } else if (st.rate < 85) {
+            riskClass = 'risk-medium';
+            riskLabel = 'Needs Attention';
+            barColor = '#f59e0b';
+        }
+
+        return `
+            <tr>
+                <td style="text-align: center; color: var(--text-gray, #64748b); font-weight: 600;">${startIndex + idx + 1}</td>
+                <td>
+                    <span style="color: var(--text-dark, #0f172a); font-size: 13.5px; font-weight: 700;">${escapeHtml(st.studentName)}</span>
+                </td>
+                <td style="font-weight: 600; font-size: 13px; color: var(--text-dark, #0f172a);">${escapeHtml(st.studentClass)}</td>
+                <td style="text-align: center; font-weight: 600;">${st.total}</td>
+                <td style="text-align: center; font-weight: 700; color: #10b981;">${st.present}</td>
+                <td style="text-align: center; font-weight: 700; color: #ef4444;">${st.absent}</td>
+                <td style="text-align: center; font-weight: 700; color: #f59e0b;">${st.other}</td>
+                <td>
+                    <div class="att-progress-bar-wrap">
+                        <div class="att-progress-bar-track">
+                            <div class="att-progress-bar-fill" style="width: ${st.rate}%; background: ${barColor};"></div>
+                        </div>
+                        <span style="font-size: 12.5px; font-weight: 700; min-width: 38px; text-align: right; color: ${barColor};">${st.rate}%</span>
+                    </div>
+                </td>
+                <td style="text-align: center;">
+                    <span class="att-risk-badge ${riskClass}">${riskLabel}</span>
+                </td>
+            </tr>
+        `;
+    });
+
+    tbody.innerHTML = rows.join('');
+
+    // Update Pagination UI
+    if (pageInfoEl) {
+        pageInfoEl.innerText = `Showing ${startIndex + 1}-${endIndex} of ${totalCount} students`;
+    }
+
+    if (prevBtn) {
+        prevBtn.disabled = currentAttWatchlistPage <= 1;
+        prevBtn.style.opacity = currentAttWatchlistPage <= 1 ? '0.5' : '1';
+        prevBtn.style.cursor = currentAttWatchlistPage <= 1 ? 'not-allowed' : 'pointer';
+    }
+
+    if (nextBtn) {
+        nextBtn.disabled = currentAttWatchlistPage >= totalPages;
+        nextBtn.style.opacity = currentAttWatchlistPage >= totalPages ? '0.5' : '1';
+        nextBtn.style.cursor = currentAttWatchlistPage >= totalPages ? 'not-allowed' : 'pointer';
+    }
+
+    if (pageNumbersEl) {
+        let pagesHtml = '';
+        const maxVisibleButtons = 5;
+        let startPage = Math.max(1, currentAttWatchlistPage - Math.floor(maxVisibleButtons / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+
+        if (endPage - startPage + 1 < maxVisibleButtons) {
+            startPage = Math.max(1, endPage - maxVisibleButtons + 1);
+        }
+
+        if (startPage > 1) {
+            pagesHtml += `<button type="button" class="att-page-num-btn" onclick="goToAttWatchlistPage(1)">1</button>`;
+            if (startPage > 2) {
+                pagesHtml += `<span style="font-size: 11px; color: var(--text-gray, #94a3b8); padding: 0 2px;">...</span>`;
+            }
+        }
+
+        for (let p = startPage; p <= endPage; p++) {
+            pagesHtml += `<button type="button" class="att-page-num-btn ${p === currentAttWatchlistPage ? 'active' : ''}" onclick="goToAttWatchlistPage(${p})">${p}</button>`;
+        }
+
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                pagesHtml += `<span style="font-size: 11px; color: var(--text-gray, #94a3b8); padding: 0 2px;">...</span>`;
+            }
+            pagesHtml += `<button type="button" class="att-page-num-btn" onclick="goToAttWatchlistPage(${totalPages})">${totalPages}</button>`;
+        }
+
+        pageNumbersEl.innerHTML = pagesHtml;
+    }
+}
+
+window.loadAttendanceAnalyticsData = async function (forceReload = false) {
+    if (attAnalyticsIsLoading) return;
+    const now = Date.now();
+    // Cache for 15 seconds unless forced
+    if (!forceReload && attAnalyticsAllRecords.length > 0 && (now - attAnalyticsLastLoadedTime < 15000)) {
+        window.renderAttendanceAnalytics();
+        return;
+    }
+
+    try {
+        attAnalyticsIsLoading = true;
+        const [recordsSnap, sessionsSnap, studentsSnap] = await Promise.all([
+            getDocs(collection(db, "attendance_records")),
+            getDocs(collection(db, "attendance_sessions")),
+            getDocs(collection(db, "students"))
+        ]);
+
+        const records = [];
+        recordsSnap.forEach(docSnap => {
+            records.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        const sessions = [];
+        sessionsSnap.forEach(docSnap => {
+            sessions.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        const students = [];
+        studentsSnap.forEach(docSnap => {
+            students.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        attAnalyticsAllRecords = records;
+        attAnalyticsAllSessions = sessions;
+        attAnalyticsLastLoadedTime = Date.now();
+
+        // Populate Class and Subject Filter dropdowns
+        const classFilter = document.getElementById('attAnalyticsClassFilter');
+        const subjectFilter = document.getElementById('attAnalyticsSubjectFilter');
+
+        const classesSet = new Set();
+        const subjectsSet = new Set();
+
+        records.forEach(r => {
+            if (r.studentClass) classesSet.add(r.studentClass);
+            if (r.subject) subjectsSet.add(r.subject);
+        });
+        students.forEach(s => {
+            if (s.studentClass) classesSet.add(s.studentClass);
+        });
+        sessions.forEach(s => {
+            if (s.targetClass && s.targetClass !== "All Classes") classesSet.add(s.targetClass);
+            if (s.subject) subjectsSet.add(s.subject);
+        });
+
+        if (classFilter) {
+            const currentVal = classFilter.value;
+            const sortedClasses = Array.from(classesSet).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+            classFilter.innerHTML = '<option value="all">All Classes</option>';
+            sortedClasses.forEach(cls => {
+                classFilter.innerHTML += `<option value="${escapeHtml(cls)}">${escapeHtml(cls)}</option>`;
+            });
+            if (classesSet.has(currentVal)) classFilter.value = currentVal;
+        }
+
+        if (subjectFilter) {
+            const currentSubVal = subjectFilter.value;
+            const sortedSubjects = Array.from(subjectsSet).sort((a, b) => a.localeCompare(b));
+            subjectFilter.innerHTML = '<option value="all">All Subjects</option>';
+            sortedSubjects.forEach(sub => {
+                subjectFilter.innerHTML += `<option value="${escapeHtml(sub)}">${escapeHtml(sub)}</option>`;
+            });
+            if (subjectsSet.has(currentSubVal)) subjectFilter.value = currentSubVal;
+        }
+
+        window.renderAttendanceAnalytics();
+    } catch (err) {
+        console.error("Error loading attendance analytics data:", err);
+    } finally {
+        attAnalyticsIsLoading = false;
+    }
+};
+
+window.renderAttendanceAnalytics = function () {
+    const timeRange = document.getElementById('attAnalyticsTimeRange')?.value || 'all';
+    const selectedClass = document.getElementById('attAnalyticsClassFilter')?.value || 'all';
+    const selectedSubject = document.getElementById('attAnalyticsSubjectFilter')?.value || 'all';
+
+    let filteredRecords = Array.from(attAnalyticsAllRecords || []);
+
+    // Filter by Time Range
+    if (timeRange !== 'all') {
+        const days = parseInt(timeRange, 10);
+        if (!isNaN(days) && days > 0) {
+            const cutoff = new Date();
+            cutoff.setDate(cutoff.getDate() - days);
+            const cutoffStr = cutoff.toISOString().slice(0, 10);
+            filteredRecords = filteredRecords.filter(r => (r.date || '') >= cutoffStr);
+        }
+    }
+
+    // Filter by Class
+    if (selectedClass !== 'all') {
+        filteredRecords = filteredRecords.filter(r => r.studentClass === selectedClass);
+    }
+
+    // Filter by Subject
+    if (selectedSubject !== 'all') {
+        filteredRecords = filteredRecords.filter(r => r.subject === selectedSubject);
+    }
+
+    // 1. Compute Metrics & Aggregations
+    let totalRecords = filteredRecords.length;
+    let totalPresent = 0;
+    let totalAbsent = 0;
+    let totalOther = 0;
+
+    const classStatsMap = {};
+    const subjectStatsMap = {};
+    const studentStatsMap = {};
+    const dateStatsMap = {};
+    const reasonsMap = {};
+
+    filteredRecords.forEach(r => {
+        const st = (r.status || 'pending').toLowerCase();
+        const cls = r.studentClass || 'Unknown';
+        const subj = r.subject || 'General';
+        const stCode = r.studentCode || r.id;
+        const stName = r.studentName || stCode;
+        const dt = r.date || 'Unknown';
+        const reason = (r.reason || '').trim();
+
+        if (st === 'present') totalPresent++;
+        else if (st === 'absent') totalAbsent++;
+        else if (st === 'others') totalOther++;
+
+        if (reason && (st === 'absent' || st === 'others')) {
+            reasonsMap[reason] = (reasonsMap[reason] || 0) + 1;
+        }
+
+        // Class Aggregation
+        if (!classStatsMap[cls]) classStatsMap[cls] = { present: 0, absent: 0, other: 0, total: 0 };
+        classStatsMap[cls].total++;
+        if (st === 'present') classStatsMap[cls].present++;
+        else if (st === 'absent') classStatsMap[cls].absent++;
+        else if (st === 'others') classStatsMap[cls].other++;
+
+        // Subject Aggregation
+        if (!subjectStatsMap[subj]) subjectStatsMap[subj] = { present: 0, absent: 0, other: 0, total: 0, sessionsSet: new Set() };
+        subjectStatsMap[subj].total++;
+        if (r.sessionId) subjectStatsMap[subj].sessionsSet.add(r.sessionId);
+        if (st === 'present') subjectStatsMap[subj].present++;
+        else if (st === 'absent') subjectStatsMap[subj].absent++;
+        else if (st === 'others') subjectStatsMap[subj].other++;
+
+        // Student Aggregation
+        if (!studentStatsMap[stCode]) {
+            studentStatsMap[stCode] = {
+                studentCode: stCode,
+                studentName: stName,
+                studentClass: cls,
+                present: 0,
+                absent: 0,
+                other: 0,
+                total: 0
+            };
+        }
+        studentStatsMap[stCode].total++;
+        if (st === 'present') studentStatsMap[stCode].present++;
+        else if (st === 'absent') studentStatsMap[stCode].absent++;
+        else if (st === 'others') studentStatsMap[stCode].other++;
+
+        // Date Aggregation
+        if (!dateStatsMap[dt]) dateStatsMap[dt] = { date: dt, present: 0, absent: 0, other: 0, total: 0 };
+        dateStatsMap[dt].total++;
+        if (st === 'present') dateStatsMap[dt].present++;
+        else if (st === 'absent') dateStatsMap[dt].absent++;
+        else if (st === 'others') dateStatsMap[dt].other++;
+    });
+
+    const activeTotal = totalPresent + totalAbsent + totalOther;
+    const overallRate = activeTotal > 0 ? Math.round((totalPresent / activeTotal) * 100) : 0;
+
+    // 2. Compute Top Class
+    let topClass = '--';
+    let maxClassRate = -1;
+    Object.keys(classStatsMap).forEach(cls => {
+        const c = classStatsMap[cls];
+        const cActive = c.present + c.absent + c.other;
+        const rate = cActive > 0 ? (c.present / cActive) * 100 : 0;
+        c.rate = Math.round(rate);
+        if (rate > maxClassRate && cActive >= 3) {
+            maxClassRate = rate;
+            topClass = `${cls} (${c.rate}%)`;
+        }
+    });
+
+    // 3. Compute Top Absence Reason
+    let topReason = '--';
+    let topReasonCount = 0;
+    Object.keys(reasonsMap).forEach(rs => {
+        if (reasonsMap[rs] > topReasonCount) {
+            topReasonCount = reasonsMap[rs];
+            topReason = `${rs} (${topReasonCount}x)`;
+        }
+    });
+    if (topReason === '--' && totalAbsent > 0) {
+        topReason = 'Unspecified / Alpha';
+    }
+
+    // 4. Compute Student Watchlist Array & At Risk Count
+    const watchlistArray = [];
+    let atRiskCount = 0;
+    Object.values(studentStatsMap).forEach(st => {
+        const stActive = st.present + st.absent + st.other;
+        const rate = stActive > 0 ? Math.round((st.present / stActive) * 100) : 0;
+        st.rate = rate;
+        if (rate < 80 && stActive > 0) atRiskCount++;
+        watchlistArray.push(st);
+    });
+    cachedWatchlistData = watchlistArray;
+
+    // 5. Update KPI Cards in DOM
+    const kpiRateEl = document.getElementById('attKpiRate');
+    const kpiTopClassEl = document.getElementById('attKpiTopClass');
+    const kpiTopReasonEl = document.getElementById('attKpiTopReason');
+    const kpiAtRiskEl = document.getElementById('attKpiAtRiskCount');
+
+    if (kpiRateEl) kpiRateEl.innerText = `${overallRate}%`;
+    if (kpiTopClassEl) kpiTopClassEl.innerText = topClass !== '--' ? topClass : 'No data';
+    if (kpiTopReasonEl) kpiTopReasonEl.innerText = topReason;
+    if (kpiAtRiskEl) kpiAtRiskEl.innerText = atRiskCount;
+
+    // 6. Render View-Specific Components
+    if (currentAttAnalyticsView === 'classes') {
+        renderAttClassOverview(classStatsMap);
+    } else if (currentAttAnalyticsView === 'subjects') {
+        renderAttSubjectBreakdown(subjectStatsMap);
+    } else if (currentAttAnalyticsView === 'students') {
+        renderAttWatchlistTableOnly();
+    } else if (currentAttAnalyticsView === 'trends') {
+        renderAttTrendsChart(dateStatsMap);
+    }
+};
+
+function renderAttClassOverview(classStatsMap) {
+    const sortedClassNames = Object.keys(classStatsMap).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+    const rates = sortedClassNames.map(cls => classStatsMap[cls].rate || 0);
+
+    // Chart
+    const canvas = document.getElementById('attClassCompChart');
+    if (canvas && typeof Chart !== 'undefined') {
+        if (attClassChartInstance) attClassChartInstance.destroy();
+        attClassChartInstance = new Chart(canvas.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: sortedClassNames.length > 0 ? sortedClassNames : ['No Class Data'],
+                datasets: [{
+                    label: 'Attendance Rate (%)',
+                    data: rates.length > 0 ? rates : [0],
+                    backgroundColor: rates.map(r => r >= 85 ? 'rgba(16, 185, 129, 0.75)' : (r >= 75 ? 'rgba(245, 158, 11, 0.75)' : 'rgba(239, 68, 68, 0.75)')),
+                    borderColor: rates.map(r => r >= 85 ? '#10b981' : (r >= 75 ? '#f59e0b' : '#ef4444')),
+                    borderWidth: 1.5,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => `Attendance Rate: ${ctx.raw}%`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { callback: (v) => `${v}%`, font: { size: 11 } },
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11, weight: '600' } }
+                    }
+                }
+            }
+        });
+    }
+
+    // Summary Table
+    const tbody = document.querySelector('#attClassSummaryTable tbody');
+    if (tbody) {
+        if (sortedClassNames.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-gray, #64748b); padding: 18px;">No class data available.</td></tr>`;
+        } else {
+            tbody.innerHTML = sortedClassNames.map(cls => {
+                const c = classStatsMap[cls];
+                return `
+                    <tr>
+                        <td style="font-weight: 700; color: var(--text-dark, #0f172a);">${escapeHtml(cls)}</td>
+                        <td style="text-align: right; font-weight: 800; color: ${c.rate >= 85 ? '#10b981' : (c.rate >= 75 ? '#f59e0b' : '#ef4444')};">${c.rate}%</td>
+                        <td style="text-align: right; color: #10b981; font-weight: 600;">${c.present}</td>
+                        <td style="text-align: right; color: #ef4444; font-weight: 600;">${c.absent}</td>
+                        <td style="text-align: right; color: #f59e0b; font-weight: 600;">${c.other}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    }
+}
+
+function renderAttSubjectBreakdown(subjectStatsMap) {
+    const sortedSubjects = Object.keys(subjectStatsMap).sort((a, b) => a.localeCompare(b));
+    sortedSubjects.forEach(s => {
+        const item = subjectStatsMap[s];
+        const active = item.present + item.absent + item.other;
+        item.rate = active > 0 ? Math.round((item.present / active) * 100) : 0;
+        item.sessionsCount = item.sessionsSet.size;
+    });
+
+    const rates = sortedSubjects.map(s => subjectStatsMap[s].rate || 0);
+
+    // Chart
+    const canvas = document.getElementById('attSubjectCompChart');
+    if (canvas && typeof Chart !== 'undefined') {
+        if (attSubjectChartInstance) attSubjectChartInstance.destroy();
+        attSubjectChartInstance = new Chart(canvas.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: sortedSubjects.length > 0 ? sortedSubjects : ['No Subject Data'],
+                datasets: [{
+                    label: 'Compliance Rate (%)',
+                    data: rates.length > 0 ? rates : [0],
+                    backgroundColor: 'rgba(30, 94, 255, 0.7)',
+                    borderColor: '#1e5eff',
+                    borderWidth: 1.5,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => `Compliance: ${ctx.raw}%`
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { callback: (v) => `${v}%`, font: { size: 11 } },
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11, weight: '600' } }
+                    }
+                }
+            }
+        });
+    }
+
+    // Summary Table
+    const tbody = document.querySelector('#attSubjectSummaryTable tbody');
+    if (tbody) {
+        if (sortedSubjects.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-gray, #64748b); padding: 18px;">No subject data available.</td></tr>`;
+        } else {
+            tbody.innerHTML = sortedSubjects.map(subj => {
+                const s = subjectStatsMap[subj];
+                return `
+                    <tr>
+                        <td style="font-weight: 700; color: var(--text-dark, #0f172a);">${escapeHtml(subj)}</td>
+                        <td style="text-align: right; font-weight: 800; color: #1e5eff;">${s.rate}%</td>
+                        <td style="text-align: right; color: var(--text-dark, #0f172a); font-weight: 600;">${s.sessionsCount || 1}</td>
+                        <td style="text-align: right; color: #ef4444; font-weight: 600;">${s.absent}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    }
+}
+
+function renderAttTrendsChart(dateStatsMap) {
+    const sortedDates = Object.keys(dateStatsMap).sort();
+    const rates = sortedDates.map(d => {
+        const item = dateStatsMap[d];
+        const active = item.present + item.absent + item.other;
+        return active > 0 ? Math.round((item.present / active) * 100) : 0;
+    });
+
+    const canvas = document.getElementById('attTrendChart');
+    if (canvas && typeof Chart !== 'undefined') {
+        if (attTrendChartInstance) attTrendChartInstance.destroy();
+        attTrendChartInstance = new Chart(canvas.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: sortedDates.length > 0 ? sortedDates : ['No Timeline Data'],
+                datasets: [{
+                    label: 'Daily Attendance Rate (%)',
+                    data: rates.length > 0 ? rates : [0],
+                    borderColor: '#1e5eff',
+                    backgroundColor: 'rgba(30, 94, 255, 0.08)',
+                    borderWidth: 2.5,
+                    fill: true,
+                    tension: 0.35,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: '#1e5eff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => `Attendance Rate: ${ctx.raw}%`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { callback: (v) => `${v}%`, font: { size: 11 } },
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    }
 }
 
 // ==========================================================================
@@ -9979,13 +10799,13 @@ function renderAssignmentRemindersTable() {
         let dueDisplay = `<span style="font-weight: 600;">${escapeHtml(item.dueDate || 'No date')}</span>`;
 
         if (item.status === 'completed') {
-            dueDisplay += ` <span style="background: rgba(16, 185, 129, 0.12); color: #10b981; font-weight: 700; font-size: 11px; padding: 2px 7px; border-radius: 4px; margin-left: 6px; display: inline-flex; align-items: center; gap: 3px;">✓ Submitted</span>`;
+            dueDisplay += ` <span style="background: rgba(16, 185, 129, 0.12); color: #10b981; font-weight: 700; font-size: 11px; padding: 2px 7px; border-radius: 4px; margin-left: 6px; display: inline-flex; align-items: center; gap: 3px;">Submitted</span>`;
         } else if (daysLate > 1) {
-            dueDisplay += ` <strong style="color: #ef4444; font-size: 11.5px; margin-left: 6px; background: rgba(239, 68, 68, 0.1); padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.3);">🚨 ${daysLate}d Overdue</strong>`;
+            dueDisplay += ` <strong style="color: #ef4444; font-size: 11.5px; margin-left: 6px; background: rgba(239, 68, 68, 0.1); padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.3);">${daysLate}d Overdue</strong>`;
         } else if (daysLate === 1) {
-            dueDisplay += ` <strong style="color: #ea580c; font-size: 11.5px; margin-left: 6px; background: rgba(249, 115, 22, 0.1); padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(249, 115, 22, 0.3);">⚠️ 1d Overdue</strong>`;
+            dueDisplay += ` <strong style="color: #ea580c; font-size: 11.5px; margin-left: 6px; background: rgba(249, 115, 22, 0.1); padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(249, 115, 22, 0.3);">1d Overdue</strong>`;
         } else if (daysLate === 0) {
-            dueDisplay += ` <strong style="color: #d97706; font-size: 11.5px; margin-left: 6px; background: rgba(245, 158, 11, 0.1); padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(245, 158, 11, 0.3);">⏳ Due Today</strong>`;
+            dueDisplay += ` <strong style="color: #d97706; font-size: 11.5px; margin-left: 6px; background: rgba(245, 158, 11, 0.1); padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(245, 158, 11, 0.3);">Due Today</strong>`;
         } else {
             const inDays = Math.abs(daysLate);
             dueDisplay += ` <span style="color: var(--primary-blue); font-size: 11.5px; margin-left: 6px;">(in ${inDays}d)</span>`;
@@ -10015,11 +10835,9 @@ function renderAssignmentRemindersTable() {
                         </button>
                         <div id="reminder-kebab-${item.id}" class="kebab-dropdown">
                             <button type="button" class="kebab-item" onclick="toggleAssignmentReminderStatus('${item.id}', '${isCompleted ? 'pending' : 'completed'}')">
-                                <span style="font-size: 13px;">${isCompleted ? '↺' : '✓'}</span>
                                 <span>${isCompleted ? 'Mark Pending' : 'Mark as Done'}</span>
                             </button>
                             <button type="button" class="kebab-item danger" onclick="deleteAssignmentReminder('${item.id}')">
-                                <span style="font-size: 13px;">🗑</span>
                                 <span>Delete Reminder</span>
                             </button>
                         </div>
