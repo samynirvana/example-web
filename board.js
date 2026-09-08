@@ -232,6 +232,28 @@ function updateNavUserUI() {
     }
 }
 
+// --- BOARD PERMISSION & OWNERSHIP HELPER ---
+function checkIsBoardOwner(data, user) {
+    if (!user || !data) return false;
+    const isStaff = user.type === 'staff';
+    const isAdmin = isStaff && user.role === 'admin';
+    if (isAdmin) return true; // Admins have full management access to all boards
+
+    if (isStaff) {
+        // Staff/Teacher ownership: match authorUid, authorEmail, authorCode, or authorName
+        if (data.authorUid && user.uid && data.authorUid === user.uid) return true;
+        if (data.authorEmail && user.email && data.authorEmail.toLowerCase().trim() === user.email.toLowerCase().trim()) return true;
+        if (data.authorCode && user.code && data.authorCode === user.code) return true;
+        if (!data.authorUid && data.authorName && user.name && data.authorName.trim().toLowerCase() === user.name.trim().toLowerCase()) return true;
+        return false;
+    } else {
+        // Student ownership
+        if (data.authorCode && user.code && data.authorCode === user.code) return true;
+        if (data.authorUid && user.uid && data.authorUid === user.uid) return true;
+        return false;
+    }
+}
+
 // --- 2. BOARD HUB MANAGEMENT ---
 async function loadBoards() {
     if (!currentUser) return;
@@ -244,16 +266,23 @@ async function loadBoards() {
 
     try {
         // 1. Fetch My Personal Boards from Firestore
-        let myQuery;
         if (currentUser.type === 'staff') {
-            myQuery = query(collection(db, "boards"), where("authorUid", "==", currentUser.uid));
+            const uidSnap = await getDocs(query(collection(db, "boards"), where("authorUid", "==", currentUser.uid)));
+            const map = new Map();
+            uidSnap.forEach(d => map.set(d.id, { id: d.id, ...d.data() }));
+            if (currentUser.email) {
+                try {
+                    const emailSnap = await getDocs(query(collection(db, "boards"), where("authorEmail", "==", currentUser.email)));
+                    emailSnap.forEach(d => map.set(d.id, { id: d.id, ...d.data() }));
+                } catch (_) {}
+            }
+            myBoardsList = Array.from(map.values());
         } else {
-            myQuery = query(collection(db, "boards"), where("authorCode", "==", currentUser.code));
+            const myQuery = query(collection(db, "boards"), where("authorCode", "==", currentUser.code));
+            const mySnap = await getDocs(myQuery);
+            myBoardsList = [];
+            mySnap.forEach(docSnap => myBoardsList.push({ id: docSnap.id, ...docSnap.data() }));
         }
-
-        const mySnap = await getDocs(myQuery);
-        myBoardsList = [];
-        mySnap.forEach(docSnap => myBoardsList.push({ id: docSnap.id, ...docSnap.data() }));
 
         // 2. Fetch Teacher Shared Boards from Firestore (supporting multi-class targetClasses)
         const teacherQuery = query(collection(db, "boards"), where("isShared", "==", true));
@@ -402,32 +431,86 @@ function renderHubBoardsGrid() {
             return;
         }
 
-        teacherGrid.innerHTML = teacherBoardsList.map(b => `
-            <div class="board-item-card" onclick="window.openBoardEditor('${b.id}', true)">
-                <div class="board-thumb-area" style="background: rgba(30, 94, 255, 0.06); display: flex; align-items: center; justify-content: center;">
-                    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
-                    </svg>
-                </div>
-                <div class="board-card-body">
-                    <div class="board-card-title-row">
-                        <h4 class="board-card-title">${escapeHtml(b.title || 'Teacher Board')}</h4>
-                        <span class="board-badge-shared" style="background: rgba(30, 94, 255, 0.08); color: #1e5eff;">🔒 View Only</span>
-                    </div>
-                    <div class="board-card-meta">
-                        <span>By ${escapeHtml(b.authorName || 'Teacher')}</span>
-                        <button class="board-create-btn" style="padding: 5px 12px; font-size: 11px; display: inline-flex; align-items: center; gap: 5px;" onclick="event.stopPropagation(); window.copyTeacherBoardToMine('${b.id}')">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        teacherGrid.innerHTML = teacherBoardsList.map(b => {
+            const isOwner = checkIsBoardOwner(b, currentUser);
+            const isAdmin = currentUser?.type === 'staff' && currentUser?.role === 'admin';
+            const canManage = isOwner || isAdmin;
+            const targetClassesStr = Array.isArray(b.targetClasses) && b.targetClasses.length > 0
+                ? b.targetClasses.join(', ')
+                : (b.targetClass || 'All');
+
+            if (canManage) {
+                return `
+                    <div class="board-item-card" onclick="window.openBoardEditor('${b.id}', false)">
+                        <div class="board-thumb-area" style="background: rgba(30, 94, 255, 0.06); display: flex; align-items: center; justify-content: center;">
+                            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                             </svg>
-                            <span>Duplicate to My Boards</span>
-                        </button>
+                        </div>
+                        <div class="board-card-body">
+                            <div class="board-card-title-row">
+                                <h4 class="board-card-title">${escapeHtml(b.title || 'Teacher Board')}</h4>
+                                <span class="board-badge-shared" style="background: rgba(16, 185, 129, 0.12); color: #059669; font-weight: 600;">
+                                    ✓ Shared (${escapeHtml(targetClassesStr)})
+                                </span>
+                            </div>
+                            <div class="board-card-meta">
+                                <span>${isOwner ? 'By You' : `By ${escapeHtml(b.authorName || 'Teacher')}`}</span>
+                                <div style="display: flex; gap: 4px; align-items: center;" onclick="event.stopPropagation();">
+                                    <button class="board-create-btn" style="padding: 4px 10px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;" title="Edit Shared Board" onclick="window.openBoardEditor('${b.id}', false)">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg>
+                                        <span>Edit</span>
+                                    </button>
+                                    <button class="board-icon-btn" style="width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;" title="Duplicate" onclick="window.duplicateBoard('${b.id}')">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="board-icon-btn" style="width: 28px; height: 28px; color: #ef4444; display: inline-flex; align-items: center; justify-content: center;" title="Delete Shared Board" onclick="window.deleteBoard('${b.id}')">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        `).join('');
+                `;
+            } else {
+                return `
+                    <div class="board-item-card" onclick="window.openBoardEditor('${b.id}', true)">
+                        <div class="board-thumb-area" style="background: rgba(30, 94, 255, 0.06); display: flex; align-items: center; justify-content: center;">
+                            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                            </svg>
+                        </div>
+                        <div class="board-card-body">
+                            <div class="board-card-title-row">
+                                <h4 class="board-card-title">${escapeHtml(b.title || 'Teacher Board')}</h4>
+                                <span class="board-badge-shared" style="background: rgba(30, 94, 255, 0.08); color: #1e5eff;">🔒 View Only</span>
+                            </div>
+                            <div class="board-card-meta">
+                                <span>By ${escapeHtml(b.authorName || 'Teacher')}</span>
+                                <button class="board-create-btn" style="padding: 5px 12px; font-size: 11px; display: inline-flex; align-items: center; gap: 5px;" onclick="event.stopPropagation(); window.copyTeacherBoardToMine('${b.id}')">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    <span>Duplicate to My Boards</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }).join('');
     } else if (activeTab === 'student-shared-boards') {
         if (!studentSharedGrid) return;
         studentSharedGrid.classList.remove('hidden');
@@ -597,13 +680,15 @@ function setupHubEventListeners() {
 // --- 3. TEMPLATES & CREATION ---
 window.createNewBoard = async function(templateName = 'Blank Board') {
     if (!currentUser) return;
+    const isStaff = currentUser.type === 'staff';
     const newElements = generateTemplateElements(templateName);
     const newBoardData = {
         title: templateName === 'Blank Board' ? 'Untitled Board' : templateName,
         authorUid: currentUser.uid || '',
         authorCode: currentUser.code || '',
-        authorName: currentUser.name || 'Student',
-        authorRole: currentUser.role || currentUser.type || 'student',
+        authorEmail: currentUser.email || '',
+        authorName: currentUser.name || (isStaff ? 'Teacher' : 'Student'),
+        authorRole: currentUser.role || (isStaff ? 'teacher' : 'student'),
         studentClass: currentUser.studentClass || 'Unassigned',
         targetClass: 'All',
         isShared: false,
@@ -670,9 +755,7 @@ window.openBoardEditor = async function(boardId, isReadOnly = false) {
         const data = snap.data();
         const isStaff = currentUser.type === 'staff';
         const isAdmin = isStaff && currentUser.role === 'admin';
-        const isOwner = isStaff
-            ? (data.authorUid && currentUser.uid && data.authorUid === currentUser.uid)
-            : (Boolean(data.authorCode) && Boolean(currentUser.code) && data.authorCode === currentUser.code);
+        const isOwner = checkIsBoardOwner(data, currentUser);
 
         // --- STRICT PERMISSION ENFORCEMENT ---
         if (isAdmin) {
@@ -727,8 +810,20 @@ window.openBoardEditor = async function(boardId, isReadOnly = false) {
         }
 
         // Determine if canvas should be opened in view-only / read-only mode
-        // Students cannot edit teacher boards or boards that they do not own!
-        const shouldBeReadOnly = isReadOnly || (!isAdmin && !isOwner && !isStaff);
+        // The owner of a board (or admin) can ALWAYS edit their board, even if shared!
+        let shouldBeReadOnly;
+        if (isOwner || isAdmin) {
+            shouldBeReadOnly = false;
+        } else if (isStaff && !data.isSharedWithTeacher) {
+            // Teacher viewing another teacher's shared lesson board: read-only
+            shouldBeReadOnly = true;
+        } else if (!isStaff) {
+            // Student viewing teacher board: read-only
+            shouldBeReadOnly = true;
+        } else {
+            shouldBeReadOnly = Boolean(isReadOnly);
+        }
+
         currentBoard = { id: snap.id, ...data, isReadOnly: shouldBeReadOnly };
         openBoardWorkspace(currentBoard);
     } catch (err) {
@@ -741,14 +836,23 @@ window.duplicateBoard = async function(boardId) {
         const snap = await getDoc(doc(db, "boards", boardId));
         if (snap.exists()) {
             const data = snap.data();
+            const isStaff = currentUser?.type === 'staff';
             const copyData = {
                 ...data,
-                title: `${data.title} (Copy)`,
+                title: `${data.title || 'Untitled Board'} (Copy)`,
+                authorUid: currentUser.uid || '',
+                authorCode: currentUser.code || '',
+                authorEmail: currentUser.email || '',
+                authorName: currentUser.name || (isStaff ? 'Teacher' : 'Student'),
+                authorRole: currentUser.role || (isStaff ? 'teacher' : 'student'),
+                isShared: false,
+                isSharedWithTeacher: false,
+                sharedWithTeachers: [],
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             };
             await addDoc(collection(db, "boards"), copyData);
-            loadBoards();
+            await loadBoards();
         }
     } catch (err) {
         alert("Duplicate error: " + err.message);
@@ -769,6 +873,7 @@ window.copyTeacherBoardToMine = async function(boardId) {
                 title: `My Copy - ${data.title || 'Teacher Board'}`,
                 authorUid: currentUser.uid || '',
                 authorCode: currentUser.code || '',
+                authorEmail: currentUser.email || '',
                 authorName: currentUser.name || 'Student',
                 authorRole: 'student',
                 studentClass: currentUser.studentClass || 'Unassigned',
@@ -792,23 +897,26 @@ window.copyTeacherBoardToMine = async function(boardId) {
 };
 
 window.deleteBoard = async function(boardId) {
-    if (!confirm("Are you sure you want to delete this board?")) return;
     try {
         const snap = await getDoc(doc(db, "boards", boardId));
-        if (!snap.exists()) return;
+        if (!snap.exists()) {
+            alert("Board not found.");
+            return;
+        }
         const data = snap.data();
         const isAdmin = currentUser?.type === 'staff' && currentUser?.role === 'admin';
-        const isOwner = currentUser?.type === 'staff'
-            ? (data.authorUid && currentUser?.uid && data.authorUid === currentUser.uid)
-            : (Boolean(data.authorCode) && Boolean(currentUser?.code) && data.authorCode === currentUser.code);
+        const isOwner = checkIsBoardOwner(data, currentUser);
 
         if (!isAdmin && !isOwner) {
             alert("You can only delete boards that you own.");
             return;
         }
 
+        const title = data.title || 'this board';
+        if (!confirm(`Are you sure you want to permanently delete "${title}"?`)) return;
+
         await deleteDoc(doc(db, "boards", boardId));
-        loadBoards();
+        await loadBoards();
     } catch (err) {
         alert("Delete error: " + err.message);
     }
@@ -841,6 +949,15 @@ function openBoardWorkspace(boardData) {
     const dupBtn = document.getElementById('btnDuplicateReadOnlyBoard');
     if (dupBtn) dupBtn.classList.toggle('hidden', !isReadOnly);
 
+    const isOwner = checkIsBoardOwner(boardData, currentUser);
+    const isAdmin = currentUser?.type === 'staff' && currentUser?.role === 'admin';
+    const canManage = isOwner || isAdmin;
+
+    const deleteBtn = document.getElementById('btnDeleteCurrentBoard');
+    if (deleteBtn) {
+        deleteBtn.classList.toggle('hidden', isReadOnly || !canManage);
+    }
+
     const editControls = [
         document.getElementById('btnUndo'),
         document.getElementById('btnRedo'),
@@ -857,6 +974,11 @@ function openBoardWorkspace(boardData) {
     if (syncStatus) {
         if (isReadOnly) {
             syncStatus.innerHTML = `<span style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 3px 8px; border-radius: 6px; font-weight: 600; font-size: 11px;">🔒 View Only (Teacher Board)</span>`;
+        } else if (boardData.isShared) {
+            const targets = Array.isArray(boardData.targetClasses) && boardData.targetClasses.length > 0
+                ? boardData.targetClasses.join(', ')
+                : (boardData.targetClass || 'All');
+            syncStatus.innerHTML = `<span style="background: rgba(16, 185, 129, 0.12); color: #059669; padding: 3px 8px; border-radius: 6px; font-weight: 600; font-size: 11px;">✓ Shared (${escapeHtml(targets)})</span>`;
         } else {
             syncStatus.innerText = '✓ Saved';
         }
@@ -1838,6 +1960,28 @@ function setupCanvasEventListeners() {
         saveCurrentBoardDirectly();
     });
     document.getElementById('btnExportPng')?.addEventListener('click', window.exportBoardAsPNG);
+
+    // Delete Current Board (for author/teacher/admin)
+    document.getElementById('btnDeleteCurrentBoard')?.addEventListener('click', async () => {
+        if (!currentBoardId || !currentBoard) return;
+        const isOwner = checkIsBoardOwner(currentBoard, currentUser);
+        const isAdmin = currentUser?.type === 'staff' && currentUser?.role === 'admin';
+        if (!isOwner && !isAdmin) {
+            alert("You can only delete boards that you own.");
+            return;
+        }
+        const boardTitle = currentBoard.title || 'Untitled Board';
+        if (!confirm(`Are you sure you want to permanently delete "${boardTitle}"? This action cannot be undone.`)) {
+            return;
+        }
+        try {
+            await deleteDoc(doc(db, "boards", currentBoardId));
+            hasUnsavedChanges = false;
+            window.closeBoardWorkspace();
+        } catch (err) {
+            alert("Delete error: " + err.message);
+        }
+    });
 
     // Share Board Modal
     document.getElementById('btnShareBoardToggle')?.addEventListener('click', () => {
@@ -3840,7 +3984,16 @@ async function saveCurrentBoardDirectly() {
             updatedAt: new Date().toISOString()
         });
         hasUnsavedChanges = false;
-        if (syncStatus) syncStatus.innerText = '✓ Saved to cloud';
+        if (syncStatus) {
+            if (currentBoard?.isShared) {
+                const targets = Array.isArray(currentBoard.targetClasses) && currentBoard.targetClasses.length > 0
+                    ? currentBoard.targetClasses.join(', ')
+                    : (currentBoard.targetClass || 'All');
+                syncStatus.innerHTML = `<span style="background: rgba(16, 185, 129, 0.12); color: #059669; padding: 3px 8px; border-radius: 6px; font-weight: 600; font-size: 11px;">✓ Saved • Shared (${escapeHtml(targets)})</span>`;
+            } else {
+                syncStatus.innerText = '✓ Saved to cloud';
+            }
+        }
     } catch (err) {
         console.warn("Cloud auto-save error:", err);
         if (syncStatus) syncStatus.innerText = '⚠️ Save error';
