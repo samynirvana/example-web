@@ -11,10 +11,10 @@
     <title>Interactive Board - Student Portal</title>
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1o_7O1hdx1SJOXfoFw9ZKxpl4zSOD_VYd">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=380">
-    <link rel="stylesheet" href="admin.css?v=380">
-    <link rel="stylesheet" href="student.css?v=380">
-    <link rel="stylesheet" href="board.css?v=380">
+    <link rel="stylesheet" href="style.css?v=391">
+    <link rel="stylesheet" href="admin.css?v=393">
+    <link rel="stylesheet" href="student.css?v=393">
+    <link rel="stylesheet" href="board.css?v=393">
 </head>
 
 <body>
@@ -254,22 +254,13 @@
         <main id="boardHubView" class="main-wrapper">
             <div class="board-hub-container">
                 <!-- Header Banner -->
-                <div class="board-hub-header-card">
-                    <div class="board-hub-title-group">
-                        <div class="board-hub-icon-badge">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="8" y1="12" x2="16" y2="12"></line>
-                                <line x1="12" y1="8" x2="12" y2="16"></line>
-                            </svg>
-                        </div>
+                <div class="board-hub-header-card" style="padding: 18px 24px;">
+                    <div class="board-hub-title-group" style="gap: 0;">
                         <div>
-                            <h1 style="font-size: 22px; font-weight: 800; margin: 0; color: var(--text-dark, #0f172a); font-family: 'Outfit', sans-serif;">
-                                Interactive Board & Brainstorming Studio
+                            <h1 style="font-size: 24px; font-weight: 800; margin: 0; color: var(--text-dark, #0f172a); font-family: 'Outfit', sans-serif; letter-spacing: -0.02em;">
+                                Whiteboard
                             </h1>
-                            <p style="margin: 4px 0 0 0; font-size: 13.5px; color: var(--text-gray, #64748b);">
-                                Welcome back, <b id="hubUserName">Student</b>! Create sticky notes, mind maps, sketches, and view teacher shared boards.
-                            </p>
+                            <span id="hubUserName" style="display: none;">Student</span>
                         </div>
                     </div>
                     <div>
@@ -283,69 +274,37 @@
                     </div>
                 </div>
 
-                <!-- Starter Templates Strip -->
-                <div>
-                    <h3 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-gray, #64748b); margin: 0 0 12px 0;">
-                        Quick Starter Templates
-                    </h3>
-                    <div class="board-templates-strip">
-                        <div class="board-template-card" onclick="window.createNewBoard('Blank Board')">
-                            <div class="board-template-icon" style="background: rgba(30, 94, 255, 0.1); color: #1e5eff;">
-                                📄
-                            </div>
-                            <div>
-                                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark, #0f172a);">Blank Canvas</div>
-                                <div style="font-size: 11.5px; color: var(--text-gray, #64748b);">Start from scratch</div>
-                            </div>
-                        </div>
-
-                        <div class="board-template-card" onclick="window.createNewBoard('Sticky Brainstorming')">
-                            <div class="board-template-icon" style="background: rgba(254, 240, 138, 0.5); color: #854d0e;">
-                                💡
-                            </div>
-                            <div>
-                                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark, #0f172a);">Sticky Brainstorm</div>
-                                <div style="font-size: 11.5px; color: var(--text-gray, #64748b);">Idea cards & clusters</div>
-                            </div>
-                        </div>
-
-                        <div class="board-template-card" onclick="window.createNewBoard('Cornell Notes')">
-                            <div class="board-template-icon" style="background: rgba(187, 247, 208, 0.5); color: #15803d;">
-                                📝
-                            </div>
-                            <div>
-                                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark, #0f172a);">Cornell Notes</div>
-                                <div style="font-size: 11.5px; color: var(--text-gray, #64748b);">Cues, notes & summary</div>
-                            </div>
-                        </div>
-
-                        <div class="board-template-card" onclick="window.createNewBoard('Mind Map')">
-                            <div class="board-template-icon" style="background: rgba(251, 207, 232, 0.5); color: #9d174d;">
-                                🧠
-                            </div>
-                            <div>
-                                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark, #0f172a);">Mind Map</div>
-                                <div style="font-size: 11.5px; color: var(--text-gray, #64748b);">Visual concept trees</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tabs: My Personal Boards vs Shared Teacher Boards -->
-                <div class="board-tabs-nav">
+                <!-- Tabs: My Personal Boards vs Shared Teacher Boards vs Shared by Students -->
+                <div class="board-tabs-nav" style="margin-top: 20px;">
                     <button id="tabMyBoards" class="board-tab-btn active">
-                        📁 My Boards
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -3.5px; margin-right: 6px;">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>My Boards</span>
                         <span id="myBoardsCount" class="board-tab-count">0</span>
                     </button>
                     <button id="tabTeacherBoards" class="board-tab-btn">
-                        🎓 Teacher Boards
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -3.5px; margin-right: 6px;">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        </svg>
+                        <span>Teacher Boards</span>
                         <span id="teacherBoardsCount" class="board-tab-count">0</span>
+                    </button>
+                    <button id="tabStudentSharedBoards" class="board-tab-btn hidden">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -3.5px; margin-right: 6px;">
+                            <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+                            <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                        </svg>
+                        <span>Shared by Students</span>
+                        <span id="studentSharedBoardsCount" class="board-tab-count">0</span>
                     </button>
                 </div>
 
                 <!-- Boards Grid Container -->
                 <div id="myBoardsGrid" class="boards-grid"></div>
                 <div id="teacherBoardsGrid" class="boards-grid hidden"></div>
+                <div id="studentSharedBoardsGrid" class="hidden"></div>
             </div>
         </main>
 
@@ -366,50 +325,45 @@
                 </div>
 
                 <div class="board-topbar-actions">
+                    <!-- Duplicate to Edit Button (shown when viewing a teacher board in read-only mode) -->
+                    <button id="btnDuplicateReadOnlyBoard" class="board-create-btn hidden" style="padding: 6px 14px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;" title="Duplicate this teacher board to your personal boards to edit">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Duplicate to Edit</span>
+                    </button>
+
                     <!-- Undo -->
                     <button id="btnUndo" class="board-icon-btn" title="Undo (Ctrl+Z)" aria-label="Undo">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 7v6h6"></path>
-                            <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"></path>
-                        </svg>
+                        <img src="https://lh3.googleusercontent.com/d/1xAlTlueV68_70NmitfRld8NWZ2cl9YeR" width="18" height="18" alt="Undo" style="display:block; object-fit:contain;">
                     </button>
 
                     <!-- Redo -->
                     <button id="btnRedo" class="board-icon-btn" title="Redo (Ctrl+Y)" aria-label="Redo">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 7v6h-6"></path>
-                            <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3L21 13"></path>
-                        </svg>
+                        <img src="https://lh3.googleusercontent.com/d/1TmH6663MGF2XIk7rKIWC4E2BbNFWWAk1" width="18" height="18" alt="Redo" style="display:block; object-fit:contain;">
                     </button>
                     
                     <div class="board-topbar-divider"></div>
 
                     <!-- Clear -->
                     <button id="btnClearBoard" class="board-icon-btn board-btn-danger" title="Clear Board Canvas" aria-label="Clear">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
-                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                        </svg>
+                        <img src="https://lh3.googleusercontent.com/d/1IBDhsyGvAAUrR8IhBxt0mrBx_nQJ6qvZ" width="20" height="20" alt="Clear" style="display:block; object-fit:contain;">
                     </button>
 
                     <!-- Save -->
                     <button id="btnSaveBoard" class="board-icon-btn" title="Save to Cloud" aria-label="Save">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path>
-                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                            <polyline points="7 3 7 8 15 8"></polyline>
-                        </svg>
+                        <img src="https://lh3.googleusercontent.com/d/1tO66hAD67Ux0FwLFgdDGhCb0eDLzoyvC" width="20" height="20" alt="Save" style="display:block; object-fit:contain;">
                     </button>
 
                     <!-- Export PNG -->
                     <button id="btnExportPng" class="board-icon-btn" title="Export as PNG Image" aria-label="Export">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
+                        <img src="https://lh3.googleusercontent.com/d/14I315Jcgi_APfuuqfFLMSF9wa2Vg1YaQ" width="20" height="20" alt="Export" style="display:block; object-fit:contain;">
+                    </button>
+
+                    <!-- Share Board -->
+                    <button id="btnShareBoardToggle" class="board-icon-btn" title="Share Board" aria-label="Share">
+                        <img src="https://lh3.googleusercontent.com/d/1M7k7xtcSnCMpWF1gpf55rHk6slha3WGf" width="18" height="18" alt="Share" style="display:block; object-fit:contain;">
                     </button>
                 </div>
             </div>
@@ -418,75 +372,49 @@
             <div class="board-tools-dock">
                 <!-- Group 1: Navigation / Selection -->
                 <button class="tool-btn active" data-tool="select" title="Select & Move (V)" aria-label="Select Tool">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 3l7 18 3-7 7-3L3 3z"></path>
-                    </svg>
+                    <img src="https://lh3.googleusercontent.com/d/1AZs2w787YGMHyTAI6UNCEnj_NUi1XdA6" width="22" height="22" alt="Select" style="display:block; object-fit:contain;">
                 </button>
                 <button class="tool-btn" data-tool="pan" title="Pan / Hand Tool (H / Space)" aria-label="Hand Tool">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 11V6a2 2 0 00-4 0v5"></path>
-                        <path d="M14 10V4a2 2 0 00-4 0v6"></path>
-                        <path d="M10 10.5V6a2 2 0 00-4 0v8"></path>
-                        <path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"></path>
-                    </svg>
+                    <img src="https://lh3.googleusercontent.com/d/1s06PoXBszFyqnsnNHig3i8JHHGKhds7W" width="22" height="22" alt="Hand Tool" style="display:block; object-fit:contain;">
                 </button>
 
                 <div class="tool-divider"></div>
 
-                <!-- Group 2: Elements (Sticky, Shape, Text) -->
+                <!-- Group 2: Elements (Sticky, Shape, Text, Line, Arrow, Image) -->
                 <button class="tool-btn" data-tool="sticky" title="Sticky Note (S)" aria-label="Sticky Note">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15.5 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8.5L15.5 3z"></path>
-                        <path d="M15 3v6h6"></path>
-                    </svg>
+                    <img src="https://lh3.googleusercontent.com/d/1S-KMxiJKaZX4hqhhAj3SpFh-P_ZK_QxO" width="22" height="22" alt="Sticky Note" style="display:block; object-fit:contain;">
                 </button>
                 <button class="tool-btn" data-tool="shape" title="Shapes (Rectangle, Circle, Star, etc.)" aria-label="Shapes">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                    </svg>
+                    <img src="https://lh3.googleusercontent.com/d/1cmfMaOuPwkQQRJvYSJxPtl0sr9NFC-aH" width="22" height="22" alt="Shapes" style="display:block; object-fit:contain;">
                 </button>
                 <button class="tool-btn" data-tool="text" title="Text Box (T)" aria-label="Text Box">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="4 7 4 4 20 4 20 7"></polyline>
-                        <line x1="9" y1="20" x2="15" y2="20"></line>
-                        <line x1="12" y1="4" x2="12" y2="20"></line>
-                    </svg>
+                    <img src="https://lh3.googleusercontent.com/d/1SyC251b80YHUu-Tr-zm2dcSe7EzVSFKo" width="22" height="22" alt="Text Box" style="display:block; object-fit:contain;">
                 </button>
                 <button class="tool-btn" data-tool="line" title="Straight Connector Line (L)" aria-label="Line">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="19" x2="19" y2="5"></line>
-                        <circle cx="5" cy="19" r="2" fill="currentColor"></circle>
-                        <circle cx="19" cy="5" r="2" fill="currentColor"></circle>
-                    </svg>
+                    <img src="https://lh3.googleusercontent.com/d/1oxjoYyhGEsC_KOoxkV1ynYyV0ILE2mei" width="22" height="22" alt="Line" style="display:block; object-fit:contain;">
                 </button>
                 <button class="tool-btn" data-tool="arrow" title="Flowchart Connector Arrow (A)" aria-label="Arrow">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="19" x2="19" y2="5"></line>
-                        <polyline points="10 5 19 5 19 14"></polyline>
-                    </svg>
+                    <img src="https://lh3.googleusercontent.com/d/11np23NTnzRc9i9I7IfF2e7zg6oys1nhW" width="22" height="22" alt="Arrow" style="display:block; object-fit:contain;">
                 </button>
+                <button class="tool-btn" data-tool="image" id="btnToolImage" title="Insert Image / Upload to Drive" aria-label="Image Tool">
+                    <img src="https://lh3.googleusercontent.com/d/1sdBLs9wVT8CKn3b9fLPJLRj1yaN9I8ql" width="22" height="22" alt="Image" style="display:block; object-fit:contain;">
+                </button>
+                <input type="file" id="boardImageFileInput" accept="image/*" style="display: none;" />
 
                 <div class="tool-divider"></div>
 
-                <!-- Group 3: Freehand Drawing (Pen, Highlighter, Eraser) -->
+                <!-- Group 3: Freehand Drawing (Pen, Highlighter, Eraser, Eyedropper Color Picker) -->
                 <button class="tool-btn" data-tool="pen" title="Draw / Pen (P)" aria-label="Pen">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                    </svg>
+                    <img src="https://lh3.googleusercontent.com/d/15NlUXnvy1GooW10it3wYUX0Z-r7xcdzF" width="22" height="22" alt="Pen" style="display:block; object-fit:contain;">
                 </button>
                 <button class="tool-btn" data-tool="highlighter" title="Highlighter" aria-label="Highlighter">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m9 11-6 6v3h3l6-6"></path>
-                        <path d="m22 2-2.5 2.5a2.12 2.12 0 01-3 0l-1.5-1.5a2.12 2.12 0 010-3L17.5 0"></path>
-                        <path d="m14 6 4 4"></path>
-                    </svg>
+                    <img src="https://lh3.googleusercontent.com/d/10HoTiF8PPGTOSYw01tjopZiXZ86lOeaG" width="22" height="22" alt="Highlighter" style="display:block; object-fit:contain;">
                 </button>
                 <button class="tool-btn" data-tool="eraser" title="Eraser (E)" aria-label="Eraser">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"></path>
-                        <path d="M22 21H7"></path>
-                        <path d="m5 11 9 9"></path>
-                    </svg>
+                    <img src="https://lh3.googleusercontent.com/d/1guGmEZz6dj2rix030PK3EIoTQs3UJCKF" width="22" height="22" alt="Eraser" style="display:block; object-fit:contain;">
+                </button>
+                <button class="tool-btn" data-tool="picker" id="btnToolPicker" title="Color Picker / Eyedropper (I)" aria-label="Color Picker">
+                    <img src="https://lh3.googleusercontent.com/d/1dDsQSfB6mCqvZa22HfdeOUL49_6WwSUD" width="22" height="22" alt="Color Picker" style="display:block; object-fit:contain;">
                 </button>
             </div>
 
@@ -494,7 +422,7 @@
             <div id="boardFormattingBar" class="board-formatting-bar hidden">
                 <!-- Font Family (75+ Curated Google Fonts) -->
                 <select id="fmtFontFamily" class="fmt-select" title="Font Family">
-                    <optgroup label="✍️ Handwriting & Notes">
+                    <optgroup label="Handwriting & Notes">
                         <option value="'Caveat', cursive, sans-serif" selected>Caveat</option>
                         <option value="'Kalam', cursive, sans-serif">Kalam</option>
                         <option value="'Patrick Hand', cursive, sans-serif">Patrick Hand</option>
@@ -516,7 +444,7 @@
                         <option value="'Marck Script', cursive, sans-serif">Marck Script</option>
                         <option value="'Nanum Pen Script', cursive, sans-serif">Nanum Pen Script</option>
                     </optgroup>
-                    <optgroup label="✨ Modern Sans-Serif">
+                    <optgroup label="Modern Sans-Serif">
                         <option value="'Outfit', sans-serif">Outfit</option>
                         <option value="'Inter', sans-serif">Inter</option>
                         <option value="'Roboto', sans-serif">Roboto</option>
@@ -538,7 +466,7 @@
                         <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
                         <option value="'Kanit', sans-serif">Kanit</option>
                     </optgroup>
-                    <optgroup label="🎨 Display & Creative">
+                    <optgroup label="Display & Creative">
                         <option value="'Comic Neue', cursive, sans-serif">Comic Neue</option>
                         <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
                         <option value="'Anton', sans-serif">Anton</option>
@@ -558,7 +486,7 @@
                         <option value="'Creepster', cursive, sans-serif">Creepster</option>
                         <option value="'Special Elite', cursive, sans-serif">Special Elite</option>
                     </optgroup>
-                    <optgroup label="📖 Classic Serif">
+                    <optgroup label="Classic Serif">
                         <option value="'Merriweather', serif">Merriweather</option>
                         <option value="'Playfair Display', serif">Playfair Display</option>
                         <option value="'Lora', serif">Lora</option>
@@ -572,7 +500,7 @@
                         <option value="'Spectral', serif">Spectral</option>
                         <option value="'Abril Fatface', serif">Abril Fatface</option>
                     </optgroup>
-                    <optgroup label="💻 Monospace & Code">
+                    <optgroup label="Monospace & Code">
                         <option value="'Roboto Mono', monospace">Roboto Mono</option>
                         <option value="'Fira Code', monospace">Fira Code</option>
                         <option value="'Source Code Pro', monospace">Source Code Pro</option>
@@ -648,7 +576,9 @@
                     <div id="fmtColorPopover" class="fmt-color-popover hidden">
                         <div class="fmt-popover-title">FILL / STICKY COLOR</div>
                         <div class="fmt-color-grid">
-                            <div class="fmt-color-swatch fmt-color-none" data-bg="transparent" data-text="#0f172a" title="Transparent (No Fill)">🚫</div>
+                            <div class="fmt-color-swatch fmt-color-none" data-bg="transparent" data-text="#0f172a" title="Transparent (No Fill)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" style="pointer-events: none;"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                            </div>
                             <div class="fmt-color-swatch" data-bg="#fef08a" data-text="#713f12" style="background: #fef08a;" title="Yellow"></div>
                             <div class="fmt-color-swatch" data-bg="#fbcfe8" data-text="#831843" style="background: #fbcfe8;" title="Pink"></div>
                             <div class="fmt-color-swatch" data-bg="#bbf7d0" data-text="#14532d" style="background: #bbf7d0;" title="Green"></div>
@@ -657,11 +587,17 @@
                             <div class="fmt-color-swatch" data-bg="#fed7aa" data-text="#7c2d12" style="background: #fed7aa;" title="Orange"></div>
                             <div class="fmt-color-swatch" data-bg="#ffffff" data-text="#0f172a" style="background: #ffffff; border: 1px solid #cbd5e1;" title="White"></div>
                             <div class="fmt-color-swatch" data-bg="#334155" data-text="#f8fafc" style="background: #334155;" title="Charcoal"></div>
+                            <div class="custom-color-dot-wrapper" title="Custom Fill Color">
+                                <div id="fmtCustomBgDot" class="fmt-color-swatch custom-color-dot" title="Custom Fill Color"></div>
+                                <input type="color" id="fmtCustomBgPicker" class="native-color-input" value="#bae6fd" title="Choose Custom Fill Color">
+                            </div>
                         </div>
 
                         <div class="fmt-popover-title" style="margin-top: 10px;">SHAPE BORDER COLOR</div>
                         <div class="fmt-color-grid">
-                            <div class="fmt-border-color-swatch fmt-color-none" data-border="transparent" title="No Border">🚫</div>
+                            <div class="fmt-border-color-swatch fmt-color-none" data-border="transparent" title="No Border">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" style="pointer-events: none;"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                            </div>
                             <div class="fmt-border-color-swatch" data-border="#1e5eff" style="background: #1e5eff;" title="Blue"></div>
                             <div class="fmt-border-color-swatch" data-border="#0f172a" style="background: #0f172a;" title="Dark Slate"></div>
                             <div class="fmt-border-color-swatch" data-border="#10b981" style="background: #10b981;" title="Green"></div>
@@ -669,6 +605,10 @@
                             <div class="fmt-border-color-swatch" data-border="#8b5cf6" style="background: #8b5cf6;" title="Purple"></div>
                             <div class="fmt-border-color-swatch" data-border="#f59e0b" style="background: #f59e0b;" title="Amber"></div>
                             <div class="fmt-border-color-swatch" data-border="#ffffff" style="background: #ffffff; border: 1px solid #cbd5e1;" title="White"></div>
+                            <div class="custom-color-dot-wrapper" title="Custom Border Color">
+                                <div id="fmtCustomBorderDot" class="fmt-border-color-swatch custom-color-dot" title="Custom Border Color"></div>
+                                <input type="color" id="fmtCustomBorderPicker" class="native-color-input" value="#1e5eff" title="Choose Custom Border Color">
+                            </div>
                         </div>
 
                         <div class="fmt-popover-title" style="margin-top: 10px;">TEXT COLOR</div>
@@ -680,6 +620,10 @@
                             <div class="fmt-text-color-swatch" data-text="#8b5cf6" style="background: #8b5cf6;" title="Purple"></div>
                             <div class="fmt-text-color-swatch" data-text="#f59e0b" style="background: #f59e0b;" title="Amber"></div>
                             <div class="fmt-text-color-swatch" data-text="#ffffff" style="background: #ffffff; border: 1px solid #cbd5e1;" title="White"></div>
+                            <div class="custom-color-dot-wrapper" title="Custom Text Color">
+                                <div id="fmtCustomTextDot" class="fmt-text-color-swatch custom-color-dot" title="Custom Text Color"></div>
+                                <input type="color" id="fmtCustomTextPicker" class="native-color-input" value="#0f172a" title="Choose Custom Text Color">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -726,108 +670,97 @@
                 <div class="sticky-color-dot" data-color="#e9d5ff" style="background: #e9d5ff;" title="Purple"></div>
                 <div class="sticky-color-dot" data-color="#fed7aa" style="background: #fed7aa;" title="Orange"></div>
                 <div class="sticky-color-dot" data-color="#334155" style="background: #334155;" title="Charcoal"></div>
+                <div class="custom-color-dot-wrapper" title="Custom Sticky Color">
+                    <div id="stickyCustomColorDot" class="sticky-color-dot custom-color-dot" title="Choose Custom Sticky Color"></div>
+                    <input type="color" id="stickyCustomColorPicker" class="native-color-input" value="#fef08a" title="Choose Custom Sticky Color">
+                </div>
             </div>
 
             <!-- Shapes Sub-palette (Flowcharts & Diagramming) -->
             <div id="shapeSubPalette" class="board-sub-palette board-shape-palette hidden">
-                <div class="shape-palette-title">FLOWCHART & SHAPES</div>
-                <div class="shape-grid">
-                    <button class="shape-choice-btn active" data-shape="rectangle" title="Process / Rectangle">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="2" width="20" height="16" rx="2"></rect>
-                        </svg>
-                        <span>Rectangle</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="pill" title="Start/End / Pill">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="3" width="20" height="14" rx="7"></rect>
-                        </svg>
-                        <span>Pill / End</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="diamond" title="Decision / Diamond">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="12,2 22,10 12,18 2,10"></polygon>
-                        </svg>
-                        <span>Decision</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="parallelogram" title="Input/Output / Parallelogram">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="6,3 22,3 18,17 2,17"></polygon>
-                        </svg>
-                        <span>Data In/Out</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="circle" title="State / Circle">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="10" r="8"></circle>
-                        </svg>
-                        <span>Circle</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="cylinder" title="Database / Storage">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M4 5c0-1.7 3.6-3 8-3s8 1.3 8 3v10c0 1.7-3.6 3-8 3s-8-1.3-8-3V5z"></path>
-                            <ellipse cx="12" cy="5" rx="8" ry="3"></ellipse>
-                        </svg>
-                        <span>Database</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="hexagon" title="Preparation / Hexagon">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="6,2 18,2 22,10 18,18 6,18 2,10"></polygon>
-                        </svg>
-                        <span>Hexagon</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="document" title="Document / Report">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M3 3h18v11c-4.5-3-9 2-18-2V3z"></path>
-                        </svg>
-                        <span>Document</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="triangle" title="Warning / Triangle">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="12,2 22,18 2,18"></polygon>
-                        </svg>
-                        <span>Triangle</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="star" title="Goal / Star">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <polygon points="12,2 15,8 22,9 17,14 18,20 12,17 6,20 7,14 2,9 9,8"></polygon>
-                        </svg>
-                        <span>Star</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="cloud" title="Cloud / Network">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M18 10h-1.26A5 5 0 0 0 7 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4h11a3 3 0 0 0 0-6z"></path>
-                        </svg>
-                        <span>Cloud</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="bubble" title="Speech Bubble / Callout">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                        </svg>
-                        <span>Bubble</span>
-                    </button>
-                    <button class="shape-choice-btn" data-shape="block-arrow" title="Right Arrow / Step">
-                        <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="2,7 14,7 14,3 22,10 14,17 14,13 2,13"></polygon>
-                        </svg>
-                        <span>Arrow Block</span>
-                    </button>
-                </div>
+                <button class="shape-choice-btn active" data-shape="rectangle" title="Process / Rectangle">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="2" width="20" height="16" rx="2"></rect>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="pill" title="Start/End / Pill">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="7"></rect>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="diamond" title="Decision / Diamond">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12,2 22,10 12,18 2,10"></polygon>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="parallelogram" title="Input/Output / Parallelogram">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="6,3 22,3 18,17 2,17"></polygon>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="circle" title="State / Circle">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="10" r="8"></circle>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="cylinder" title="Database / Storage">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M4 5c0-1.7 3.6-3 8-3s8 1.3 8 3v10c0 1.7-3.6 3-8 3s-8-1.3-8-3V5z"></path>
+                        <ellipse cx="12" cy="5" rx="8" ry="3"></ellipse>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="hexagon" title="Preparation / Hexagon">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="6,2 18,2 22,10 18,18 6,18 2,10"></polygon>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="document" title="Document / Report">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M3 3h18v11c-4.5-3-9 2-18-2V3z"></path>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="triangle" title="Warning / Triangle">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12,2 22,18 2,18"></polygon>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="star" title="Goal / Star">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <polygon points="12,2 15,8 22,9 17,14 18,20 12,17 6,20 7,14 2,9 9,8"></polygon>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="cloud" title="Cloud / Network">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M18 10h-1.26A5 5 0 0 0 7 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4h11a3 3 0 0 0 0-6z"></path>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="bubble" title="Speech Bubble / Callout">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                </button>
+                <button class="shape-choice-btn" data-shape="block-arrow" title="Right Arrow / Step">
+                    <svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="2,7 14,7 14,3 22,10 14,17 14,13 2,13"></polygon>
+                    </svg>
+                </button>
             </div>
 
             <!-- Pen & Drawing Sub-palette -->
             <div id="penSubPalette" class="board-sub-palette board-tool-sub-palette hidden">
-                <div class="palette-mini-label">PEN COLOR</div>
-                <div class="palette-colors-row">
+                <div id="penPaletteColorLabel" class="palette-mini-label">PEN COLOR</div>
+                <div id="penColorsContainer" class="palette-colors-row">
                     <div class="pen-color-dot active" data-color="#1e293b" style="background: #1e293b;" title="Charcoal"></div>
                     <div class="pen-color-dot" data-color="#1e5eff" style="background: #1e5eff;" title="Blue"></div>
-                    <div class="pen-color-dot" data-color="#10b981" style="background: #10b981;" title="Green"></div>
                     <div class="pen-color-dot" data-color="#ef4444" style="background: #ef4444;" title="Red"></div>
+                    <div class="pen-color-dot" data-color="#10b981" style="background: #10b981;" title="Green"></div>
                     <div class="pen-color-dot" data-color="#8b5cf6" style="background: #8b5cf6;" title="Purple"></div>
-                    <div class="pen-color-dot" data-color="#f59e0b" style="background: #f59e0b;" title="Amber"></div>
-                    <div class="pen-color-dot" data-color="#ffffff" style="background: #ffffff; border: 1px solid #cbd5e1;" title="White"></div>
-                    <div class="pen-color-dot" data-color="#facc15" style="background: #facc15;" title="Highlighter Yellow"></div>
+                    <div id="penCustomColorWrapper" class="custom-color-dot-wrapper" title="Custom Color Gallery">
+                        <div id="penCustomColorDot" class="pen-color-dot custom-color-dot" title="Choose Custom Color"></div>
+                        <input type="color" id="penCustomColorPicker" class="native-color-input" value="#1e293b" title="Choose Custom Color">
+                    </div>
                 </div>
-                <div class="palette-mini-label" style="margin-top: 8px;">PEN SIZE</div>
+                <div id="penPaletteSizeLabel" class="palette-mini-label" style="margin-top: 8px;">PEN SIZE</div>
                 <div class="palette-size-row">
                     <button class="pen-size-btn" data-size="2" title="Thin (2px)"><span style="width: 4px; height: 4px;"></span>2px</button>
                     <button class="pen-size-btn active" data-size="4" title="Medium (4px)"><span style="width: 7px; height: 7px;"></span>4px</button>
@@ -838,19 +771,17 @@
 
             <!-- Line & Connector Sub-palette -->
             <div id="lineSubPalette" class="board-sub-palette board-tool-sub-palette hidden">
-                <div class="palette-mini-label">CONNECTOR STYLE</div>
-                <div class="palette-size-row">
-                    <button id="btnLineTypeStraight" class="line-style-btn active" data-type="line" title="Straight Line">Straight</button>
-                    <button id="btnLineTypeArrow" class="line-style-btn" data-type="arrow" title="Flowchart Arrow">Arrow ➔</button>
-                </div>
-                <div class="palette-mini-label" style="margin-top: 8px;">LINE COLOR</div>
+                <div class="palette-mini-label">LINE COLOR</div>
                 <div class="palette-colors-row">
                     <div class="line-color-dot active" data-color="#1e5eff" style="background: #1e5eff;" title="Blue"></div>
                     <div class="line-color-dot" data-color="#0f172a" style="background: #0f172a;" title="Dark"></div>
                     <div class="line-color-dot" data-color="#10b981" style="background: #10b981;" title="Green"></div>
                     <div class="line-color-dot" data-color="#ef4444" style="background: #ef4444;" title="Red"></div>
                     <div class="line-color-dot" data-color="#8b5cf6" style="background: #8b5cf6;" title="Purple"></div>
-                    <div class="line-color-dot" data-color="#f59e0b" style="background: #f59e0b;" title="Amber"></div>
+                    <div class="custom-color-dot-wrapper" title="Custom Line Color">
+                        <div id="lineCustomColorDot" class="line-color-dot custom-color-dot" title="Choose Custom Line Color"></div>
+                        <input type="color" id="lineCustomColorPicker" class="native-color-input" value="#1e5eff" title="Choose Custom Line Color">
+                    </div>
                 </div>
                 <div class="palette-mini-label" style="margin-top: 8px;">LINE THICKNESS</div>
                 <div class="palette-size-row">
@@ -876,9 +807,83 @@
         </div>
     </div>
 
+    <!-- Modal for Sharing Board -->
+    <div id="boardShareModal" class="board-modal-backdrop hidden">
+        <div class="board-modal-card board-share-modal-container">
+            <div class="board-modal-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 34px; height: 34px; border-radius: 8px; background: rgba(30,94,255,0.08); display: flex; align-items: center; justify-content: center;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e5eff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--text-dark, #0f172a);">Share Board</h3>
+                        <p style="margin: 2px 0 0 0; font-size: 12px; color: var(--text-gray, #64748b);">Collaborate and share your whiteboard</p>
+                    </div>
+                </div>
+                <button id="btnCloseShareModal" class="board-icon-btn" title="Close" aria-label="Close">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="board-modal-body">
+                <!-- 1. Student View: Share with Teacher -->
+                <div id="studentShareWithTeacherSection" class="share-section">
+                    <label class="share-section-label">SHARE WITH TEACHER</label>
+                    <p style="margin: 0 0 8px 0; font-size: 12.5px; color: var(--text-gray, #64748b);">
+                        Select your teacher to submit or share your board for review and feedback:
+                    </p>
+                    <div style="display: flex; gap: 8px;">
+                        <select id="shareTeacherSelect" class="share-select">
+                            <option value="">-- Loading teachers from database... --</option>
+                        </select>
+                        <button id="btnShareWithTeacherSubmit" class="board-create-btn" style="white-space: nowrap; padding: 0 16px;">
+                            Share
+                        </button>
+                    </div>
+                    <div id="shareTeacherStatus" class="share-feedback hidden"></div>
+
+                    <!-- Existing shared teachers pills -->
+                    <div id="sharedTeachersListContainer" style="margin-top: 12px;" class="hidden">
+                        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-gray, #64748b); margin-bottom: 6px;">
+                            Currently Shared With:
+                        </div>
+                        <div id="sharedTeachersPills" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+                    </div>
+                </div>
+
+                <!-- 3. Teacher View: Multi-Class Publishing -->
+                <div id="teacherShareWithClassesSection" class="share-section hidden">
+                    <label class="share-section-label">PUBLISH TO CLASSES</label>
+                    <p style="margin: 0 0 8px 0; font-size: 12.5px; color: var(--text-gray, #64748b);">
+                        Choose one or more classes to publish this lesson board:
+                    </p>
+                    <div class="share-classes-checkbox-grid" id="teacherClassCheckboxes">
+                        <!-- Populated dynamically -->
+                    </div>
+                    <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+                            <input type="checkbox" id="teacherPublishToggle" />
+                            <span>Publicly visible to students</span>
+                        </label>
+                        <button id="btnTeacherSaveSharing" class="board-create-btn" style="padding: 6px 18px;">
+                            Save Sharing
+                        </button>
+                    </div>
+                    <div id="teacherShareStatus" class="share-feedback hidden"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
-    <script type="module" src="board.js?v=380"></script>
-    <script src="studentNav.js?v=380"></script>
+    <script type="module" src="board.js?v=393"></script>
+    <script src="studentNav.js?v=393"></script>
 </body>
 
 </html>
