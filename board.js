@@ -6,7 +6,7 @@ import {
     collection, addDoc, getDocs, doc, deleteDoc, updateDoc, 
     query, where, getDoc, setDoc, onSnapshot, orderBy 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { db, auth } from "./firebase.js";
 import { escapeHtml, formatDate } from "./utils.js";
 
@@ -80,11 +80,58 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function initAuthAndUser() {
-    // 1. Check if student session is cached
+    // 1. Check Firebase Auth first for Staff (Teacher / Admin)
+    const firebaseUser = await new Promise((resolve) => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            unsubscribe();
+            resolve(user);
+        });
+        setTimeout(() => {
+            resolve(auth.currentUser || null);
+        }, 800);
+    });
+
+    if (firebaseUser) {
+        try {
+            const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
+            let userData = userDoc.exists() ? userDoc.data() : {};
+            let role = userData.role;
+            if (!role) {
+                role = (firebaseUser.email && firebaseUser.email.toLowerCase().includes('admin')) ? 'admin' : 'teacher';
+            }
+
+            const rawEmail = firebaseUser.email || userData.email || '';
+            const formattedName = rawEmail ? rawEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Teacher';
+            const displayName = (userData && userData.name) || firebaseUser.displayName || (role === 'admin' ? 'Administrator' : formattedName);
+
+            currentUser = {
+                type: 'staff',
+                uid: firebaseUser.uid,
+                email: rawEmail,
+                name: displayName,
+                role: role, // 'admin' | 'teacher'
+                subject: userData.subject || 'All',
+                studentClass: 'All',
+                photoUrl: userData.photoUrl || firebaseUser.photoURL || ''
+            };
+
+            updateNavUserUI();
+            await loadBoards();
+            await checkDirectBoardParam();
+            return;
+        } catch (e) {
+            console.warn("Staff profile fetch err:", e);
+        }
+    }
+
+    // 2. Check for Student Session if not staff
     let studentCode = localStorage.getItem('loggedInStudentCode') || localStorage.getItem('studentCode') || '';
     let studentData = null;
 
-    const rawSession = sessionStorage.getItem('studentLoggedInSession') || localStorage.getItem('studentLoggedInSession') || sessionStorage.getItem('studentTimelineSession') || localStorage.getItem('studentTimelineSession');
+    const rawSession = sessionStorage.getItem('studentLoggedInSession') 
+        || localStorage.getItem('studentLoggedInSession') 
+        || sessionStorage.getItem('studentTimelineSession') 
+        || localStorage.getItem('studentTimelineSession');
     if (rawSession) {
         try {
             const parsed = JSON.parse(rawSession);
@@ -110,61 +157,37 @@ async function initAuthAndUser() {
                 }
             }
 
-            currentUser = {
-                type: 'student',
-                code: studentCode,
-                name: (studentData && (studentData.name || studentData.studentName)) || 'Student',
-                studentClass: (studentData && (studentData.studentClass || studentData.class)) || 'Unassigned',
-                photoUrl: (studentData && studentData.photoUrl) || ''
-            };
-            updateNavUserUI();
-            await loadBoards();
-            return;
+            if (studentData) {
+                currentUser = {
+                    type: 'student',
+                    code: studentCode,
+                    name: (studentData && (studentData.name || studentData.studentName)) || 'Student',
+                    studentClass: (studentData && (studentData.studentClass || studentData.class)) || 'Unassigned',
+                    photoUrl: (studentData && studentData.photoUrl) || ''
+                };
+                // For student, navigate directly to their board view
+                activeTab = 'my-boards';
+                updateNavUserUI();
+                await loadBoards();
+                await checkDirectBoardParam();
+                return;
+            }
         } catch (err) {
             console.warn("Student profile load err:", err);
-            currentUser = {
-                type: 'student',
-                code: studentCode,
-                name: (studentData && (studentData.name || studentData.studentName)) || 'Student',
-                studentClass: 'Unassigned',
-                photoUrl: ''
-            };
-            updateNavUserUI();
-            await loadBoards();
-            return;
         }
     }
 
-    // 2. Also listen to Firebase Auth for Teacher / Admin
-    onAuthStateChanged(auth, async (firebaseUser) => {
-        if (firebaseUser) {
-            try {
-                const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
-                const userData = userDoc.exists() ? userDoc.data() : {};
-                currentUser = {
-                    type: 'staff',
-                    uid: firebaseUser.uid,
-                    email: firebaseUser.email || userData.email || '',
-                    name: userData.name || firebaseUser.displayName || 'Teacher',
-                    role: userData.role || 'teacher',
-                    subject: userData.subject || 'All',
-                    studentClass: 'All',
-                    photoUrl: userData.photoUrl || firebaseUser.photoURL || ''
-                };
-                updateNavUserUI();
-                await loadBoards();
-            } catch (e) {
-                console.warn("Staff profile fetch err:", e);
-            }
-        }
-    });
+    // 3. Unauthorized access check: neither staff nor student -> immediately redirect to index.html
+    console.warn("Unauthorized: No authenticated session found. Redirecting to login...");
+    window.location.replace('index.html');
+}
 
-    // 3. Grace period before redirecting if not authenticated
-    setTimeout(() => {
-        if (!currentUser && !auth.currentUser) {
-            window.location.href = 'index.html';
-        }
-    }, 1500);
+async function checkDirectBoardParam() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const directBoardId = urlParams.get('id');
+    if (directBoardId) {
+        await window.openBoardEditor(directBoardId);
+    }
 }
 
 function updateNavUserUI() {
@@ -172,6 +195,25 @@ function updateNavUserUI() {
     const isStaff = currentUser.type === 'staff';
     const nameEl = document.getElementById('hubUserName');
     if (nameEl) nameEl.innerText = currentUser.name;
+
+    // For teacher and admin: hide other tabs (dashboard, online quiz, timeline, profile, score)
+    document.querySelectorAll('.student-only-nav').forEach(el => {
+        if (isStaff) {
+            el.style.setProperty('display', 'none', 'important');
+        } else {
+            el.style.removeProperty('display');
+        }
+    });
+
+    // Brand subtitle customization
+    const brandSubtitle = document.querySelector('.brand p');
+    if (brandSubtitle) {
+        if (isStaff) {
+            brandSubtitle.innerText = currentUser.role === 'admin' ? 'Admin Whiteboard Studio' : 'Teacher Whiteboard Studio';
+        } else {
+            brandSubtitle.innerText = 'Student Portal System';
+        }
+    }
 
     // Show/hide teacher-specific controls (e.g. sharing selector, student shared tab)
     const studentSharedTab = document.getElementById('tabStudentSharedBoards');
@@ -182,6 +224,12 @@ function updateNavUserUI() {
     document.querySelectorAll('.teacher-only-control').forEach(el => {
         el.classList.toggle('hidden', !isStaff);
     });
+
+    // In mobile kebab menu, update "For Teacher" link label for admin
+    const forTeacherMobileLink = document.querySelector('#mobileTopbarDropdown a[href="admin.html"] span');
+    if (forTeacherMobileLink && currentUser.role === 'admin') {
+        forTeacherMobileLink.innerText = 'Admin Portal';
+    }
 }
 
 // --- 2. BOARD HUB MANAGEMENT ---
@@ -230,14 +278,19 @@ async function loadBoards() {
                 const studentSnap = await getDocs(studentQuery);
                 studentSharedBoardsList = [];
                 const teacherEmail = (currentUser.email || '').toLowerCase().trim();
-                const teacherUid = currentUser.uid || '';
+                const teacherUid = (currentUser.uid || '').toLowerCase().trim();
+                const isAdmin = currentUser.role === 'admin';
 
                 studentSnap.forEach(docSnap => {
                     const data = docSnap.data();
                     const sharedList = Array.isArray(data.sharedWithTeachers)
                         ? data.sharedWithTeachers.map(x => String(x).toLowerCase().trim())
                         : [];
-                    const isForMe = currentUser.role === 'admin' || sharedList.includes(teacherEmail) || sharedList.includes(teacherUid) || sharedList.length === 0;
+                    // Admin can access everything; teachers can ONLY access boards explicitly shared with them
+                    const isForMe = isAdmin || (
+                        (teacherEmail && sharedList.includes(teacherEmail)) ||
+                        (teacherUid && sharedList.includes(teacherUid))
+                    );
                     if (isForMe) {
                         studentSharedBoardsList.push({ id: docSnap.id, ...data });
                     }
@@ -490,9 +543,16 @@ function setupHubEventListeners() {
         renderCanvas();
     });
 
-    // Student Logout
-    const handleLogout = () => {
+    // Logout (Student & Staff)
+    const handleLogout = async () => {
         if (confirm("Are you sure you want to log out?")) {
+            if (currentUser?.type === 'staff') {
+                try {
+                    await signOut(auth);
+                } catch (e) {
+                    console.warn("SignOut error:", e);
+                }
+            }
             localStorage.removeItem('loggedInStudentCode');
             localStorage.removeItem('studentCode');
             sessionStorage.removeItem('studentLoggedInSession');
@@ -594,23 +654,83 @@ function generateTemplateElements(templateName) {
 }
 
 window.openBoardEditor = async function(boardId, isReadOnly = false) {
+    if (!currentUser) {
+        alert("Please log in first to access this board.");
+        window.location.href = 'index.html';
+        return;
+    }
     try {
         const snap = await getDoc(doc(db, "boards", boardId));
-        if (snap.exists()) {
-            currentBoardId = boardId;
-            const data = snap.data();
-            const isStaff = currentUser?.type === 'staff';
-            const isOwner = isStaff
-                ? (data.authorUid && currentUser?.uid && data.authorUid === currentUser.uid)
-                : (Boolean(data.authorCode) && Boolean(currentUser?.code) && data.authorCode === currentUser.code);
-
-            // Students cannot edit teacher boards or boards that they do not own!
-            const shouldBeReadOnly = isReadOnly || (!isStaff && !isOwner);
-            currentBoard = { id: snap.id, ...data, isReadOnly: shouldBeReadOnly };
-            openBoardWorkspace(currentBoard);
-        } else {
+        if (!snap.exists()) {
             alert("Board not found.");
+            return;
         }
+
+        currentBoardId = boardId;
+        const data = snap.data();
+        const isStaff = currentUser.type === 'staff';
+        const isAdmin = isStaff && currentUser.role === 'admin';
+        const isOwner = isStaff
+            ? (data.authorUid && currentUser.uid && data.authorUid === currentUser.uid)
+            : (Boolean(data.authorCode) && Boolean(currentUser.code) && data.authorCode === currentUser.code);
+
+        // --- STRICT PERMISSION ENFORCEMENT ---
+        if (isAdmin) {
+            // Admin can access everything
+        } else if (isOwner) {
+            // Board owner always has access
+        } else if (isStaff) {
+            // Teacher (Staff but not admin and not owner)
+            const isStudentBoard = data.authorRole === 'student' || Boolean(data.authorCode);
+            if (isStudentBoard) {
+                // Only teacher that is explicitly given share can access it
+                const teacherEmail = (currentUser.email || '').toLowerCase().trim();
+                const teacherUid = (currentUser.uid || '').toLowerCase().trim();
+                const sharedList = Array.isArray(data.sharedWithTeachers)
+                    ? data.sharedWithTeachers.map(x => String(x).toLowerCase().trim())
+                    : [];
+                const isSharedWithThisTeacher = Boolean(data.isSharedWithTeacher) && (
+                    (teacherEmail && sharedList.includes(teacherEmail)) ||
+                    (teacherUid && sharedList.includes(teacherUid))
+                );
+
+                if (!isSharedWithThisTeacher) {
+                    alert("Access Denied: This student board has not been shared with you.");
+                    return;
+                }
+            } else {
+                // Teacher viewing another teacher's lesson board
+                if (!data.isShared) {
+                    alert("Access Denied: This teacher board is private to its author.");
+                    return;
+                }
+            }
+        } else {
+            // Student (not owner)
+            const isTeacherBoard = data.authorRole === 'teacher' || data.authorRole === 'admin' || Boolean(data.authorUid);
+            if (isTeacherBoard) {
+                const targets = Array.isArray(data.targetClasses) && data.targetClasses.length > 0
+                    ? data.targetClasses
+                    : (data.targetClass ? data.targetClass.split(',').map(s => s.trim()) : ['All']);
+                const studentClass = (currentUser.studentClass || '').trim().toLowerCase();
+                const isTargeted = targets.includes('All') || targets.some(t => t.toLowerCase() === studentClass);
+
+                if (!data.isShared || !isTargeted) {
+                    alert("Access Denied: This teacher board is not assigned to your class.");
+                    return;
+                }
+            } else {
+                // Another student's board
+                alert("Access Denied: You do not have permission to view this board.");
+                return;
+            }
+        }
+
+        // Determine if canvas should be opened in view-only / read-only mode
+        // Students cannot edit teacher boards or boards that they do not own!
+        const shouldBeReadOnly = isReadOnly || (!isAdmin && !isOwner && !isStaff);
+        currentBoard = { id: snap.id, ...data, isReadOnly: shouldBeReadOnly };
+        openBoardWorkspace(currentBoard);
     } catch (err) {
         alert("Could not load board: " + err.message);
     }
@@ -674,6 +794,19 @@ window.copyTeacherBoardToMine = async function(boardId) {
 window.deleteBoard = async function(boardId) {
     if (!confirm("Are you sure you want to delete this board?")) return;
     try {
+        const snap = await getDoc(doc(db, "boards", boardId));
+        if (!snap.exists()) return;
+        const data = snap.data();
+        const isAdmin = currentUser?.type === 'staff' && currentUser?.role === 'admin';
+        const isOwner = currentUser?.type === 'staff'
+            ? (data.authorUid && currentUser?.uid && data.authorUid === currentUser.uid)
+            : (Boolean(data.authorCode) && Boolean(currentUser?.code) && data.authorCode === currentUser.code);
+
+        if (!isAdmin && !isOwner) {
+            alert("You can only delete boards that you own.");
+            return;
+        }
+
         await deleteDoc(doc(db, "boards", boardId));
         loadBoards();
     } catch (err) {
