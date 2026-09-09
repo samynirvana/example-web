@@ -16,7 +16,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="admin.css?v=388">
+    <link rel="stylesheet" href="admin.css?v=420">
 </head>
 
 <body>
@@ -752,8 +752,8 @@
                                 <!-- Populated dynamically via JS -->
                             </div>
 
-                            <button onclick="document.getElementById('menuNewsOnly').click()"
-                                style="margin-top: auto; width: 100%; background: var(--primary-blue); font-weight: 600; padding: 12px; border-radius: 10px;">
+                            <button id="btnCreateNoticeDashboard" class="btn-primary-red" onclick="document.getElementById('menuNewsOnly').click()"
+                                style="margin-top: auto; width: 100%; height: 44px; font-weight: 700; font-size: 14px;">
                                 + Create a Notice
                             </button>
                         </div>
@@ -869,7 +869,7 @@
                                         </select>
                                     </div>
                                     <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px; width: 100%;">
-                                        <button id="loadDirectStudentsBtn" style="background: var(--primary-blue); height: 44px; padding: 0 28px; border-radius: 10px; font-size: 14px; font-weight: 700; color: #fff; border: none; cursor: pointer;">Load Class Roster</button>
+                                        <button id="loadDirectStudentsBtn" class="btn-primary-red" style="height: 44px; padding: 0 28px; font-size: 14px; font-weight: 700;">Load Class Roster</button>
                                     </div>
                                 </div>
 
@@ -931,7 +931,7 @@
                                         <input type="file" id="excelFile" accept=".xlsx, .xls, .csv">
                                     </div>
                                     <div style="flex: 0 0 auto;">
-                                        <button id="uploadExcelBtn" style="background: var(--primary-blue);">Upload &
+                                        <button id="uploadExcelBtn" class="btn-primary-red" style="height: 42px; padding: 0 20px;">Upload &
                                             Process</button>
                                     </div>
                                 </div>
@@ -1213,7 +1213,7 @@
                                                 onclick="exportChosenScoreToExcel(); closeScoreLedgerDropdown();"
                                                 title="Download chosen score records as Excel (.xlsx)">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                    stroke="#10b981" stroke-width="2.2" stroke-linecap="round"
+                                                    stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
                                                     stroke-linejoin="round">
                                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                                     <polyline points="7 10 12 15 17 10"></polyline>
@@ -1544,7 +1544,7 @@
 
                                 <!-- Submit Points Button Centered -->
                                 <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px; width: 100%;">
-                                    <button id="saveCustomPointBtn" style="background: var(--purple-header); height: 44px; padding: 0 28px; border-radius: 10px; font-size: 14px; font-weight: 700; color: #fff; border: none; cursor: pointer;">
+                                    <button id="saveCustomPointBtn" class="btn-primary-red" style="height: 44px; padding: 0 28px; font-size: 14px; font-weight: 700;">
                                         Submit Points
                                     </button>
                                 </div>
@@ -1558,8 +1558,8 @@
                                 <div>
                                     <h3 style="margin: 0;">Analytics Diagram</h3>
                                 </div>
-                                <button type="button" id="btnToggleBehaviorCharts" onclick="toggleBehaviorCharts()"
-                                    style="width: auto; padding: 8px 16px; font-size: 13px; background: var(--primary-blue);">Show
+                                <button type="button" id="btnToggleBehaviorCharts" class="btn-primary-red" onclick="toggleBehaviorCharts()"
+                                    style="width: auto; padding: 8px 18px; font-size: 13px;">Show
                                     Diagram</button>
                             </div>
                             <div id="containerBehaviorCharts" class="hidden" style="margin-top: 20px;">
@@ -1732,8 +1732,8 @@
                                         </div>
                                         <div
                                             style="display: flex; justify-content: center; align-items: center; margin-top: 5px; width: 100%;">
-                                            <button id="registerStudentBtn"
-                                                style="background: var(--primary-blue); height: 44px; padding: 0 28px; border-radius: 10px; font-size: 14px; font-weight: 700; color: #fff; border: none; cursor: pointer;">Generate
+                                            <button id="registerStudentBtn" class="btn-primary-red"
+                                                style="height: 44px; padding: 0 28px; font-size: 14px; font-weight: 700;">Generate
                                                 Student Code</button>
                                         </div>
                                     </div>
@@ -1752,8 +1752,8 @@
                                             style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; flex: 1; justify-content: flex-end;">
                                             <input type="file" id="bulkStudentsFile" accept=".xlsx, .xls, .csv"
                                                 style="max-width: 270px; margin: 0; padding: 8px 12px; font-size: 13px;">
-                                            <button id="uploadBulkStudentsBtn"
-                                                style="background: var(--primary-blue); color: white; width: auto !important; padding: 10px 24px !important; margin: 0; font-weight: 700; font-size: 13.5px; border-radius: 8px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                                            <button id="uploadBulkStudentsBtn" class="btn-primary-red"
+                                                style="width: auto !important; padding: 10px 24px !important; margin: 0; font-weight: 700; font-size: 13.5px;">
                                                 Upload & Sync Students
                                             </button>
                                         </div>
@@ -1815,9 +1815,9 @@
                                         </p>
                                         <input type="file" id="bulkPhotoFileInput" multiple accept="image/*"
                                             style="display: none;">
-                                        <button type="button"
+                                        <button type="button" class="btn-primary-red"
                                             onclick="document.getElementById('bulkPhotoFileInput').click()"
-                                            style="background: var(--primary-blue); color: white; border: none; padding: 8px 22px; border-radius: 20px; font-weight: 700; font-size: 13.5px; cursor: pointer;">
+                                            style="padding: 10px 24px; font-weight: 700; font-size: 13.5px;">
                                             Select Photo Files
                                         </button>
                                     </div>
@@ -1889,9 +1889,9 @@
                                     <div>
                                         <h3 style="margin: 0;">Class Database</h3>
                                     </div>
-                                    <button type="button" id="btnToggleClassesTable"
+                                    <button type="button" id="btnToggleClassesTable" class="btn-primary-red"
                                         onclick="toggleActiveClassesTable()"
-                                        style="width: auto; padding: 8px 16px; font-size: 13px; background: var(--primary-blue);">Show
+                                        style="width: auto; padding: 8px 18px; font-size: 13px;">Show
                                         Table</button>
                                 </div>
                                 <div id="containerClassesTable" class="hidden" style="margin-top: 15px;">
@@ -1948,8 +1948,8 @@
                                     </div>
                                     <div
                                         style="display: flex; justify-content: center; align-items: center; margin-top: 5px; width: 100%;">
-                                        <button id="createTeacherBtn"
-                                            style="background: #f59e0b; height: 44px; padding: 0 28px; border-radius: 10px; font-size: 14px; font-weight: 700; color: #fff; border: none; cursor: pointer;">Register
+                                        <button id="createTeacherBtn" class="btn-primary-red"
+                                            style="height: 44px; padding: 0 28px; font-size: 14px; font-weight: 700;">Register
                                             Teacher</button>
                                     </div>
                                 </div>
@@ -1982,9 +1982,9 @@
                                     <div>
                                         <h3 style="margin: 0;">Subjects Database</h3>
                                     </div>
-                                    <button type="button" id="btnToggleSubjectsTable"
+                                    <button type="button" id="btnToggleSubjectsTable" class="btn-primary-red"
                                         onclick="toggleActiveSubjectsTable()"
-                                        style="width: auto; padding: 8px 16px; font-size: 13px; background: var(--primary-blue);">Show
+                                        style="width: auto; padding: 8px 18px; font-size: 13px;">Show
                                         Table</button>
                                 </div>
                                 <div id="containerSubjectsTable" class="hidden" style="margin-top: 15px;">
@@ -2068,8 +2068,8 @@
 
                                     <div
                                         style="display: flex; justify-content: center; align-items: center; margin-top: 5px; width: 100%;">
-                                        <button onclick="addManualQuiz()"
-                                            style="background: var(--primary-blue); height: 44px; padding: 0 28px; border-radius: 10px; font-size: 14px; font-weight: 700; color: #fff; border: none; cursor: pointer;">Add
+                                        <button onclick="addManualQuiz()" class="btn-primary-red"
+                                            style="height: 44px; padding: 0 28px; font-size: 14px; font-weight: 700;">Add
                                             Assignment</button>
                                     </div>
                                 </div>
@@ -2297,8 +2297,9 @@
                                     <span id="scriptingSaveMsg" style="font-size: 13px; font-weight: 700;"></span>
                                 </div>
                                 <button type="button" id="btnSaveAllScripts" onclick="saveAdminDriveSettings()"
-                                    style="background: var(--primary-blue); color: #ffffff; border: none; padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(30, 94, 255, 0.3);">
-                                    💾 Save All Script Configurations to Firestore
+                                    class="btn-primary-red"
+                                    style="padding: 12px 28px; font-size: 14px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+                                    Save Script
                                 </button>
                             </div>
 
@@ -2339,7 +2340,9 @@
                                 </div>
                             </div>
 
-                            <button id="postNewsBtn">Post Notice</button>
+                                <div style="display: flex; justify-content: center; align-items: center; margin-top: 18px; width: 100%;">
+                                    <button id="postNewsBtn" class="btn-primary-red" style="height: 44px; padding: 0 32px; font-size: 14px; font-weight: 700;">Post Notice</button>
+                                </div>
                         </div>
 
                         <!-- Manage Existing Notices -->
@@ -2403,8 +2406,8 @@
                             <h3 style="margin-top: 0; color: #1e5eff; font-size: 20px;">Create a New Quiz</h3>
                             <p style="color: #707eae; font-size: 14px; margin-bottom: 20px;">Design interactive quizzes,
                                 worksheets, and functional writing tasks.</p>
-                            <button onclick="openQuizBuilder(true)"
-                                style="background: #1e5eff; width: auto; padding: 12px 32px; font-size: 16px; border-radius: 8px;">+
+                            <button onclick="openQuizBuilder(true)" class="btn-primary-red"
+                                style="width: auto; padding: 12px 32px; font-size: 16px;">+
                                 Create New Quiz</button>
                         </div>
 
@@ -3850,8 +3853,8 @@
 
 
     <!-- Navigation & Core Scripts -->
-    <script src="studentNav.js?v=379"></script>
-    <script type="module" src="admin.js?v=392"></script>
+    <script src="studentNav.js?v=420"></script>
+    <script type="module" src="admin.js?v=420"></script>
 </body>
 
 </html>

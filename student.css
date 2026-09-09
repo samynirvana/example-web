@@ -930,9 +930,8 @@ body.dark-mode .behavior-item-title {
 }
 
 /* ======================================================
-   ROUNDED PILL BUTTON STYLING SYSTEM (LIGHT & DARK THEME)
+   BUTTON STYLING SYSTEM (FLAT & MODERN)
    ====================================================== */
-button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn),
 .btn-pill:not(.btn-circle):not(.db-page-btn),
 #studentLoginBtn,
 #verifyBtn,
@@ -942,20 +941,19 @@ button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#no
     background: #ffffff !important;
     color: #0f172a !important;
     border: 1.5px solid #e2e8f0 !important;
-    border-radius: 24px !important;
-    padding: 10px 22px !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
     font-size: 14px !important;
     font-weight: 700 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 8px !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+    box-shadow: none !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
 }
 
-button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.kebab-btn):not(.kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn):hover,
 .btn-pill:not(.btn-circle):not(.db-page-btn):hover,
 #studentLoginBtn:hover,
 #verifyBtn:hover,
@@ -968,14 +966,12 @@ button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#no
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
-button:not(.btn-circle):not(.tool-btn):not(.board-icon-btn):not(.board-zoom-btn):not(.fmt-btn):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn):active,
 .btn-pill:not(.btn-circle):not(.db-page-btn):active {
     transform: translateY(0) scale(0.97) !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 /* Dark Theme Button Overrides */
-.dark-theme button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn),
 .dark-theme .btn-pill:not(.btn-circle):not(.db-page-btn),
 .dark-theme #studentLoginBtn,
 .dark-theme #verifyBtn,
@@ -985,10 +981,9 @@ button:not(.btn-circle):not(.tool-btn):not(.board-icon-btn):not(.board-zoom-btn)
     background: #1e293b !important;
     color: #f8fafc !important;
     border-color: #334155 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: none !important;
 }
 
-.dark-theme button:not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.menu-btn):not(.submenu-btn):not(.kebab-item):not(.kebab-btn):not(.edit-btn):not(.delete-btn):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn):hover,
 .dark-theme .btn-pill:not(.btn-circle):not(.db-page-btn):hover,
 .dark-theme #studentLoginBtn:hover,
 .dark-theme #verifyBtn:hover,

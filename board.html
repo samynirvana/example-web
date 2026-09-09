@@ -11,10 +11,10 @@
     <title>Interactive Board - Student Portal</title>
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1o_7O1hdx1SJOXfoFw9ZKxpl4zSOD_VYd">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=395">
-    <link rel="stylesheet" href="admin.css?v=395">
-    <link rel="stylesheet" href="student.css?v=395">
-    <link rel="stylesheet" href="board.css?v=395">
+    <link rel="stylesheet" href="style.css?v=418">
+    <link rel="stylesheet" href="admin.css?v=420">
+    <link rel="stylesheet" href="student.css?v=420">
+    <link rel="stylesheet" href="board.css?v=420">
 </head>
 
 <body>
@@ -264,7 +264,7 @@
                         </div>
                     </div>
                     <div>
-                        <button id="btnCreateBlankBoard" class="board-create-btn">
+                        <button id="btnCreateBlankBoard" class="board-create-btn btn-primary-red">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -343,6 +343,99 @@
                     <button id="btnRedo" class="board-icon-btn" title="Redo (Ctrl+Y)" aria-label="Redo">
                         <img src="https://lh3.googleusercontent.com/d/1TmH6663MGF2XIk7rKIWC4E2BbNFWWAk1" width="18" height="18" alt="Redo" style="display:block; object-fit:contain;">
                     </button>
+
+                    <!-- Canvas Background Choice (Dotted, Isometric, Paper, Grid) -->
+                    <div class="board-bg-dropdown-container">
+                        <button id="btnCanvasBg" class="board-icon-btn" title="Canvas Background (Dots, Isometric, Paper, Grid)" aria-label="Canvas Background">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="2" y="2" width="5.33" height="5.33" rx="1.8"></rect>
+                                <rect x="9.33" y="2" width="5.33" height="5.33" rx="1.8"></rect>
+                                <rect x="16.67" y="2" width="5.33" height="5.33" rx="1.8"></rect>
+                                <rect x="2" y="9.33" width="5.33" height="5.33" rx="1.8"></rect>
+                                <rect x="9.33" y="9.33" width="5.33" height="5.33" rx="1.8"></rect>
+                                <rect x="16.67" y="9.33" width="5.33" height="5.33" rx="1.8"></rect>
+                                <rect x="2" y="16.67" width="5.33" height="5.33" rx="1.8"></rect>
+                                <rect x="9.33" y="16.67" width="5.33" height="5.33" rx="1.8"></rect>
+                                <rect x="16.67" y="16.67" width="5.33" height="5.33" rx="1.8"></rect>
+                            </svg>
+                        </button>
+                        <div id="canvasBgDropdown" class="board-bg-dropdown hidden">
+                            <div class="bg-option-header">CANVAS BACKGROUND</div>
+                            <button type="button" class="bg-option-item active" data-bg="dots" title="Dotted Grid (Default)">
+                                <span class="bg-preview-box preview-dots"></span>
+                                <span>Dotted (Default)</span>
+                                <svg class="bg-check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </button>
+                            <button type="button" class="bg-option-item" data-bg="isometric" title="Isometric Grid">
+                                <span class="bg-preview-box preview-isometric"></span>
+                                <span>Isometric Grid</span>
+                                <svg class="bg-check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </button>
+
+                            <!-- Isometric Grid Controls (Size & Angle) -->
+                            <div id="isometricSizeControl" class="isometric-size-control">
+                                <!-- Grid Size -->
+                                <div class="iso-control-header">
+                                    <span>GRID SIZE</span>
+                                    <span id="isometricSizeLabel" class="iso-size-badge">60px</span>
+                                </div>
+                                <div class="isometric-size-row">
+                                    <button type="button" id="btnIsoSizeDown" class="iso-control-btn" title="Smaller Grid (-)" aria-label="Smaller Grid">-</button>
+                                    <input type="range" id="isoSizeSlider" min="20" max="140" step="5" value="60" class="iso-control-slider" title="Adjust Isometric Spacing" />
+                                    <button type="button" id="btnIsoSizeUp" class="iso-control-btn" title="Bigger Grid (+)" aria-label="Bigger Grid">+</button>
+                                </div>
+                                <div class="isometric-presets-row size-presets">
+                                    <button type="button" class="iso-preset-btn" data-iso-size="30">30px</button>
+                                    <button type="button" class="iso-preset-btn active" data-iso-size="60">60px</button>
+                                    <button type="button" class="iso-preset-btn" data-iso-size="90">90px</button>
+                                    <button type="button" class="iso-preset-btn" data-iso-size="120">120px</button>
+                                </div>
+
+                                <!-- Grid Angle / Rotation -->
+                                <div class="iso-control-header" style="margin-top: 6px;">
+                                    <span>GRID ANGLE</span>
+                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                        <span id="isometricAngleLabel" class="iso-size-badge">0°</span>
+                                        <button type="button" id="btnIsoAngleReset" class="iso-reset-angle-btn" title="Reset Angle to 0°">⟲</button>
+                                    </div>
+                                </div>
+                                <div class="isometric-size-row">
+                                    <button type="button" id="btnIsoAngleDown" class="iso-control-btn" title="Rotate Counter-Clockwise (-15°)" aria-label="Rotate Counter-Clockwise">↺</button>
+                                    <input type="range" id="isoAngleSlider" min="-90" max="90" step="5" value="0" class="iso-control-slider" title="Rotate Isometric Angle" />
+                                    <button type="button" id="btnIsoAngleUp" class="iso-control-btn" title="Rotate Clockwise (+15°)" aria-label="Rotate Clockwise">↻</button>
+                                </div>
+                                <div class="isometric-presets-row angle-presets">
+                                    <button type="button" class="iso-angle-preset-btn active" data-iso-angle="0">0°</button>
+                                    <button type="button" class="iso-angle-preset-btn" data-iso-angle="30">30°</button>
+                                    <button type="button" class="iso-angle-preset-btn" data-iso-angle="45">45°</button>
+                                    <button type="button" class="iso-angle-preset-btn" data-iso-angle="60">60°</button>
+                                    <button type="button" class="iso-angle-preset-btn" data-iso-angle="90">90°</button>
+                                </div>
+                            </div>
+
+                            <button type="button" class="bg-option-item" data-bg="paper" title="Paper Line">
+                                <span class="bg-preview-box preview-paper"></span>
+                                <span>Paper Line</span>
+                                <svg class="bg-check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </button>
+                            <button type="button" class="bg-option-item" data-bg="lines" title="Square Grid">
+                                <span class="bg-preview-box preview-grid"></span>
+                                <span>Square Grid</span>
+                                <svg class="bg-check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Magnet Snapping Toggle Button (Beside background selection) -->
+                    <button id="btnSnapMagnet" class="board-icon-btn is-magnet-active" title="Magnet Snapping (Snap to Grid, Vertices, Corners & Edges - M)" aria-label="Magnet Snapping">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 15v-6a6 6 0 0 1 12 0v6"></path>
+                            <path d="M6 10h4"></path>
+                            <path d="M14 10h4"></path>
+                            <path d="M4 15h4v4H4z"></path>
+                            <path d="M16 15h4v4h-4z"></path>
+                        </svg>
+                    </button>
                     
                     <div class="board-topbar-divider"></div>
 
@@ -403,9 +496,12 @@
 
                 <div class="tool-divider"></div>
 
-                <!-- Group 3: Freehand Drawing (Pen, Highlighter, Eraser, Eyedropper Color Picker) -->
-                <button class="tool-btn" data-tool="pen" title="Draw / Pen (P)" aria-label="Pen">
+                <!-- Group 3: Freehand & Vector Drawing (Pen, Anchor Tools, Highlighter, Eraser, Eyedropper Color Picker) -->
+                <button class="tool-btn" data-tool="pen" title="Vector Pen / Anchor Tool (P)" aria-label="Pen">
                     <img src="https://lh3.googleusercontent.com/d/15NlUXnvy1GooW10it3wYUX0Z-r7xcdzF" width="22" height="22" alt="Pen" style="display:block; object-fit:contain;">
+                </button>
+                <button class="tool-btn" data-tool="anchor" id="btnToolAnchor" title="Anchor Point Tools (Direct, Edit, Add, Delete Anchors)" aria-label="Anchor Point Tools">
+                    <img src="https://lh3.googleusercontent.com/d/1XPUvMF_MgCK0V0iRHCX_cq_rDst0VB_T" width="22" height="22" alt="Anchor Point Tools" style="display:block; object-fit:contain;">
                 </button>
                 <button class="tool-btn" data-tool="highlighter" title="Highlighter" aria-label="Highlighter">
                     <img src="https://lh3.googleusercontent.com/d/10HoTiF8PPGTOSYw01tjopZiXZ86lOeaG" width="22" height="22" alt="Highlighter" style="display:block; object-fit:contain;">
@@ -786,6 +882,25 @@
                     <button class="pen-size-btn" data-size="8" title="Thick (8px)"><span style="width: 10px; height: 10px;"></span>8px</button>
                     <button class="pen-size-btn" data-size="14" title="Marker (14px)"><span style="width: 14px; height: 14px;"></span>14px</button>
                 </div>
+                <div class="palette-mini-hint" style="margin-top: 8px;">
+                    <span>💡 Click point A then point B to place anchor points. Click 1st point to close into shape. Enter/Esc to finish.</span>
+                </div>
+            </div>
+
+            <!-- Anchor Point Tools Sub-palette (Direct Anchor, Edit, Add, Delete) -->
+            <div id="anchorSubPalette" class="board-sub-palette board-anchor-palette hidden">
+                <button class="anchor-tool-choice-btn active" data-anchor-mode="direct" title="Direct Anchor Cursor (Click and drag to move anchor points)" aria-label="Direct Anchor">
+                    <img src="https://lh3.googleusercontent.com/d/1XPUvMF_MgCK0V0iRHCX_cq_rDst0VB_T" width="22" height="22" alt="Direct Anchor" style="display:block; object-fit:contain;">
+                </button>
+                <button class="anchor-tool-choice-btn" data-anchor-mode="edit" title="Edit Anchor Point (Click to create/adjust 2 curve handles)" aria-label="Edit Anchor">
+                    <img src="https://lh3.googleusercontent.com/d/1G4URvc4hs3BIQe2TTkO0cX4DbDyL6xo-" width="22" height="22" alt="Edit Anchor" style="display:block; object-fit:contain;">
+                </button>
+                <button class="anchor-tool-choice-btn" data-anchor-mode="add" title="Add Anchor Point (Click path line to insert anchor)" aria-label="Add Anchor">
+                    <img src="https://lh3.googleusercontent.com/d/1x__-NPF2EIaLDmFBpA-zVFKNflRl20Lw" width="22" height="22" alt="Add Anchor" style="display:block; object-fit:contain;">
+                </button>
+                <button class="anchor-tool-choice-btn" data-anchor-mode="delete" title="Delete Anchor Point (Click anchor to delete)" aria-label="Delete Anchor">
+                    <img src="https://lh3.googleusercontent.com/d/1sfWQzuqb44QfOEGfEdGdQ6Zp6QkmwZ2_" width="22" height="22" alt="Delete Anchor" style="display:block; object-fit:contain;">
+                </button>
             </div>
 
             <!-- Line & Connector Sub-palette -->
@@ -813,6 +928,7 @@
 
             <!-- Canvas Surface Area -->
             <div id="boardCanvasSurface" class="board-canvas-surface grid-dots">
+                <div id="boardGridLayer" class="board-grid-layer grid-dots"></div>
                 <canvas id="whiteboardCanvas"></canvas>
             </div>
 
@@ -901,8 +1017,8 @@
     </div>
 
     <!-- Scripts -->
-    <script type="module" src="board.js?v=395"></script>
-    <script src="studentNav.js?v=395"></script>
+    <script type="module" src="board.js?v=420"></script>
+    <script src="studentNav.js?v=420"></script>
 </body>
 
 </html>

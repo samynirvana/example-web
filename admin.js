@@ -6076,11 +6076,13 @@ window.toggleActiveClassesTable = function () {
     if (container.classList.contains('hidden')) {
         container.classList.remove('hidden');
         btn.innerText = 'Hide Table';
+        btn.classList.add('table-hidden-state');
         btn.style.background = '#64748b';
     } else {
         container.classList.add('hidden');
         btn.innerText = 'Show Table';
-        btn.style.background = 'var(--primary-blue)';
+        btn.classList.remove('table-hidden-state');
+        btn.style.background = '';
     }
 };
 
@@ -6092,11 +6094,13 @@ window.toggleActiveSubjectsTable = function () {
     if (container.classList.contains('hidden')) {
         container.classList.remove('hidden');
         btn.innerText = 'Hide Table';
+        btn.classList.add('table-hidden-state');
         btn.style.background = '#64748b';
     } else {
         container.classList.add('hidden');
         btn.innerText = 'Show Table';
-        btn.style.background = 'var(--primary-blue)';
+        btn.classList.remove('table-hidden-state');
+        btn.style.background = '';
     }
 };
 
@@ -6750,7 +6754,7 @@ async function viewScoreLedger() {
 
     try {
         if (viewBtn) {
-            viewBtn.innerText = "Loading...";
+            viewBtn.innerHTML = `<span>Loading...</span>`;
             viewBtn.disabled = true;
         }
 
@@ -6825,7 +6829,14 @@ async function viewScoreLedger() {
         alert("An error occurred while loading the ledger: " + error.message);
     } finally {
         if (viewBtn) {
-            viewBtn.innerText = "View Table";
+            viewBtn.innerHTML = `
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <span>View Table</span>`;
             viewBtn.disabled = false;
         }
     }
@@ -7072,12 +7083,14 @@ window.toggleBehaviorCharts = function () {
     if (container.classList.contains('hidden')) {
         container.classList.remove('hidden');
         btn.innerText = 'Hide Diagram';
+        btn.classList.add('diagram-hidden-state');
         btn.style.background = '#64748b';
         if (typeof refreshBehaviorTabLedgers === 'function') refreshBehaviorTabLedgers();
     } else {
         container.classList.add('hidden');
         btn.innerText = 'Show Diagram';
-        btn.style.background = 'var(--primary-blue)';
+        btn.classList.remove('diagram-hidden-state');
+        btn.style.background = '';
     }
 };
 

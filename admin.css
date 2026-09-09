@@ -934,7 +934,9 @@ select:focus {
     background: white;
 }
 
-button {
+.box button.btn-submit,
+.box button.login-btn,
+.form-box button {
     background: var(--primary-blue);
     color: white;
     border: none;
@@ -942,11 +944,13 @@ button {
     cursor: pointer;
     transition: 0.2s;
     padding: 12px;
-    border-radius: 10px;
+    border-radius: 8px;
     width: 100%;
 }
 
-button:hover {
+.box button.btn-submit:hover,
+.box button.login-btn:hover,
+.form-box button:hover {
     opacity: 0.9;
     transform: translateY(-1px);
 }
@@ -3755,9 +3759,8 @@ body.dark-theme .multi-select-option-row:hover {
 }
 
 /* ======================================================
-   ROUNDED PILL BUTTON STYLING SYSTEM (LIGHT & DARK THEME)
+   BUTTON STYLING SYSTEM (FLAT & MODERN)
    ====================================================== */
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn),
 .btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle):not(.db-page-btn),
 .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle):not(.db-page-btn),
 .add-btn,
@@ -3767,20 +3770,19 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     background: #ffffff !important;
     color: #0f172a !important;
     border: 1.5px solid #e2e8f0 !important;
-    border-radius: 24px !important;
-    padding: 10px 22px !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
     font-size: 14px !important;
     font-weight: 700 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 8px !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+    box-shadow: none !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.btn-circle):not(#themeToggleBtn):not(#darkModeToggle):not(.theme-toggle-btn):not(.teacher-btn):not(#logoutBtn):not(#studentLogoutBtn):not(.logout-btn):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn):hover,
 .btn:not(.dropdown-item):not(.kebab-item):not(.btn-circle):not(.db-page-btn):hover,
 .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.btn-circle):not(.db-page-btn):hover,
 .add-btn:hover,
@@ -3793,14 +3795,12 @@ button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
-button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-zoom-btn):not(.fmt-btn):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn):active,
 .btn:not(.dropdown-item):not(.kebab-item):active {
     transform: translateY(0) !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 /* Dark Theme Overrides for Admin Buttons */
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.card-kebab-btn):not(#profileCardKebabBtn):not(.profile-dropdown-item):not(.info-kebab-btn):not(#btnDobKebab):not(.info-kebab-item):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn),
 body.dark-theme .btn:not(.dropdown-item):not(.kebab-item):not(.db-page-btn),
 body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.db-page-btn),
 body.dark-theme .add-btn,
@@ -3810,10 +3810,9 @@ body.dark-theme .modal-btn {
     background: #1e293b !important;
     color: #f8fafc !important;
     border-color: #334155 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: none !important;
 }
 
-body.dark-theme button:not(.menu-btn):not(.submenu-btn):not(.kebab-btn):not(.dropdown-item):not(.kebab-item):not(.mobile-kebab-btn):not(#mobileTopbarKebabBtn):not(.notif-btn):not(#notifToggleBtn):not(.info-kebab-btn):not(#btnDobKebab):not(.att-kebab-trigger):not(.att-row-item):not(.att-split-main-btn):not(.att-split-arrow-btn):not(.att-action-dropdown-item):not(.score-mode-btn):not(.score-mode-option):not(.score-ledger-main-btn):not(.score-ledger-arrow-btn):not(.score-ledger-dropdown-item):not(.btn-composer-tool):not(#submitPostBtn):not(.action-btn):not(.like-btn):not(.comment-btn):not(.timeline-tab-item):not(#tabBtnAllPosts):not(#tabBtnMyClass):not(.reminder-deploy-main-btn):not(.reminder-deploy-arrow-btn):not(.reminder-deploy-dropdown-item):not(#btnBulkDeleteReminders):not(.tool-btn):not(.board-icon-btn):not(.board-back-btn):not(.board-tab-btn):not(.board-create-btn):not(.board-action-btn):not(.board-zoom-btn):not(.board-template-card):not(.sticky-color-dot):not(.fmt-btn):not(.fmt-select):not(.fmt-color-btn):not(.fmt-color-swatch):not(.fmt-text-color-swatch):not(.shape-choice-btn):not(.pen-size-btn):not(.line-style-btn):not(.line-width-btn):not(.db-page-btn):hover,
 body.dark-theme .btn:not(.dropdown-item):not(.kebab-item):not(.db-page-btn):hover,
 body.dark-theme .action-btn:not(.dropdown-item):not(.kebab-item):not(.like-btn):not(.comment-btn):not(.db-page-btn):hover,
 body.dark-theme .add-btn:hover,
@@ -5490,20 +5489,41 @@ body.dark-theme .teacher-modal-card .password-section-card {
 }
 
 .att-split-pill {
-    display: inline-flex;
-    align-items: stretch;
-    background: var(--card-bg, #ffffff) !important;
-    border: 1.5px solid var(--border-color, #cbd5e1);
-    border-radius: 9999px;
-    box-shadow: none !important;
-    overflow: hidden;
-    height: 40px;
-    transition: border-color 0.2s ease;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.28) !important;
+    overflow: hidden !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer;
+    box-sizing: border-box !important;
+    line-height: 1 !important;
+    transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.16s ease, 
+                background 0.16s ease, 
+                filter 0.16s ease !important;
+    transform: translateY(0) scale(1);
 }
 
 .att-split-pill:hover {
-    border-color: #94a3b8;
-    box-shadow: none !important;
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.42) !important;
+    filter: brightness(1.04) !important;
+}
+
+.att-split-pill:active {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    transform: translateY(1px) scale(0.96) !important;
+    box-shadow: 0 1px 4px rgba(239, 68, 68, 0.3) !important;
+    filter: brightness(0.92) !important;
 }
 
 .att-split-main-btn,
@@ -5516,34 +5536,65 @@ body.dark-theme .teacher-modal-card .password-section-card {
     outline: none !important;
     transform: none !important;
     height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     align-self: stretch !important;
 }
 
 .att-split-main-btn {
     background: transparent !important;
-    color: var(--text-dark, #0f172a) !important;
+    color: #ffffff !important;
     padding: 0 16px 0 18px !important;
     margin: 0 !important;
     font-size: 13.5px !important;
     font-weight: 700 !important;
     cursor: pointer;
     display: inline-flex !important;
-    align-items: center;
-    gap: 8px;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    height: 100% !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    box-sizing: border-box !important;
     transition: background 0.15s ease, color 0.15s ease;
-    white-space: nowrap;
+    white-space: nowrap !important;
+}
+
+.att-split-main-btn span {
+    display: inline-flex !important;
+    align-items: center !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.att-split-main-btn svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    display: block !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
 }
 
 .att-split-main-btn:hover {
-    background: #f1f5f9 !important;
-    color: var(--primary-blue, #1e5eff) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+    color: #ffffff !important;
 }
 
 .att-split-divider {
-    width: 1px;
-    background: var(--border-color, #cbd5e1);
-    align-self: stretch;
-    flex-shrink: 0;
+    width: 1px !important;
+    min-width: 1px !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: rgba(255, 255, 255, 0.28) !important;
+    align-self: stretch !important;
+    flex-shrink: 0 !important;
 }
 
 .att-split-arrow-btn,
@@ -5556,24 +5607,41 @@ body.dark-theme .teacher-modal-card .password-section-card {
     outline: none !important;
     transform: none !important;
     height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     align-self: stretch !important;
 }
 
 .att-split-arrow-btn {
     background: transparent !important;
-    color: var(--text-dark, #334155) !important;
-    padding: 0 12px !important;
+    color: #ffffff !important;
+    padding: 0 11px !important;
     margin: 0 !important;
     cursor: pointer;
     display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    box-sizing: border-box !important;
     transition: background 0.15s ease, color 0.15s ease;
 }
 
+.att-split-arrow-btn svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    display: block !important;
+    margin: auto !important;
+    flex-shrink: 0 !important;
+}
+
 .att-split-arrow-btn:hover {
-    background: #f1f5f9 !important;
-    color: var(--primary-blue, #1e5eff) !important;
+    background: rgba(255, 255, 255, 0.22) !important;
+    color: #ffffff !important;
 }
 
 .att-actions-dropdown {
@@ -5582,14 +5650,14 @@ body.dark-theme .teacher-modal-card .password-section-card {
     top: calc(100% + 8px);
     background: var(--card-bg, #ffffff);
     border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: 12px;
+    border-radius: 10px;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06);
     padding: 6px;
     min-width: 215px;
     z-index: 1050;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
     animation: fadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -5598,39 +5666,67 @@ body.dark-theme .teacher-modal-card .password-section-card {
 }
 
 .att-action-dropdown-item {
-    display: flex !important;
-    align-items: center;
+    display: inline-flex !important;
+    align-items: center !important;
     justify-content: flex-start !important;
-    gap: 8px;
+    gap: 8px !important;
     width: 100% !important;
     height: auto !important;
-    padding: 8px 12px !important;
+    padding: 9px 13px !important;
     margin: 0 !important;
-    background: transparent !important;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
     border: none !important;
     border-radius: 8px !important;
     font-size: 13px !important;
-    font-weight: 600 !important;
-    cursor: pointer;
+    font-weight: 700 !important;
+    cursor: pointer !important;
     text-align: left !important;
-    color: var(--text-dark, #1e293b) !important;
-    box-shadow: none !important;
-    transition: background 0.15s ease, color 0.15s ease;
+    color: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.22) !important;
+    outline: none !important;
+    line-height: 1 !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+    transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.16s ease, 
+                background 0.16s ease, 
+                filter 0.16s ease !important;
+    transform: translateY(0) scale(1);
+}
+
+.att-action-dropdown-item svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    display: block !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    transition: transform 0.16s ease;
+}
+
+.att-action-dropdown-item span {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
 }
 
 .att-action-dropdown-item:hover {
-    background: #f1f5f9 !important;
-    color: var(--primary-blue, #1e5eff) !important;
-    transform: none !important;
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) scale(1.02) !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.38) !important;
+    filter: brightness(1.04) !important;
 }
 
-.att-action-dropdown-item.att-danger-item {
-    color: #ef4444 !important;
+.att-action-dropdown-item:hover svg {
+    transform: scale(1.08);
 }
 
-.att-action-dropdown-item.att-danger-item:hover {
-    background: rgba(239, 68, 68, 0.1) !important;
-    color: #dc2626 !important;
+.att-action-dropdown-item:active {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(1px) scale(0.97) !important;
+    box-shadow: 0 1px 4px rgba(239, 68, 68, 0.25) !important;
+    filter: brightness(0.92) !important;
 }
 
 .att-dropdown-divider {
@@ -6050,21 +6146,43 @@ body.dark-mode .att-dropdown-divider {
 
 .score-ledger-split-pill,
 .score-ledger-split-btn-wrap {
-    display: inline-flex;
-    align-items: stretch;
-    background: var(--card-bg, #ffffff) !important;
-    border: 1.5px solid var(--border-color, #cbd5e1);
-    border-radius: 9999px;
-    box-shadow: none !important;
-    overflow: hidden;
-    height: 38px;
-    transition: border-color 0.2s ease;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.28) !important;
+    overflow: hidden !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer;
+    box-sizing: border-box !important;
+    line-height: 1 !important;
+    transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.16s ease, 
+                background 0.16s ease, 
+                filter 0.16s ease !important;
+    transform: translateY(0) scale(1);
 }
 
 .score-ledger-split-pill:hover,
 .score-ledger-split-btn-wrap:hover {
-    border-color: #94a3b8;
-    box-shadow: none !important;
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.42) !important;
+    filter: brightness(1.04) !important;
+}
+
+.score-ledger-split-pill:active,
+.score-ledger-split-btn-wrap:active {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    transform: translateY(1px) scale(0.96) !important;
+    box-shadow: 0 1px 4px rgba(239, 68, 68, 0.3) !important;
+    filter: brightness(0.92) !important;
 }
 
 .score-ledger-main-btn,
@@ -6077,34 +6195,65 @@ body.dark-mode .att-dropdown-divider {
     outline: none !important;
     transform: none !important;
     height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     align-self: stretch !important;
 }
 
 .score-ledger-main-btn {
     background: transparent !important;
-    color: var(--text-dark, #0f172a) !important;
+    color: #ffffff !important;
     padding: 0 16px !important;
     margin: 0 !important;
     font-size: 13px !important;
     font-weight: 700 !important;
     cursor: pointer;
     display: inline-flex !important;
-    align-items: center;
-    gap: 7px;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    height: 100% !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    box-sizing: border-box !important;
     transition: background 0.15s ease, color 0.15s ease;
-    white-space: nowrap;
+    white-space: nowrap !important;
+}
+
+.score-ledger-main-btn span {
+    display: inline-flex !important;
+    align-items: center !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.score-ledger-main-btn svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    display: block !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
 }
 
 .score-ledger-main-btn:hover {
-    background: #f1f5f9 !important;
-    color: var(--primary-blue, #1e5eff) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+    color: #ffffff !important;
 }
 
 .score-ledger-divider {
-    width: 1px;
-    background: var(--border-color, #cbd5e1);
-    align-self: stretch;
-    flex-shrink: 0;
+    width: 1px !important;
+    min-width: 1px !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: rgba(255, 255, 255, 0.28) !important;
+    align-self: stretch !important;
+    flex-shrink: 0 !important;
 }
 
 .score-ledger-arrow-btn,
@@ -6117,28 +6266,42 @@ body.dark-mode .att-dropdown-divider {
     outline: none !important;
     transform: none !important;
     height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     align-self: stretch !important;
 }
 
 .score-ledger-arrow-btn {
     background: transparent !important;
-    color: var(--text-dark, #334155) !important;
-    padding: 0 11px !important;
+    color: #ffffff !important;
+    padding: 0 10px !important;
     margin: 0 !important;
     cursor: pointer;
     display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    box-sizing: border-box !important;
     transition: background 0.15s ease, color 0.15s ease;
 }
 
-.score-ledger-arrow-btn:hover {
-    background: #f1f5f9 !important;
-    color: var(--primary-blue, #1e5eff) !important;
+.score-ledger-arrow-btn svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    display: block !important;
+    margin: auto !important;
+    flex-shrink: 0 !important;
+    transition: transform 0.2s ease;
 }
 
-.score-ledger-arrow-btn svg {
-    transition: transform 0.2s ease;
+.score-ledger-arrow-btn:hover {
+    background: rgba(255, 255, 255, 0.22) !important;
+    color: #ffffff !important;
 }
 
 .score-ledger-arrow-btn[aria-expanded="true"] svg {
@@ -6151,14 +6314,14 @@ body.dark-mode .att-dropdown-divider {
     top: calc(100% + 6px);
     background: var(--card-bg, #ffffff);
     border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: 12px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-    padding: 5px;
-    min-width: 175px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+    padding: 6px;
+    min-width: 180px;
     z-index: 1050;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
     animation: fadeIn 0.15s ease-out;
 }
 
@@ -6167,30 +6330,72 @@ body.dark-mode .att-dropdown-divider {
 }
 
 .score-ledger-dropdown-item {
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
+    justify-content: flex-start !important;
     gap: 9px !important;
     width: 100% !important;
-    padding: 8px 12px !important;
+    padding: 9px 14px !important;
     margin: 0 !important;
-    background: transparent !important;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
     border: none !important;
     border-radius: 8px !important;
     font-size: 13px !important;
-    font-weight: 600 !important;
-    color: var(--text-dark, #1e293b) !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
     cursor: pointer !important;
     text-align: left !important;
-    box-shadow: none !important;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.22) !important;
     outline: none !important;
-    transform: none !important;
+    line-height: 1 !important;
     white-space: nowrap !important;
-    transition: background 0.12s ease, color 0.12s ease !important;
+    box-sizing: border-box !important;
+    transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.16s ease, 
+                background 0.16s ease, 
+                filter 0.16s ease !important;
+    transform: translateY(0) scale(1);
+}
+
+.score-ledger-dropdown-item svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    display: block !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    transition: transform 0.16s ease;
+}
+
+.score-ledger-dropdown-item span {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
 }
 
 .score-ledger-dropdown-item:hover {
-    background: #f1f5f9 !important;
-    color: #10b981 !important;
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) scale(1.02) !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.38) !important;
+    filter: brightness(1.04) !important;
+}
+
+.score-ledger-dropdown-item:hover svg {
+    transform: scale(1.08);
+}
+
+.score-ledger-dropdown-item:active {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(1px) scale(0.97) !important;
+    box-shadow: 0 1px 4px rgba(239, 68, 68, 0.25) !important;
+    filter: brightness(0.92) !important;
+}
+
+/* Dark theme overrides */
+body.dark-theme .score-ledger-dropdown {
+    background: #111c44 !important;
+    border-color: #243269 !important;
 }
 
 /* Dark theme overrides */
@@ -6233,21 +6438,17 @@ body.dark-theme .score-mode-icon-gclass {
 }
 body.dark-theme .score-ledger-split-pill,
 body.dark-theme .score-ledger-split-btn-wrap {
-    background: #1e293b !important;
-    border-color: #334155 !important;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    border: none !important;
 }
 body.dark-theme .score-ledger-main-btn {
-    color: #f8fafc !important;
-}
-body.dark-theme .score-ledger-main-btn:hover,
-body.dark-theme .score-ledger-arrow-btn:hover {
-    background: #334155 !important;
+    color: #ffffff !important;
 }
 body.dark-theme .score-ledger-arrow-btn {
-    color: #cbd5e1 !important;
+    color: #ffffff !important;
 }
 body.dark-theme .score-ledger-divider {
-    background: #334155 !important;
+    background: rgba(255, 255, 255, 0.28) !important;
 }
 
 /* Accessibility: Respect Reduced Motion Preference */
@@ -6549,26 +6750,43 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
 }
 
 .reminder-deploy-split-pill {
-    display: inline-flex;
-    align-items: stretch;
-    background: #ef4444 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
     color: #ffffff !important;
     border: none !important;
     border-radius: 8px !important;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25) !important;
-    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.28) !important;
+    overflow: hidden !important;
     height: 38px !important;
     min-height: 38px !important;
     max-height: 38px !important;
     width: auto !important;
     margin: 0 !important;
     padding: 0 !important;
-    transition: all 0.2s ease;
+    box-sizing: border-box !important;
+    line-height: 1 !important;
+    cursor: pointer;
+    transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.16s ease, 
+                background 0.16s ease, 
+                filter 0.16s ease !important;
+    transform: translateY(0) scale(1);
 }
 
 .reminder-deploy-split-pill:hover {
-    background: #dc2626 !important;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35) !important;
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.42) !important;
+    filter: brightness(1.04) !important;
+}
+
+.reminder-deploy-split-pill:active {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    transform: translateY(1px) scale(0.96) !important;
+    box-shadow: 0 1px 4px rgba(239, 68, 68, 0.3) !important;
+    filter: brightness(0.92) !important;
 }
 
 .reminder-deploy-main-btn,
@@ -6580,6 +6798,9 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
     border-radius: 0 !important;
     box-shadow: none !important;
     border: none !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
     margin: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -6591,9 +6812,9 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
     background: transparent !important;
     color: #ffffff !important;
     border: none !important;
-    height: 38px !important;
-    min-height: 38px !important;
-    max-height: 38px !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
     width: auto !important;
     align-self: stretch !important;
     padding: 0 18px !important;
@@ -6602,23 +6823,45 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
     font-weight: 700 !important;
     cursor: pointer;
     display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    box-sizing: border-box !important;
     transition: background 0.15s ease, color 0.15s ease;
-    white-space: nowrap;
+    white-space: nowrap !important;
+}
+
+.reminder-deploy-main-btn span {
+    display: inline-flex !important;
+    align-items: center !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.reminder-deploy-main-btn svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    display: block !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
 }
 
 .reminder-deploy-main-btn:hover {
-    background: rgba(0, 0, 0, 0.12) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
     color: #ffffff !important;
 }
 
 .reminder-deploy-divider {
-    width: 1px;
-    background: rgba(255, 255, 255, 0.25) !important;
-    align-self: stretch;
-    flex-shrink: 0;
+    width: 1px !important;
+    min-width: 1px !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    background: rgba(255, 255, 255, 0.28) !important;
+    align-self: stretch !important;
+    flex-shrink: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
 }
@@ -6632,6 +6875,9 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
     border-radius: 0 !important;
     box-shadow: none !important;
     border: none !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
     margin: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -6643,26 +6889,34 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
     background: transparent !important;
     color: #ffffff !important;
     border: none !important;
-    height: 38px !important;
-    min-height: 38px !important;
-    max-height: 38px !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
     width: auto !important;
     align-self: stretch !important;
-    padding: 0 12px !important;
+    padding: 0 10px !important;
     margin: 0 !important;
     cursor: pointer;
     display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    box-sizing: border-box !important;
     transition: background 0.15s ease, color 0.15s ease;
 }
 
 .reminder-deploy-arrow-btn:hover {
-    background: rgba(0, 0, 0, 0.12) !important;
+    background: rgba(255, 255, 255, 0.22) !important;
     color: #ffffff !important;
 }
 
 .reminder-deploy-arrow-btn svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    display: block !important;
+    margin: auto !important;
+    flex-shrink: 0 !important;
     transition: transform 0.2s ease;
 }
 
@@ -6672,7 +6926,7 @@ body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
 
 body.dark-theme .reminder-deploy-split-pill,
 body.dark-mode .reminder-deploy-split-pill {
-    background: #ef4444 !important;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
     border: none !important;
     color: #ffffff !important;
     box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
@@ -6680,8 +6934,7 @@ body.dark-mode .reminder-deploy-split-pill {
 
 body.dark-theme .reminder-deploy-split-pill:hover,
 body.dark-mode .reminder-deploy-split-pill:hover {
-    background: #dc2626 !important;
-    border: none !important;
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
 }
 
@@ -6692,13 +6945,13 @@ body.dark-mode .reminder-deploy-main-btn {
 
 body.dark-theme .reminder-deploy-main-btn:hover,
 body.dark-mode .reminder-deploy-main-btn:hover {
-    background: rgba(0, 0, 0, 0.16) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
     color: #ffffff !important;
 }
 
 body.dark-theme .reminder-deploy-divider,
 body.dark-mode .reminder-deploy-divider {
-    background: rgba(255, 255, 255, 0.25) !important;
+    background: rgba(255, 255, 255, 0.28) !important;
 }
 
 body.dark-theme .reminder-deploy-arrow-btn,
@@ -6708,7 +6961,7 @@ body.dark-mode .reminder-deploy-arrow-btn {
 
 body.dark-theme .reminder-deploy-arrow-btn:hover,
 body.dark-mode .reminder-deploy-arrow-btn:hover {
-    background: rgba(0, 0, 0, 0.16) !important;
+    background: rgba(255, 255, 255, 0.22) !important;
     color: #ffffff !important;
 }
 
@@ -6722,13 +6975,13 @@ body.dark-mode .reminder-deploy-arrow-btn:hover {
     min-width: 250px;
     background: var(--card-bg, #ffffff);
     border: 1px solid var(--border-color, #cbd5e1);
-    border-radius: 12px;
+    border-radius: 10px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     padding: 6px;
     z-index: 1050;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
 }
 
 .reminder-deploy-dropdown.hidden {
@@ -6743,35 +6996,71 @@ body.dark-mode .reminder-deploy-dropdown {
 }
 
 .reminder-deploy-dropdown-item {
-    background: transparent !important;
-    color: var(--text-dark, #1e293b) !important;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: #ffffff !important;
     border: none !important;
     border-radius: 8px !important;
-    box-shadow: none !important;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.22) !important;
     outline: none !important;
-    transform: none !important;
     width: 100% !important;
     text-align: left;
-    padding: 9px 12px !important;
+    padding: 9px 13px !important;
     margin: 0 !important;
     font-size: 12.5px !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     cursor: pointer;
-    display: flex !important;
-    align-items: center;
-    gap: 9px;
-    transition: background 0.15s ease, color 0.15s ease;
-    white-space: nowrap;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 9px !important;
+    line-height: 1 !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+    transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.16s ease, 
+                background 0.16s ease, 
+                filter 0.16s ease !important;
+    transform: translateY(0) scale(1);
+}
+
+.reminder-deploy-dropdown-item svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    display: block !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    transition: transform 0.16s ease;
+}
+
+.reminder-deploy-dropdown-item span {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
 }
 
 .reminder-deploy-dropdown-item:hover {
-    background: var(--bg-hover, #f1f5f9) !important;
-    color: var(--primary-blue, #1e5eff) !important;
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) scale(1.02) !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.38) !important;
+    filter: brightness(1.04) !important;
+}
+
+.reminder-deploy-dropdown-item:hover svg {
+    transform: scale(1.08);
+}
+
+.reminder-deploy-dropdown-item:active {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(1px) scale(0.97) !important;
+    box-shadow: 0 1px 4px rgba(239, 68, 68, 0.25) !important;
+    filter: brightness(0.92) !important;
 }
 
 body.dark-theme .reminder-deploy-dropdown-item,
 body.dark-mode .reminder-deploy-dropdown-item {
-    color: #e2e8f0 !important;
+    color: #ffffff !important;
 }
 
 body.dark-theme .reminder-deploy-dropdown-item:hover,
@@ -7028,9 +7317,150 @@ body.dark-mode .att-page-num-btn.active {
     }
 }
 
+/* ==========================================================================
+   PRIMARY ACTION RED BUTTONS & TACTILE MICRO-ANIMATIONS
+   ========================================================================== */
+.btn-primary-red,
+#loadDirectStudentsBtn,
+#saveCustomPointBtn,
+#btnCreateNoticeDashboard,
+#registerStudentBtn,
+#postNewsBtn,
+#createTeacherBtn,
+#btnToggleClassesTable:not(.table-hidden-state),
+#btnToggleSubjectsTable:not(.table-hidden-state),
+#uploadBulkStudentsBtn,
+#btnToggleBehaviorCharts:not(.diagram-hidden-state),
+#btnSaveAllScripts {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    font-size: 13.5px !important;
+    letter-spacing: 0.01em !important;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.28) !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    outline: none !important;
+    user-select: none !important;
+    text-decoration: none !important;
+    transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.16s ease, 
+                background 0.16s ease, 
+                filter 0.16s ease,
+                color 0.16s ease !important;
+    transform: translateY(0) scale(1);
+    -webkit-font-smoothing: antialiased;
+}
 
+.btn-primary-red svg,
+#loadDirectStudentsBtn svg,
+#saveCustomPointBtn svg,
+#btnCreateNoticeDashboard svg,
+#registerStudentBtn svg,
+#postNewsBtn svg,
+#createTeacherBtn svg,
+#btnToggleClassesTable svg,
+#btnToggleSubjectsTable svg,
+#uploadBulkStudentsBtn svg,
+#btnToggleBehaviorCharts svg,
+#btnSaveAllScripts svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    transition: transform 0.16s ease;
+}
 
+/* Hover Micro-Animation: Smooth lift up + vibrant glow */
+.btn-primary-red:hover,
+#loadDirectStudentsBtn:hover,
+#saveCustomPointBtn:hover,
+#btnCreateNoticeDashboard:hover,
+#registerStudentBtn:hover,
+#postNewsBtn:hover,
+#createTeacherBtn:hover,
+#btnToggleClassesTable:not(.table-hidden-state):hover,
+#btnToggleSubjectsTable:not(.table-hidden-state):hover,
+#uploadBulkStudentsBtn:hover,
+#btnToggleBehaviorCharts:not(.diagram-hidden-state):hover,
+#btnSaveAllScripts:hover {
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.42) !important;
+    filter: brightness(1.04) !important;
+}
 
+.btn-primary-red:hover svg,
+#loadDirectStudentsBtn:hover svg,
+#saveCustomPointBtn:hover svg,
+#btnCreateNoticeDashboard:hover svg,
+#registerStudentBtn:hover svg,
+#postNewsBtn:hover svg,
+#createTeacherBtn:hover svg,
+#btnToggleClassesTable:hover svg,
+#btnToggleSubjectsTable:hover svg,
+#uploadBulkStudentsBtn:hover svg,
+#btnToggleBehaviorCharts:hover svg,
+#btnSaveAllScripts:hover svg {
+    transform: scale(1.08);
+}
 
+/* Click / Active Micro-Animation: Tactile depression + pressed shadow */
+.btn-primary-red:active,
+#loadDirectStudentsBtn:active,
+#saveCustomPointBtn:active,
+#btnCreateNoticeDashboard:active,
+#registerStudentBtn:active,
+#postNewsBtn:active,
+#createTeacherBtn:active,
+#btnToggleClassesTable:not(.table-hidden-state):active,
+#btnToggleSubjectsTable:not(.table-hidden-state):active,
+#uploadBulkStudentsBtn:active,
+#btnToggleBehaviorCharts:not(.diagram-hidden-state):active,
+#btnSaveAllScripts:active {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(1px) scale(0.96) !important;
+    box-shadow: 0 1px 4px rgba(239, 68, 68, 0.3) !important;
+    filter: brightness(0.92) !important;
+}
 
+/* Focused Accessible Ring */
+.btn-primary-red:focus-visible,
+#loadDirectStudentsBtn:focus-visible,
+#saveCustomPointBtn:focus-visible,
+#btnCreateNoticeDashboard:focus-visible,
+#registerStudentBtn:focus-visible,
+#postNewsBtn:focus-visible,
+#createTeacherBtn:focus-visible,
+#btnToggleClassesTable:focus-visible,
+#btnToggleSubjectsTable:focus-visible,
+#uploadBulkStudentsBtn:focus-visible,
+#btnToggleBehaviorCharts:focus-visible,
+#btnSaveAllScripts:focus-visible {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4), 0 2px 8px rgba(239, 68, 68, 0.28) !important;
+}
+
+/* Disabled State */
+.btn-primary-red:disabled,
+#loadDirectStudentsBtn:disabled,
+#saveCustomPointBtn:disabled,
+#btnCreateNoticeDashboard:disabled,
+#registerStudentBtn:disabled,
+#postNewsBtn:disabled,
+#createTeacherBtn:disabled,
+#btnToggleClassesTable:disabled,
+#btnToggleSubjectsTable:disabled,
+#uploadBulkStudentsBtn:disabled,
+#btnToggleBehaviorCharts:disabled,
+#btnSaveAllScripts:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
 
