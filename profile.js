@@ -477,7 +477,6 @@ async function loadStudentProfile() {
         // 2. Render Text Elements
         document.getElementById('profileStudentName').innerText = name;
         document.getElementById('profileClassText').innerText = sClass;
-        document.getElementById('profileCodeText').innerText = studentCode;
         document.getElementById('profileBirthDate').innerText = formatBirthDate(birthDate);
 
         // 3. Render Avatar Photo

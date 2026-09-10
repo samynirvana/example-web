@@ -1,7 +1,21 @@
 import { collection, query, where, getDocs, doc, getDoc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { db, auth } from "./firebase.js";
 import { escapeHtml } from "./utils.js";
+
+// Restore the existing student session format without retaining password input.
+const rememberedStudentKey = 'portalRememberedStudent';
+try {
+    const remembered = JSON.parse(localStorage.getItem(rememberedStudentKey) || 'null');
+    if (remembered && typeof remembered.code === 'string' && remembered.code) {
+        if (!sessionStorage.getItem('studentLoggedInSession')) {
+            sessionStorage.setItem('studentLoggedInSession', JSON.stringify(remembered));
+            sessionStorage.setItem('studentTimelineSession', JSON.stringify({ ...remembered, type: 'student' }));
+        }
+    }
+} catch {
+    localStorage.removeItem(rememberedStudentKey);
+}
 
 // Auto-route authenticated teachers/admins directly to admin dashboard
 onAuthStateChanged(auth, (user) => {
@@ -118,6 +132,7 @@ document.getElementById('loginStudentUsername')?.addEventListener('keypress', (e
 async function handleStudentLogin() {
     const rawUser = document.getElementById('loginStudentUsername').value.trim();
     const rawPass = document.getElementById('loginStudentPassword').value.trim();
+    const rememberMe = document.getElementById('loginRememberMe').checked;
     const errBox = document.getElementById('loginErrorMessage');
 
     if (errBox) errBox.classList.add('hidden');
@@ -133,7 +148,9 @@ async function handleStudentLogin() {
     // 1. TEACHER / ADMIN LOGIN (If email address entered)
     if (rawUser.includes('@')) {
         try {
+            await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
             await signInWithEmailAndPassword(auth, rawUser, rawPass);
+            localStorage.removeItem(rememberedStudentKey);
             window.location.href = "admin.html";
             return;
         } catch (err) {
@@ -192,6 +209,12 @@ async function handleStudentLogin() {
             birthDate: studentBirthDate
         };
 
+        if (rememberMe) {
+            localStorage.setItem(rememberedStudentKey, JSON.stringify(currentLoggedInStudent));
+        } else {
+            localStorage.removeItem(rememberedStudentKey);
+        }
+
         // Save session in sessionStorage so it persists across page navigation (Quiz, Timeline, etc.)
         sessionStorage.setItem('studentLoggedInSession', JSON.stringify(currentLoggedInStudent));
         sessionStorage.setItem('studentTimelineSession', JSON.stringify({
@@ -222,6 +245,7 @@ async function handleStudentLogin() {
 
 // Student Logout Handler
 document.getElementById('studentLogoutBtn')?.addEventListener('click', () => {
+    localStorage.removeItem(rememberedStudentKey);
     sessionStorage.removeItem('studentLoggedInSession');
     sessionStorage.removeItem('studentTimelineSession');
     location.reload();
@@ -1062,4 +1086,4 @@ function listenStudentAssignmentReminders(studentCode) {
     } catch (e) {
         console.error("Could not setup student assignment reminders:", e);
     }
-}
+}

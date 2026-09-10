@@ -1,3 +1,10 @@
+// Clear remembered login before any portal logout handler navigates away.
+document.addEventListener('click', (event) => {
+    if (event.target.closest?.('#studentLogoutBtn, #mobileKebabLogoutBtn, #logoutBtn')) {
+        localStorage.removeItem('portalRememberedStudent');
+    }
+}, true);
+
 // studentNav.js - Global Mobile Kebab Menu Navigation Handler
 const initMobileNav = () => {
     const kebabBtn = document.getElementById('mobileTopbarKebabBtn');
