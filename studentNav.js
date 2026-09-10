@@ -32,6 +32,14 @@ const initMobileNav = () => {
     // Handle clicks inside dropdown (tabs & links)
     dropdown.querySelectorAll('.kebab-item').forEach(item => {
         item.addEventListener('click', (e) => {
+            if (item.id === 'mobileMenuDatabases' || item.id === 'mobileMenuTools') {
+                const submenu = document.getElementById(item.getAttribute('aria-controls'));
+                if (submenu) {
+                    submenu.hidden = !submenu.hidden;
+                    item.setAttribute('aria-expanded', String(!submenu.hidden));
+                }
+                return;
+            }
             const tabId = item.getAttribute('data-tab');
             if (tabId) {
                 // If it's a tab switch button in admin dashboard
@@ -57,6 +65,8 @@ const initMobileNav = () => {
 
                 dropdown.querySelectorAll('.kebab-item[data-tab]').forEach(k => k.classList.remove('active'));
                 item.classList.add('active');
+                document.getElementById('mobileMenuTools')?.classList.toggle('active', tabId === 'tab-manage-quizzes');
+                if (tabId === 'tab-view-ledgers') document.getElementById('mobileMenuDatabases')?.classList.add('active');
             }
             dropdown.classList.add('hidden');
         });
@@ -95,7 +105,7 @@ const initMobileNav = () => {
             const tabId = dBtn.getAttribute('data-tab');
             if (tabId) {
                 dropdown.querySelectorAll('.kebab-item[data-tab]').forEach(k => {
-                    k.classList.toggle('active', k.getAttribute('data-tab') === tabId);
+                    k.classList.toggle('active', k.getAttribute('data-tab') === tabId && !k.classList.contains('mobile-db-subtab')); 
                 });
             }
         });

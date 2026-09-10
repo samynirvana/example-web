@@ -2605,6 +2605,10 @@ window.switchDbView = function (viewName) {
         if (activeSubBtn) activeSubBtn.classList.add('active');
     }
 
+    document.querySelectorAll('.mobile-db-subtab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.subtab === viewName);
+    });
+
     // 2. Show/Hide Database Section Groups
     const secStudents = document.getElementById('db-section-students');
     const secTeachers = document.getElementById('db-section-teachers');
@@ -2634,6 +2638,15 @@ window.switchDbView = function (viewName) {
         }
     }
 };
+
+// Tools expands without changing the current workspace tab.
+document.getElementById('menuTools')?.addEventListener('click', () => {
+    const group = document.getElementById('groupTools');
+    const open = !group.classList.contains('open');
+    document.querySelectorAll('.menu-item-group').forEach(item => item.classList.remove('open'));
+    group.classList.toggle('open', open);
+    document.getElementById('menuTools').setAttribute('aria-expanded', String(open));
+});
 
 // Main Menu Button Handlers
 document.querySelectorAll('.menu-btn').forEach(button => {
@@ -2710,6 +2723,18 @@ document.querySelectorAll('.submenu-btn').forEach(subBtn => {
         const tabId = subBtn.getAttribute('data-tab');
         const subtab = subBtn.getAttribute('data-subtab');
         const parentGroup = subBtn.closest('.menu-item-group');
+        if (!tabId) return; // Tools links keep their normal page navigation.
+        if (parentGroup?.id === 'groupTools') {
+            document.querySelectorAll('.menu-btn, .submenu-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('menuTools')?.classList.add('active');
+            subBtn.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.toggle('active', tab.id === tabId));
+            document.getElementById('mobileMenuTools')?.classList.add('active');
+            if (tabId === 'tab-manage-quizzes') loadQuizzesTable();
+            parentGroup.classList.remove('open');
+            document.getElementById('menuTools')?.setAttribute('aria-expanded', 'false');
+            return;
+        }
 
         // Keep parent group open and parent button active
         if (parentGroup) parentGroup.classList.add('open');
@@ -9425,7 +9450,7 @@ function renderAttWatchlistTableOnly() {
                     <span style="color: var(--text-dark, #0f172a); font-size: 13.5px; font-weight: 700;">${escapeHtml(st.studentName)}</span>
                 </td>
                 <td style="font-weight: 600; font-size: 13px; color: var(--text-dark, #0f172a);">${escapeHtml(st.studentClass)}</td>
-                <td style="text-align: center; font-weight: 600;">${st.total}</td>
+                <td style="text-align: center;"><button type="button" class="att-history-count" data-att-student="${escapeHtml(st.studentCode)}" aria-label="View attendance history for ${escapeHtml(st.studentName)}">${st.total}</button></td>
                 <td style="text-align: center; font-weight: 700; color: #10b981;">${st.present}</td>
                 <td style="text-align: center; font-weight: 700; color: #ef4444;">${st.absent}</td>
                 <td style="text-align: center; font-weight: 700; color: #f59e0b;">${st.other}</td>
@@ -11213,4 +11238,40 @@ window.updateBulkDeleteRemindersUI = function () {
 window.updateReminderSelectedCount = updateReminderSelectedCount;
 window.populateAssignmentReminderDropdowns = populateAssignmentReminderDropdowns;
 
-
+
+// Read-only student history from the same records loaded for attendance analytics.
+const studentAttendanceDialog = document.getElementById('studentAttendanceDialog');
+document.getElementById('closeStudentAttendance')?.addEventListener('click', () => studentAttendanceDialog.close());
+studentAttendanceDialog?.addEventListener('click', event => {
+    if (event.target !== studentAttendanceDialog) return;
+    const bounds = studentAttendanceDialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) studentAttendanceDialog.close();
+});
+document.getElementById('attStudentWatchlistTable')?.addEventListener('click', event => {
+    const button = event.target.closest('[data-att-student]');
+    if (!button) return;
+    const code = button.dataset.attStudent;
+    const records = attAnalyticsAllRecords.filter(record => String(record.studentCode || record.id) === code);
+    const savedTime = value => {
+        if (!value) return null;
+        const date = typeof value.toDate === 'function' ? value.toDate() : new Date(value.seconds != null ? value.seconds * 1000 : value);
+        return Number.isNaN(date.getTime()) ? null : date;
+    };
+    records.sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')) || (savedTime(b.timestamp)?.getTime() || 0) - (savedTime(a.timestamp)?.getTime() || 0));
+    const student = cachedWatchlistData.find(item => String(item.studentCode) === code);
+    document.getElementById('studentAttendanceIdentity').textContent = (student?.studentName || records[0]?.studentName || code) + ' · ' + (student?.studentClass || records[0]?.studentClass || 'Class not recorded');
+    const statusInfo = { present: ['Present', 'present'], absent: ['Absent', 'absent'], others: ['Other', 'other'] };
+    const counts = { present: 0, absent: 0, others: 0, pending: 0 };
+    records.forEach(record => { const status = String(record.status || '').toLowerCase(); counts[statusInfo[status] ? status : 'pending']++; });
+    const summary = [['Total', records.length], ['Present', counts.present], ['Absent', counts.absent], ['Other', counts.others]];
+    if (counts.pending) summary.push(['Unspecified', counts.pending]);
+    document.getElementById('studentAttendanceSummary').innerHTML = summary.map(([label,count]) => '<div><strong>' + count + '</strong><span>' + label + '</span></div>').join('');
+    document.getElementById('studentAttendanceRecords').innerHTML = records.map(record => {
+        const session = attAnalyticsAllSessions.find(item => item.id === record.sessionId);
+        const status = statusInfo[String(record.status || '').toLowerCase()] || ['Unspecified', 'pending'];
+        const dateText = record.date || session?.date || 'Date not recorded';
+        const time = savedTime(record.timestamp);
+        return '<article class="student-att-record"><div class="student-att-record-top"><strong>' + escapeHtml(dateText) + '</strong><span class="student-att-status ' + status[1] + '">' + status[0] + '</span></div><p class="student-att-class">' + escapeHtml(record.studentClass || session?.studentClass || 'Class not recorded') + ' · ' + escapeHtml(record.subject || session?.subject || 'Subject not recorded') + '</p><p class="student-att-reason">Reason: ' + escapeHtml(String(record.reason || '').trim() || 'Not recorded') + '</p><small>Last recorded: ' + escapeHtml(time ? time.toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'}) : 'Not recorded') + '</small></article>';
+    }).join('') || '<p>No attendance records available for this student.</p>';
+    studentAttendanceDialog.showModal();
+});
