@@ -10584,15 +10584,15 @@ async function loadReminderStudents() {
         studentsList.forEach(s => {
             const initial = (s.name.charAt(0) || 'S').toUpperCase();
             const avatarHtml = s.photoUrl
-                ? `<img src="${s.photoUrl}" alt="${escapeHtml(s.name)}" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">`
-                : `<div style="width: 28px; height: 28px; border-radius: 50%; background: #1e5eff; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">${initial}</div>`;
+                ? `<img src="${s.photoUrl}" alt="${escapeHtml(s.name)}" class="reminder-student-avatar" style="width: 28px; height: 28px; min-width: 28px; max-width: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">`
+                : `<div class="reminder-student-avatar" style="width: 28px; height: 28px; min-width: 28px; max-width: 28px; border-radius: 50%; background: #1e5eff; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">${initial}</div>`;
 
             html += `
-                <label class="reminder-student-item" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0); border-radius: 9px; cursor: pointer; transition: background 0.15s; user-select: none;">
-                    <input type="checkbox" class="reminder-student-cb" value="${escapeHtml(s.code)}" data-name="${escapeHtml(s.name)}" data-class="${escapeHtml(s.studentClass)}" onchange="updateReminderSelectedCount()" style="width: 16px; height: 16px; accent-color: var(--primary-blue, #1e5eff); cursor: pointer;">
+                <label class="reminder-student-item" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0); border-radius: 9px; cursor: pointer; transition: background 0.15s; user-select: none; box-sizing: border-box; min-width: 0; width: 100%;">
+                    <input type="checkbox" class="reminder-student-cb" value="${escapeHtml(s.code)}" data-name="${escapeHtml(s.name)}" data-class="${escapeHtml(s.studentClass)}" onchange="updateReminderSelectedCount()" style="width: 17px !important; height: 17px !important; min-width: 17px !important; max-width: 17px !important; flex-shrink: 0 !important; display: inline-block !important; accent-color: var(--primary-blue, #1e5eff); cursor: pointer; margin: 0 !important; padding: 0 !important;">
                     ${avatarHtml}
-                    <div style="overflow: hidden; line-height: 1.2; flex: 1;">
-                        <div style="font-size: 13px; font-weight: 700; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(s.name)}</div>
+                    <div class="reminder-student-info" style="overflow: hidden; line-height: 1.2; flex: 1 1 auto; min-width: 0;">
+                        <div class="reminder-student-name" style="font-size: 13px; font-weight: 700; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(s.name)}</div>
                     </div>
                 </label>
             `;

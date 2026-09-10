@@ -3241,15 +3241,15 @@ body.dark-theme .kebab-dropdown .kebab-item.danger:hover {
 }
 
 .single-score-centered-container select,
-.single-score-centered-container input,
+.single-score-centered-container input:not([type="radio"]):not([type="checkbox"]),
 .view-score-centered-container select,
-.view-score-centered-container input,
+.view-score-centered-container input:not([type="radio"]):not([type="checkbox"]),
 .behavior-form-centered-container select,
-.behavior-form-centered-container input,
+.behavior-form-centered-container input:not([type="radio"]):not([type="checkbox"]),
 .attendance-form-centered-container select,
-.attendance-form-centered-container input,
+.attendance-form-centered-container input:not([type="radio"]):not([type="checkbox"]),
 .reminder-form-centered-container select,
-.reminder-form-centered-container input,
+.reminder-form-centered-container input:not([type="radio"]):not([type="checkbox"]),
 #directSubjectSelect,
 #directClassSelect,
 #directQuizSelect,
@@ -6692,17 +6692,90 @@ body.dark-mode .reminder-select-pill-divider {
 }
 
 /* 3. Student Checkbox Items */
+#reminderStudentListContainer {
+    max-height: 280px;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)) !important;
+    gap: 8px !important;
+    padding: 8px !important;
+    border: 1px solid var(--border-color, #e2e8f0) !important;
+    border-radius: 10px !important;
+    background: var(--bg-hover, #f8fafc) !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+}
+
+@media (max-width: 480px) {
+    #reminderStudentListContainer {
+        grid-template-columns: 1fr !important;
+    }
+}
+
 .reminder-student-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    background: var(--card-bg, #ffffff);
-    border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    user-select: none;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 8px 12px !important;
+    background: var(--card-bg, #ffffff) !important;
+    border: 1px solid var(--border-color, #e2e8f0) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    user-select: none !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+.reminder-student-cb,
+.reminder-student-item input[type="checkbox"] {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    max-width: 17px !important;
+    min-height: 17px !important;
+    max-height: 17px !important;
+    flex: 0 0 17px !important;
+    flex-shrink: 0 !important;
+    display: inline-block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    accent-color: var(--primary-blue, #1e5eff) !important;
+    cursor: pointer !important;
+}
+
+.reminder-student-avatar,
+.reminder-student-item img {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    border-radius: 50% !important;
+    flex: 0 0 28px !important;
+    flex-shrink: 0 !important;
+    object-fit: cover !important;
+}
+
+.reminder-student-info {
+    overflow: hidden !important;
+    line-height: 1.2 !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
+
+.reminder-student-name {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: var(--text-dark, #0f172a) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
 }
 
 .reminder-student-item:hover {
@@ -6731,6 +6804,11 @@ body.dark-theme .reminder-student-item:has(.reminder-student-cb:checked),
 body.dark-mode .reminder-student-item:has(.reminder-student-cb:checked) {
     background: rgba(30, 94, 255, 0.2) !important;
     border-color: #3b82f6 !important;
+}
+
+body.dark-theme .reminder-student-name,
+body.dark-mode .reminder-student-name {
+    color: #f4f7fe !important;
 }
 
 /* 4. Centered Split Pill Deploy Button */
