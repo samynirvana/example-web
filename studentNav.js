@@ -145,8 +145,53 @@ const initMobileNav = () => {
     }
 };
 
+// Global Maintenance Mode Checker across all sub-pages
+const checkGlobalMaintenanceMode = async () => {
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    if (currentPath === 'admin.html' || currentPath === 'maintenance.html') {
+        return;
+    }
+
+    try {
+        const { db, auth } = await import('./firebase.js');
+        const { doc, getDoc, onSnapshot } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+        const { onAuthStateChanged } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js');
+
+        const evaluateAccess = (data, user) => {
+            if (data && data.enabled && !user) {
+                window.location.replace('maintenance.html');
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) return; // Authenticated staff is never blocked
+
+            onSnapshot(doc(db, "system_settings", "maintenance"), (snap) => {
+                if (snap.exists()) {
+                    evaluateAccess(snap.data(), user);
+                }
+            }, async () => {
+                try {
+                    const cSnap = await getDoc(doc(db, "config", "maintenance"));
+                    if (cSnap.exists()) evaluateAccess(cSnap.data(), user);
+                } catch (e) {}
+            });
+        });
+    } catch (err) {
+        // Fallback to cache if dynamic imports fail or offline
+        if (localStorage.getItem('maintenanceMode') === 'true') {
+            window.location.replace('maintenance.html');
+        }
+    }
+};
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMobileNav);
+    document.addEventListener('DOMContentLoaded', () => {
+        initMobileNav();
+        checkGlobalMaintenanceMode();
+    });
 } else {
     initMobileNav();
+    checkGlobalMaintenanceMode();
 }
+

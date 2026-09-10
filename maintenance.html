@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>System Maintenance - MITRA KASIH SCHOOL</title>
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1o_7O1hdx1SJOXfoFw9ZKxpl4zSOD_VYd">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=380">
+    <style>
+        :root {
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --bg-page: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --primary-blue: #1e5eff;
+            --primary-blue-glow: rgba(30, 94, 255, 0.2);
+            --border-color: #e2e8f0;
+            --accent-amber: #f59e0b;
+            --accent-amber-glow: rgba(245, 158, 11, 0.18);
+            --accent-emerald: #10b981;
+        }
+
+        body.dark-theme,
+        body.dark-mode {
+            --bg-page: #0b1329;
+            --card-bg: #131e3d;
+            --text-dark: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary-blue: #3b82f6;
+            --primary-blue-glow: rgba(59, 130, 246, 0.3);
+            --border-color: #1e293b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-page);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Ambient Glow Blobs in Background */
+        .ambient-glow-1 {
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(30, 94, 255, 0.15) 0%, rgba(30, 94, 255, 0) 70%);
+            top: -100px;
+            left: -100px;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(40px);
+        }
+
+        .ambient-glow-2 {
+            position: absolute;
+            width: 460px;
+            height: 460px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0) 70%);
+            bottom: -120px;
+            right: -120px;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(50px);
+        }
+
+        /* Top Bar Controls (Theme & Staff Login Link) */
+        .top-action-bar {
+            position: fixed;
+            top: 18px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .action-btn-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .action-btn-circle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-blue);
+        }
+
+        .staff-link-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+        }
+
+        .staff-link-pill:hover {
+            color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            transform: translateY(-1px);
+        }
+
+        /* Maintenance Main Card */
+        .maintenance-card {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 640px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            padding: 44px 36px;
+            text-align: center;
+            box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.12), 0 0 1px 1px rgba(0, 0, 0, 0.02);
+            backdrop-filter: blur(12px);
+            animation: cardAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(24px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Brand & Logo Header */
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .school-logo-img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #ffffff;
+            padding: 4px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .school-info {
+            text-align: left;
+        }
+
+        .school-info h2 {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        .school-info p {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.01em;
+        }
+
+        /* Animated Maintenance Visual */
+        .maintenance-visual-wrapper {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .visual-circle-bg {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(30, 94, 255, 0.15));
+            border: 2px dashed rgba(245, 158, 11, 0.4);
+            animation: rotateBg 20s linear infinite;
+        }
+
+        @keyframes rotateBg {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .visual-pulse-glow {
+            position: absolute;
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            background: #f59e0b;
+            opacity: 0.2;
+            animation: pulseGlow 2.5s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.18;
+            }
+
+            50% {
+                transform: scale(1.3);
+                opacity: 0.35;
+            }
+        }
+
+        .visual-icon-box {
+            position: relative;
+            z-index: 2;
+            width: 74px;
+            height: 74px;
+            border-radius: 22px;
+            background: linear-gradient(145deg, #ffb703, #f59e0b);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 24px rgba(245, 158, 11, 0.35);
+        }
+
+        .visual-icon-box svg {
+            animation: swingTool 3s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        @keyframes swingTool {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            20% {
+                transform: rotate(-12deg);
+            }
+
+            40% {
+                transform: rotate(10deg);
+            }
+
+            60% {
+                transform: rotate(-6deg);
+            }
+
+            80% {
+                transform: rotate(4deg);
+            }
+        }
+
+        /* Status Badge Pill */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #d97706;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .status-dot-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f59e0b;
+            box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+            animation: dotPulse 1.8s infinite;
+        }
+
+        @keyframes dotPulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+            }
+        }
+
+        /* Typography */
+        .maintenance-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+        }
+
+        .maintenance-message {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin-bottom: 28px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Countdown & Estimated Time Box */
+        .time-info-box {
+            background: rgba(30, 94, 255, 0.04);
+            border: 1.5px solid rgba(30, 94, 255, 0.15);
+            border-radius: 18px;
+            padding: 18px 22px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .time-badge-label {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .time-est-text {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .countdown-grid {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .countdown-segment {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px 14px;
+            min-width: 60px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .countdown-value {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary-blue);
+            line-height: 1.1;
+        }
+
+        .countdown-unit {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* Contact / Homeroom Teacher Note */
+        .contact-note {
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 12px 18px;
+            border-radius: 12px;
+            background: rgba(100, 116, 139, 0.06);
+            margin-bottom: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Action Buttons */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--primary-blue);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 14px var(--primary-blue-glow);
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--primary-blue-glow);
+            filter: brightness(1.05);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        /* Restoration Toast / Modal */
+        .restored-banner {
+            display: none;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1.5px solid #10b981;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            color: #065f46;
+            animation: bounceIn 0.5s ease;
+        }
+
+        body.dark-theme .restored-banner,
+        body.dark-mode .restored-banner {
+            color: #34d399;
+            background: rgba(16, 185, 129, 0.18);
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.03);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Teacher Login Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 24, 56, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 420px;
+            padding: 32px 28px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            position: relative;
+            animation: cardAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close-btn:hover {
+            background: var(--border-color);
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            height: 46px;
+            padding: 10px 14px;
+            font-size: 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-dark);
+            box-sizing: border-box;
+            margin-bottom: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px var(--primary-blue-glow);
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: none;
+        }
+
+        @media (max-width: 560px) {
+            .maintenance-card {
+                padding: 32px 20px;
+                border-radius: 22px;
+            }
+
+            .maintenance-title {
+                font-size: 22px;
+            }
+
+            .countdown-segment {
+                min-width: 52px;
+                padding: 6px 10px;
+            }
+
+            .countdown-value {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <!-- Top Action Bar -->
+    <div class="top-action-bar">
+        <button id="themeToggleBtn" class="action-btn-circle" title="Toggle Dark/Light Mode"
+            aria-label="Toggle Dark/Light Mode">
+            <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+
+        <button id="btnOpenStaffLogin" class="staff-link-pill">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Staff Login</span>
+        </button>
+    </div>
+
+    <!-- Main Card Container -->
+    <main class="maintenance-card">
+
+        <!-- Brand Header -->
+        <div class="brand-header">
+            <img src="https://lh3.googleusercontent.com/d/1o_7O1hdx1SJOXfoFw9ZKxpl4zSOD_VYd"
+                alt="Mitra Kasih School Logo" class="school-logo-img">
+            <div class="school-info">
+                <h2>MITRA KASIH SCHOOL</h2>
+                <p>Student Portal System</p>
+            </div>
+        </div>
+
+        <!-- Restoration Notification Banner (Real-Time Detection) -->
+        <div id="restoredBanner" class="restored-banner">
+            <div
+                style="font-weight: 800; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                Portal is Now Back Online
+            </div>
+            <div style="font-size: 13px;">Maintenance has concluded. Redirecting you to the student portal in <span
+                    id="redirectCounter">3</span> seconds...</div>
+            <div style="margin-top: 10px;">
+                <a href="index.html" class="btn-primary"
+                    style="padding: 6px 16px; font-size: 13px; text-decoration: none;">Go to Student Portal Now</a>
+            </div>
+        </div>
+
+        <!-- Animated Maintenance Visual -->
+        <div class="maintenance-visual-wrapper">
+            <div class="visual-circle-bg"></div>
+            <div class="visual-pulse-glow"></div>
+            <div class="visual-icon-box">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
+                    </path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Category / Status Badge -->
+        <div>
+            <div id="maintenanceBadge" class="status-pill">
+                <span class="status-dot-pulse"></span>
+                <span id="maintenanceBadgeText">System Upgrade & Maintenance</span>
+            </div>
+        </div>
+
+        <!-- Dynamic Title -->
+        <h1 id="displayTitle" class="maintenance-title">We'll Be Right Back!</h1>
+
+        <!-- Dynamic Message -->
+        <p id="displayMessage" class="maintenance-message">
+            We are currently performing scheduled maintenance and updates to bring you a faster and improved learning
+            experience. Please check back shortly.
+        </p>
+
+        <!-- Estimated Completion Box / Countdown -->
+        <div id="timeInfoBox" class="time-info-box">
+            <div class="time-badge-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Estimated Completion</span>
+            </div>
+            <div id="displayEstTime" class="time-est-text">Underway • Finishing Soon</div>
+
+            <!-- Countdown Timer Blocks -->
+            <div id="countdownGrid" class="countdown-grid" style="display: none;">
+                <div class="countdown-segment">
+                    <div id="cdHours" class="countdown-value">00</div>
+                    <div class="countdown-unit">Hours</div>
+                </div>
+                <div class="countdown-segment">
+                    <div id="cdMinutes" class="countdown-value">00</div>
+                    <div class="countdown-unit">Mins</div>
+                </div>
+                <div class="countdown-segment">
+                    <div id="cdSeconds" class="countdown-value">00</div>
+                    <div class="countdown-unit">Secs</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact / Support Note -->
+        <div id="contactNote" class="contact-note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span id="displayContactNote">If you have urgent school inquiries, please reach out to your homeroom
+                teacher.</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="btn-group">
+            <button id="btnRefreshStatus" class="btn-secondary">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 4v6h-6"></path>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+                <span>Refresh Status</span>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Staff / Teacher Login Modal -->
+    <div id="staffLoginModal" class="modal-overlay">
+        <div class="modal-card">
+            <button id="btnCloseStaffModal" class="modal-close-btn" aria-label="Close modal">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <div
+                style="width: 56px; height: 56px; border-radius: 16px; background: rgba(30, 94, 255, 0.1); color: var(--primary-blue); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </div>
+
+            <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 6px; color: var(--text-dark);">Staff & Admin
+                Sign In</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Teachers and administrators
+                retain full access to manage school databases and development.</p>
+
+            <form id="staffLoginForm">
+                <div style="text-align: left; margin-bottom: 12px;">
+                    <label
+                        style="font-size: 12px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 4px;">Staff
+                        Email Address</label>
+                    <input type="email" id="staffEmail" class="form-input" placeholder="e.g. teacher@mitrakasih.sch.id"
+                        required>
+                </div>
+
+                <div style="text-align: left; margin-bottom: 16px;">
+                    <label
+                        style="font-size: 12px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 4px;">Password</label>
+                    <input type="password" id="staffPassword" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <div id="staffLoginError" class="error-msg"></div>
+
+                <button type="submit" id="btnStaffSubmit" class="btn-primary"
+                    style="width: 100%; justify-content: center; height: 46px;">
+                    Sign In to Admin Portal
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase & Dynamic Maintenance Handler -->
+    <script type="module">
+        import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { db, auth } from "./firebase.js";
+
+        // --- THEME SYNC ---
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        function applyTheme(theme) {
+            const isDark = theme === 'dark';
+            if (isDark) {
+                document.body.classList.add('dark-theme', 'dark-mode');
+            } else {
+                document.body.classList.remove('dark-theme', 'dark-mode');
+            }
+            document.querySelectorAll('.theme-icon-sun').forEach(el => el.style.setProperty('display', isDark ? 'inline-block' : 'none', 'important'));
+            document.querySelectorAll('.theme-icon-moon').forEach(el => el.style.setProperty('display', isDark ? 'none' : 'inline-block', 'important'));
+        }
+
+        const savedTheme = localStorage.getItem('appTheme') || localStorage.getItem('theme') || 'light';
+        applyTheme(savedTheme);
+
+        themeToggleBtn?.addEventListener('click', () => {
+            const isDarkNow = !document.body.classList.contains('dark-theme');
+            const newTheme = isDarkNow ? 'dark' : 'light';
+            localStorage.setItem('appTheme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        });
+
+        // --- PREVIEW MODE CHECK ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const isPreview = urlParams.get('preview') === '1' || urlParams.get('preview') === 'true';
+
+        // --- AUTO ROUTE AUTHENTICATED STAFF TO ADMIN ---
+        onAuthStateChanged(auth, (user) => {
+            if (user && !isPreview) {
+                // If staff is signed in and not previewing, offer quick direct link or redirect
+                const staffBtn = document.getElementById('btnOpenStaffLogin');
+                if (staffBtn) {
+                    staffBtn.innerHTML = `<span>Go to Admin Dashboard</span>`;
+                    staffBtn.onclick = () => window.location.href = "admin.html";
+                }
+            }
+        });
+
+        // --- UI ELEMENTS ---
+        const displayTitle = document.getElementById('displayTitle');
+        const displayMessage = document.getElementById('displayMessage');
+        const displayEstTime = document.getElementById('displayEstTime');
+        const maintenanceBadgeText = document.getElementById('maintenanceBadgeText');
+        const displayContactNote = document.getElementById('displayContactNote');
+        const contactNoteWrapper = document.getElementById('contactNote');
+        const timeInfoBox = document.getElementById('timeInfoBox');
+        const countdownGrid = document.getElementById('countdownGrid');
+        const cdHours = document.getElementById('cdHours');
+        const cdMinutes = document.getElementById('cdMinutes');
+        const cdSeconds = document.getElementById('cdSeconds');
+        const restoredBanner = document.getElementById('restoredBanner');
+        const redirectCounter = document.getElementById('redirectCounter');
+
+        let countdownInterval = null;
+
+        function startCountdown(targetIsoDate) {
+            if (countdownInterval) clearInterval(countdownInterval);
+            if (!targetIsoDate) {
+                countdownGrid.style.display = 'none';
+                return;
+            }
+
+            const targetTime = new Date(targetIsoDate).getTime();
+            if (isNaN(targetTime)) {
+                countdownGrid.style.display = 'none';
+                return;
+            }
+
+            countdownGrid.style.display = 'flex';
+
+            const updateTimer = () => {
+                const now = new Date().getTime();
+                const diff = targetTime - now;
+
+                if (diff <= 0) {
+                    cdHours.innerText = '00';
+                    cdMinutes.innerText = '00';
+                    cdSeconds.innerText = '00';
+                    clearInterval(countdownInterval);
+                    return;
+                }
+
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                cdHours.innerText = String(hours).padStart(2, '0');
+                cdMinutes.innerText = String(mins).padStart(2, '0');
+                cdSeconds.innerText = String(secs).padStart(2, '0');
+            };
+
+            updateTimer();
+            countdownInterval = setInterval(updateTimer, 1000);
+        }
+
+        function renderMaintenanceData(data) {
+            if (!data) return;
+
+            // Title & Notice
+            if (data.title) displayTitle.innerText = data.title;
+            if (data.message) displayMessage.innerText = data.message;
+            if (data.category) maintenanceBadgeText.innerText = data.category;
+
+            // Estimated Downtime
+            if (data.estimatedTime) {
+                displayEstTime.innerText = data.estimatedTime;
+                timeInfoBox.style.display = 'flex';
+            } else if (!data.showCountdown && !data.targetDateTime) {
+                timeInfoBox.style.display = 'none';
+            }
+
+            // Countdown
+            if (data.showCountdown && data.targetDateTime) {
+                startCountdown(data.targetDateTime);
+            } else {
+                countdownGrid.style.display = 'none';
+            }
+
+            // Contact Note
+            if (data.contactNote) {
+                displayContactNote.innerText = data.contactNote;
+                contactNoteWrapper.style.display = 'inline-flex';
+            } else {
+                contactNoteWrapper.style.display = 'none';
+            }
+
+            // Check if maintenance is turned OFF in live mode
+            if (!isPreview && data.enabled === false) {
+                triggerAutoRedirect();
+            }
+        }
+
+        let isRedirecting = false;
+        function triggerAutoRedirect() {
+            if (isRedirecting) return;
+            isRedirecting = true;
+            if (restoredBanner) restoredBanner.style.display = 'block';
+
+            let count = 3;
+            if (redirectCounter) redirectCounter.innerText = count;
+
+            const timer = setInterval(() => {
+                count--;
+                if (redirectCounter) redirectCounter.innerText = count;
+                if (count <= 0) {
+                    clearInterval(timer);
+                    window.location.replace("index.html");
+                }
+            }, 1000);
+        }
+
+        // --- REAL-TIME FIRESTORE LISTENER ---
+        async function listenMaintenanceConfig() {
+            try {
+                // Listen to primary config
+                onSnapshot(doc(db, "system_settings", "maintenance"), (snap) => {
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        renderMaintenanceData(data);
+                    }
+                }, async (err) => {
+                    console.warn("Snapshot error on system_settings/maintenance:", err);
+                    // Fallback to static get
+                    try {
+                        const sSnap = await getDoc(doc(db, "config", "maintenance"));
+                        if (sSnap.exists()) renderMaintenanceData(sSnap.data());
+                    } catch (e) {
+                        console.warn("Fallback error:", e);
+                    }
+                });
+            } catch (e) {
+                console.warn("Listener initialization error:", e);
+            }
+        }
+
+        listenMaintenanceConfig();
+
+        // Refresh button
+        document.getElementById('btnRefreshStatus')?.addEventListener('click', async () => {
+            const btn = document.getElementById('btnRefreshStatus');
+            if (btn) {
+                btn.style.opacity = '0.6';
+                btn.querySelector('span').innerText = 'Checking...';
+            }
+            try {
+                const snap = await getDoc(doc(db, "system_settings", "maintenance"));
+                if (snap.exists()) {
+                    const data = snap.data();
+                    renderMaintenanceData(data);
+                    if (!data.enabled) {
+                        triggerAutoRedirect();
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.error("Refresh check error:", e);
+            } finally {
+                setTimeout(() => {
+                    if (btn) {
+                        btn.style.opacity = '1';
+                        btn.querySelector('span').innerText = 'Refresh Status';
+                    }
+                }, 600);
+            }
+        });
+
+        // --- STAFF / ADMIN LOGIN MODAL HANDLER ---
+        const staffModal = document.getElementById('staffLoginModal');
+        const btnOpenStaff = document.getElementById('btnOpenStaffLogin');
+        const btnCloseStaff = document.getElementById('btnCloseStaffModal');
+        const staffLoginForm = document.getElementById('staffLoginForm');
+        const staffLoginError = document.getElementById('staffLoginError');
+        const btnStaffSubmit = document.getElementById('btnStaffSubmit');
+
+        btnOpenStaff?.addEventListener('click', () => {
+            if (staffModal) staffModal.style.display = 'flex';
+        });
+
+        btnCloseStaff?.addEventListener('click', () => {
+            if (staffModal) staffModal.style.display = 'none';
+        });
+
+        staffModal?.addEventListener('click', (e) => {
+            if (e.target === staffModal) staffModal.style.display = 'none';
+        });
+
+        staffLoginForm?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('staffEmail').value.trim();
+            const password = document.getElementById('staffPassword').value.trim();
+
+            if (!email || !password) return;
+
+            if (staffLoginError) staffLoginError.style.display = 'none';
+            if (btnStaffSubmit) {
+                btnStaffSubmit.disabled = true;
+                btnStaffSubmit.innerText = 'Signing In...';
+            }
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                window.location.href = "admin.html";
+            } catch (err) {
+                console.error("Staff login error:", err);
+                if (staffLoginError) {
+                    staffLoginError.innerText = "Invalid credentials or unauthorized login.";
+                    staffLoginError.style.display = 'block';
+                }
+            } finally {
+                if (btnStaffSubmit) {
+                    btnStaffSubmit.disabled = false;
+                    btnStaffSubmit.innerText = 'Sign In to Admin Portal';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

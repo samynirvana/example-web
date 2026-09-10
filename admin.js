@@ -1749,6 +1749,212 @@ window.saveDriveScriptUrl = async function () {
     alert("Google Drive Web App Script URL saved & synced to Firestore permanently!");
 };
 
+// --- STUDENT PORTAL MAINTENANCE CONTROL (FIRESTORE PERMANENT CONFIG) ---
+window.updateMaintenanceUI = function (data) {
+    const isEnabled = !!data.enabled;
+    const toggle = document.getElementById('maintenanceToggle');
+    const toggleStateLabel = document.getElementById('maintenanceToggleStateLabel');
+    const liveBadge = document.getElementById('maintenanceLiveBadge');
+    const badgeDot = document.getElementById('maintenanceLiveBadgeDot');
+    const badgeText = document.getElementById('maintenanceLiveBadgeText');
+    const statusBanner = document.getElementById('maintenanceStatusBanner');
+
+    if (toggle) toggle.checked = isEnabled;
+
+    if (toggleStateLabel) {
+        toggleStateLabel.innerText = isEnabled ? 'ON (Maintenance Active)' : 'OFF (Online)';
+        toggleStateLabel.style.color = isEnabled ? '#ef4444' : 'var(--text-dark)';
+    }
+
+    if (liveBadge) {
+        if (isEnabled) {
+            if (badgeDot) badgeDot.style.background = '#ef4444';
+            if (badgeText) badgeText.innerText = 'Maintenance Active';
+            liveBadge.style.color = '#ef4444';
+            liveBadge.style.background = 'rgba(239, 68, 68, 0.1)';
+            liveBadge.style.borderColor = 'rgba(239, 68, 68, 0.25)';
+        } else {
+            if (badgeDot) badgeDot.style.background = '#16a34a';
+            if (badgeText) badgeText.innerText = 'Portal Online';
+            liveBadge.style.color = '#16a34a';
+            liveBadge.style.background = 'rgba(22, 163, 74, 0.1)';
+            liveBadge.style.borderColor = 'rgba(22, 163, 74, 0.2)';
+        }
+    }
+
+    if (statusBanner) {
+        if (isEnabled) {
+            statusBanner.style.background = 'rgba(239, 68, 68, 0.08)';
+            statusBanner.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+            statusBanner.style.color = '#b91c1c';
+            statusBanner.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                </svg>
+                <div>
+                    <strong>Maintenance Mode is ACTIVE:</strong> All students visiting or logging in are redirected to <code>maintenance.html</code>. Staff and teachers retain full administrative access.
+                </div>
+            `;
+        } else {
+            statusBanner.style.background = 'rgba(22, 163, 74, 0.08)';
+            statusBanner.style.borderColor = 'rgba(22, 163, 74, 0.25)';
+            statusBanner.style.color = '#15803d';
+            statusBanner.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <div>
+                    <strong>Portal is Currently ONLINE:</strong> Students can log in with their codes and access all features normally.
+                </div>
+            `;
+        }
+    }
+};
+
+window.handleMaintenanceToggleChange = function () {
+    const toggle = document.getElementById('maintenanceToggle');
+    const isChecked = toggle ? toggle.checked : false;
+    window.updateMaintenanceUI({ enabled: isChecked });
+};
+
+window.loadAdminMaintenanceSettings = async function () {
+    try {
+        let maintenanceData = {
+            enabled: false,
+            title: "We'll Be Right Back!",
+            message: "We are currently performing scheduled maintenance and updates to bring you a faster and improved learning experience. Please check back shortly.",
+            category: "System Upgrade & Maintenance",
+            estimatedTime: "Today at 5:00 PM (approx. 2 hours)",
+            targetDateTime: "",
+            contactNote: "If you have urgent school inquiries, please reach out to your homeroom teacher.",
+            showCountdown: false,
+            allowStaffLogin: true
+        };
+
+        // Try reading from localStorage cache first
+        const cached = localStorage.getItem('portalMaintenanceSettings');
+        if (cached) {
+            try {
+                maintenanceData = { ...maintenanceData, ...JSON.parse(cached) };
+            } catch (e) {}
+        }
+
+        // Fetch from Firestore system_settings/maintenance or config/maintenance
+        try {
+            let snap = await getDoc(doc(db, "system_settings", "maintenance"));
+            if (!snap.exists()) {
+                snap = await getDoc(doc(db, "config", "maintenance"));
+            }
+            if (snap.exists()) {
+                maintenanceData = { ...maintenanceData, ...snap.data() };
+            }
+        } catch (fErr) {
+            console.warn("Could not fetch Firestore maintenance config:", fErr);
+        }
+
+        // Populate Form Fields
+        const inTitle = document.getElementById('maintenanceTitleInput');
+        const inMsg = document.getElementById('maintenanceMsgInput');
+        const inCategory = document.getElementById('maintenanceCategoryInput');
+        const inEstTime = document.getElementById('maintenanceEstTimeInput');
+        const inTargetDate = document.getElementById('maintenanceTargetDateInput');
+        const inContactNote = document.getElementById('maintenanceContactNoteInput');
+        const inShowCountdown = document.getElementById('maintenanceShowCountdownInput');
+        const inAllowStaffLogin = document.getElementById('maintenanceAllowStaffLoginInput');
+
+        if (inTitle) inTitle.value = maintenanceData.title || "";
+        if (inMsg) inMsg.value = maintenanceData.message || "";
+        if (inCategory) inCategory.value = maintenanceData.category || "";
+        if (inEstTime) inEstTime.value = maintenanceData.estimatedTime || "";
+        if (inTargetDate) inTargetDate.value = maintenanceData.targetDateTime || "";
+        if (inContactNote) inContactNote.value = maintenanceData.contactNote || "";
+        if (inShowCountdown) inShowCountdown.checked = !!maintenanceData.showCountdown;
+        if (inAllowStaffLogin) inAllowStaffLogin.checked = maintenanceData.allowStaffLogin !== false;
+
+        window.updateMaintenanceUI(maintenanceData);
+
+    } catch (err) {
+        console.error("Error loading maintenance settings:", err);
+    }
+};
+
+window.saveAdminMaintenanceSettings = async function () {
+    const isEnabled = document.getElementById('maintenanceToggle')?.checked || false;
+    const title = document.getElementById('maintenanceTitleInput')?.value.trim() || "We'll Be Right Back!";
+    const message = document.getElementById('maintenanceMsgInput')?.value.trim() || "We are currently performing scheduled maintenance. Please check back shortly.";
+    const category = document.getElementById('maintenanceCategoryInput')?.value.trim() || "System Upgrade & Maintenance";
+    const estimatedTime = document.getElementById('maintenanceEstTimeInput')?.value.trim() || "";
+    const targetDateTime = document.getElementById('maintenanceTargetDateInput')?.value || "";
+    const contactNote = document.getElementById('maintenanceContactNoteInput')?.value.trim() || "";
+    const showCountdown = document.getElementById('maintenanceShowCountdownInput')?.checked || false;
+    const allowStaffLogin = document.getElementById('maintenanceAllowStaffLoginInput')?.checked !== false;
+
+    const msgEl = document.getElementById('maintenanceSaveMsg');
+    const saveBtn = document.getElementById('btnSaveMaintenanceSettings');
+
+    if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.innerText = 'Saving...';
+    }
+
+    const payload = {
+        enabled: isEnabled,
+        title,
+        message,
+        category,
+        estimatedTime,
+        targetDateTime,
+        contactNote,
+        showCountdown,
+        allowStaffLogin,
+        updatedAt: new Date().toISOString(),
+        updatedBy: auth.currentUser?.email || 'admin'
+    };
+
+    try {
+        // Save to both system_settings/maintenance and config/maintenance for seamless cross-collection compatibility
+        await setDoc(doc(db, "system_settings", "maintenance"), payload, { merge: true });
+        await setDoc(doc(db, "config", "maintenance"), payload, { merge: true });
+
+        // Update local cache
+        localStorage.setItem('portalMaintenanceSettings', JSON.stringify(payload));
+        localStorage.setItem('maintenanceMode', isEnabled ? 'true' : 'false');
+
+        window.updateMaintenanceUI(payload);
+
+        if (msgEl) {
+            msgEl.innerText = isEnabled 
+                ? "Maintenance Mode ACTIVE and landing page updated." 
+                : "Settings saved and Portal is ONLINE for students.";
+            msgEl.style.color = isEnabled ? "#ef4444" : "#16a34a";
+            setTimeout(() => { if (msgEl) msgEl.innerText = ""; }, 4000);
+        }
+
+        alert(isEnabled 
+            ? "Maintenance Mode is now ACTIVE.\nStudents logging in will be directed to the maintenance landing page."
+            : "Maintenance Mode is now OFF.\nStudents can access the portal normally.");
+
+    } catch (err) {
+        console.error("Error saving maintenance settings:", err);
+        if (msgEl) {
+            msgEl.innerText = "Error: " + err.message;
+            msgEl.style.color = "#ef4444";
+        }
+        alert("Failed to save maintenance settings: " + err.message);
+    } finally {
+        if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.innerText = 'Save Maintenance Settings';
+        }
+    }
+};
+
+window.previewMaintenancePage = function () {
+    window.open('maintenance.html?preview=1', '_blank');
+};
+
 // --- EDIT STUDENT PROFILE MODAL ---
 window.openEditStudentModal = async function (studentId) {
     try {
@@ -2382,7 +2588,7 @@ document.getElementById('filterPointsClass')?.addEventListener('change', () => l
 
 // --- TAB & SUB-TAB NAVIGATION LOGIC ---
 window.switchDbView = function (viewName) {
-    const validViews = ['students', 'teachers', 'quizzes', 'scripting', 'all'];
+    const validViews = ['students', 'teachers', 'quizzes', 'scripting', 'maintenance', 'all'];
     if (!validViews.includes(viewName)) viewName = 'students';
 
     // 1. Update Sidebar Submenu Active States
@@ -2391,7 +2597,8 @@ window.switchDbView = function (viewName) {
         'students': 'subtabStudents',
         'teachers': 'subtabTeachers',
         'quizzes': 'subtabQuizzes',
-        'scripting': 'subtabScripting'
+        'scripting': 'subtabScripting',
+        'maintenance': 'subtabMaintenance'
     };
     if (subtabMap[viewName]) {
         const activeSubBtn = document.getElementById(subtabMap[viewName]);
@@ -2403,6 +2610,7 @@ window.switchDbView = function (viewName) {
     const secTeachers = document.getElementById('db-section-teachers');
     const secQuizzes = document.getElementById('db-section-quizzes');
     const secScripting = document.getElementById('db-section-scripting');
+    const secMaintenance = document.getElementById('db-section-maintenance');
 
     if (secStudents) {
         secStudents.style.display = (viewName === 'all' || viewName === 'students') ? 'contents' : 'none';
@@ -2417,6 +2625,12 @@ window.switchDbView = function (viewName) {
         secScripting.style.display = (viewName === 'all' || viewName === 'scripting') ? 'contents' : 'none';
         if ((viewName === 'all' || viewName === 'scripting') && window.loadAdminDriveSettings) {
             window.loadAdminDriveSettings();
+        }
+    }
+    if (secMaintenance) {
+        secMaintenance.style.display = (viewName === 'all' || viewName === 'maintenance') ? 'contents' : 'none';
+        if ((viewName === 'all' || viewName === 'maintenance') && window.loadAdminMaintenanceSettings) {
+            window.loadAdminMaintenanceSettings();
         }
     }
 };

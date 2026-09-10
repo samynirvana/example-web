@@ -194,6 +194,14 @@
                             </svg>
                             <span>Scripting</span>
                         </button>
+                        <button class="submenu-btn" data-tab="tab-view-ledgers" data-subtab="maintenance"
+                            id="subtabMaintenance">
+                            <svg class="submenu-icon" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                            </svg>
+                            <span>Maintenance</span>
+                        </button>
                     </div>
                 </div>
 
@@ -2303,6 +2311,192 @@
                                 </button>
                             </div>
 
+                        </div>
+
+                        <!-- MAINTENANCE CONTROL & LANDING PAGE CUSTOMIZATION -->
+                        <div id="db-section-maintenance" class="db-section-group"
+                            style="grid-column: 1 / -1; display: none;">
+
+                            <!-- Single Unified Card Wrapper -->
+                            <div class="box" style="grid-column: 1 / -1; padding: 24px; display: flex; flex-direction: column; gap: 22px;">
+
+                                <!-- 1. Header Section -->
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 18px;">
+                                    <div>
+                                        <h3
+                                            style="margin: 0; font-size: 18px; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 8px;">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary-blue);">
+                                                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                                            </svg>
+                                            Student Portal Maintenance & Access Control
+                                        </h3>
+                                        <p style="font-size: 13px; color: var(--text-gray); margin: 6px 0 0 0;">
+                                            Toggle maintenance mode on or off and customize the landing page shown to students. When Maintenance is <strong>ON</strong>, all student logins and sessions are redirected to <code>maintenance.html</code> while staff retain full dashboard access.
+                                        </p>
+                                    </div>
+                                    <span id="maintenanceLiveBadge"
+                                        style="font-size: 12px; font-weight: 700; color: #16a34a; background: rgba(22, 163, 74, 0.1); padding: 5px 12px; border-radius: 8px; border: 1px solid rgba(22, 163, 74, 0.2); display: inline-flex; align-items: center; gap: 6px;">
+                                        <span id="maintenanceLiveBadgeDot" style="width: 8px; height: 8px; border-radius: 50%; background: #16a34a; display: inline-block;"></span>
+                                        <span id="maintenanceLiveBadgeText">Portal Online</span>
+                                    </span>
+                                </div>
+
+                                <!-- 2. Master Mode Switch Row & Banner -->
+                                <div style="background: var(--input-bg, #f8fafc); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px 20px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                                        <div>
+                                            <h4 style="margin: 0; font-size: 15.5px; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 8px;">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary-blue);">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                                </svg>
+                                                Maintenance Mode Switch
+                                            </h4>
+                                            <p style="font-size: 13px; color: var(--text-gray); margin: 4px 0 0 0;">
+                                                Switch ON during system updates or development to protect student access.
+                                            </p>
+                                        </div>
+
+                                        <!-- Switch Toggle UI -->
+                                        <div style="display: flex; align-items: center; gap: 14px;">
+                                            <span id="maintenanceToggleStateLabel" style="font-size: 14px; font-weight: 800; color: var(--text-dark);">
+                                                OFF (Online)
+                                            </span>
+                                            <label class="custom-switch" style="position: relative; display: inline-block; width: 54px; height: 28px; cursor: pointer;">
+                                                <input type="checkbox" id="maintenanceToggle" style="opacity: 0; width: 0; height: 0;" onchange="handleMaintenanceToggleChange()">
+                                                <span class="switch-slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 28px;"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Status Visual Banner -->
+                                    <div id="maintenanceStatusBanner"
+                                        style="margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-size: 13.5px; font-weight: 600; display: flex; align-items: center; gap: 10px; background: rgba(22, 163, 74, 0.08); border: 1.5px solid rgba(22, 163, 74, 0.25); color: #15803d;">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                        </svg>
+                                        <div>
+                                            <strong>Portal is Currently ONLINE:</strong> Students can log in with their codes and access all features normally.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 3. Landing Page Customization Form -->
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
+                                        <div>
+                                            <h4 style="margin: 0; font-size: 15.5px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 8px;">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M12 20h9"></path>
+                                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                                </svg>
+                                                Maintenance Landing Page Customization
+                                            </h4>
+                                            <p style="font-size: 13px; color: var(--text-gray); margin: 4px 0 0 0;">
+                                                Customize the text, categories, expected return time, and countdown displayed on <code>maintenance.html</code>.
+                                            </p>
+                                        </div>
+                                        <button type="button" class="btn-secondary" onclick="previewMaintenancePage()"
+                                            style="padding: 6px 14px; font-size: 12.5px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-dark);">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                            Live Preview Page
+                                        </button>
+                                    </div>
+
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                                        <!-- Headline / Title -->
+                                        <div style="grid-column: 1 / -1;">
+                                            <label style="font-size: 12.5px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 5px;">
+                                                Maintenance Page Heading / Title:
+                                            </label>
+                                            <input type="text" id="maintenanceTitleInput" placeholder="e.g. We'll Be Right Back! or System Under Scheduled Maintenance"
+                                                style="width: 100%; padding: 10px 12px; font-size: 13.5px; border-radius: 8px; border: 1px solid var(--border-color); box-sizing: border-box; background: var(--input-bg);">
+                                        </div>
+
+                                        <!-- Notice / Message Textarea -->
+                                        <div style="grid-column: 1 / -1;">
+                                            <label style="font-size: 12.5px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 5px;">
+                                                Detailed Notice / Message for Students:
+                                            </label>
+                                            <textarea id="maintenanceMsgInput" rows="3" placeholder="Explain the maintenance reason, improvements being deployed, or return instructions..."
+                                                style="width: 100%; padding: 10px 12px; font-size: 13.5px; border-radius: 8px; border: 1px solid var(--border-color); box-sizing: border-box; background: var(--input-bg); resize: vertical;"></textarea>
+                                        </div>
+
+                                        <!-- Category Badge -->
+                                        <div>
+                                            <label style="font-size: 12.5px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 5px;">
+                                                Reason / Category Badge Tag:
+                                            </label>
+                                            <input type="text" id="maintenanceCategoryInput" placeholder="e.g. System Upgrade, Server Maintenance, Feature Launch"
+                                                style="width: 100%; padding: 10px 12px; font-size: 13px; border-radius: 8px; border: 1px solid var(--border-color); box-sizing: border-box; background: var(--input-bg);">
+                                        </div>
+
+                                        <!-- Estimated Downtime / Return Text -->
+                                        <div>
+                                            <label style="font-size: 12.5px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 5px;">
+                                                Estimated Completion Text:
+                                            </label>
+                                            <input type="text" id="maintenanceEstTimeInput" placeholder="e.g. Today at 5:00 PM (approx. 2 hours)"
+                                                style="width: 100%; padding: 10px 12px; font-size: 13px; border-radius: 8px; border: 1px solid var(--border-color); box-sizing: border-box; background: var(--input-bg);">
+                                        </div>
+
+                                        <!-- Target Date & Time (for Countdown) -->
+                                        <div>
+                                            <label style="font-size: 12.5px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 5px;">
+                                                Target Completion Date & Time (Optional for Countdown):
+                                            </label>
+                                            <input type="datetime-local" id="maintenanceTargetDateInput"
+                                                style="width: 100%; padding: 10px 12px; font-size: 13px; border-radius: 8px; border: 1px solid var(--border-color); box-sizing: border-box; background: var(--input-bg);">
+                                        </div>
+
+                                        <!-- Contact / Support Note -->
+                                        <div>
+                                            <label style="font-size: 12.5px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 5px;">
+                                                Homeroom Teacher / Emergency Note:
+                                            </label>
+                                            <input type="text" id="maintenanceContactNoteInput" placeholder="e.g. If you have urgent questions, contact your homeroom teacher."
+                                                style="width: 100%; padding: 10px 12px; font-size: 13px; border-radius: 8px; border: 1px solid var(--border-color); box-sizing: border-box; background: var(--input-bg);">
+                                        </div>
+
+                                        <!-- Feature Checkboxes -->
+                                        <div style="grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 20px; padding-top: 4px;">
+                                            <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-dark); cursor: pointer;">
+                                                <input type="checkbox" id="maintenanceShowCountdownInput" style="width: 17px; height: 17px; cursor: pointer; accent-color: var(--primary-blue);">
+                                                <span>Display Live Countdown Timer on Maintenance Page</span>
+                                            </label>
+
+                                            <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-dark); cursor: pointer;">
+                                                <input type="checkbox" id="maintenanceAllowStaffLoginInput" checked style="width: 17px; height: 17px; cursor: pointer; accent-color: var(--primary-blue);">
+                                                <span>Display Staff / Teacher Sign In button on Maintenance Page</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 4. Save Action Bar -->
+                                <div style="border-top: 1px solid var(--border-color); padding-top: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <span id="maintenanceSaveMsg" style="font-size: 13px; font-weight: 700;"></span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                        <button type="button" onclick="previewMaintenancePage()"
+                                            style="padding: 10px 18px; font-size: 13.5px; font-weight: 700; cursor: pointer; border-radius: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-dark);">
+                                            Preview Page
+                                        </button>
+                                        <button type="button" id="btnSaveMaintenanceSettings" onclick="saveAdminMaintenanceSettings()"
+                                            class="btn-primary-red"
+                                            style="padding: 12px 28px; font-size: 14px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; background: var(--primary-blue); border-color: var(--primary-blue);">
+                                            Save Maintenance Settings
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>

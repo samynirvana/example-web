@@ -55,7 +55,40 @@ themeToggleBtn?.addEventListener('click', () => {
 let currentLoggedInStudent = null;
 let studentReminderUnsubscribe = null;
 
+async function checkMaintenanceStatus() {
+    try {
+        let snap = await getDoc(doc(db, "system_settings", "maintenance"));
+        if (!snap.exists()) {
+            snap = await getDoc(doc(db, "config", "maintenance"));
+        }
+        if (snap.exists()) {
+            const data = snap.data();
+            return !!data.enabled;
+        }
+    } catch (e) {
+        console.warn("Could not check maintenance status:", e);
+    }
+    return localStorage.getItem('maintenanceMode') === 'true';
+}
+
+// Real-time listener for maintenance changes while on index.html
+try {
+    onSnapshot(doc(db, "system_settings", "maintenance"), (snap) => {
+        if (snap.exists() && snap.data().enabled && !auth.currentUser) {
+            window.location.replace("maintenance.html");
+        }
+    });
+} catch (e) {
+    console.warn("Live maintenance listener error:", e);
+}
+
 async function checkStudentSession() {
+    const isMaintenance = await checkMaintenanceStatus();
+    if (isMaintenance && !auth.currentUser) {
+        window.location.replace("maintenance.html");
+        return;
+    }
+
     const saved = sessionStorage.getItem('studentLoggedInSession');
     const overlay = document.getElementById('studentLoginOverlay');
     
@@ -117,6 +150,13 @@ async function handleStudentLogin() {
             }
             return;
         }
+    }
+
+    // Check maintenance mode before student logs in
+    const isMaintenance = await checkMaintenanceStatus();
+    if (isMaintenance) {
+        window.location.replace("maintenance.html");
+        return;
     }
 
     // 2. STUDENT LOGIN (Unique code)
